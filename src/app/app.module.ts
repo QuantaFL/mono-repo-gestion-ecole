@@ -12,6 +12,9 @@ import { GradeEntryComponent } from './features/grades/components/grade-entry/gr
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './features/auth/components/register/register.component';
 import { AddStudentComponent } from './features/students/components/add-student/add-student.component';
+import { AddTeacherComponent } from './features/teachers/components/add-teacher/add-teacher.component';
+import {ClassAddComponent} from "./features/class/components/class-add/class-add.component";
+import {ClassListComponent} from "./features/class/components/class-list/class-list.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { AddStudentComponent } from './features/students/components/add-student/
     SubjectListComponent,
     GradeEntryComponent,
     RegisterComponent,
-    AddStudentComponent
+    AddStudentComponent,
+    AddTeacherComponent,
+    ClassAddComponent,
+    ClassListComponent
   ],
   imports: [
     BrowserModule,
