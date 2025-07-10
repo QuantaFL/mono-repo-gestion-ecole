@@ -1,0 +1,84 @@
+<div class="container mt-4">
+  <h4 class="mb-3">Ajouter un élève</h4>
+
+  <form [formGroup]="studentForm">
+    <!-- Prénom -->
+    <div class="mb-3">
+      <label for="firstName" class="form-label">Prénom</label>
+      <input type="text" id="firstName" formControlName="firstName" class="form-control" />
+    </div>
+
+    <!-- Nom -->
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Nom</label>
+      <input type="text" id="lastName" formControlName="lastName" class="form-control" />
+    </div>
+
+    <!-- Date de naissance -->
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date de naissance</label>
+      <input type="date" id="dob" formControlName="dateOfBirth" class="form-control" />
+    </div>
+
+    <!-- Sexe -->
+    <div class="mb-3">
+      <label class="form-label">Sexe</label>
+      <select class="form-select" formControlName="gender">
+        <option value="">-- Sélectionnez --</option>
+        <option value="Homme">Homme</option>
+        <option value="Femme">Femme</option>
+      </select>
+    </div>
+
+    <!-- Téléphone -->
+    <div class="mb-3">
+      <label for="phone" class="form-label">Téléphone</label>
+      <input type="text" id="phone" formControlName="phone" class="form-control" />
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" formControlName="email" class="form-control" />
+    </div>
+
+    <!-- Adresse -->
+    <div class="mb-3">
+      <label for="address" class="form-label">Adresse</label>
+      <textarea id="address" formControlName="address" class="form-control"></textarea>
+    </div>
+
+    <!-- Date d’inscription -->
+    <div class="mb-3">
+      <label for="enrollmentDate" class="form-label">Date d'inscription</label>
+      <input type="date" id="enrollmentDate" formControlName="enrollmentDate" class="form-control" />
+    </div>
+
+    <!-- Classe -->
+    <div class="mb-3">
+      <label for="classId" class="form-label">Classe</label>
+      <select class="form-select" id="classId" formControlName="classId">
+        <option value="">-- Sélectionnez une classe --</option>
+        <option *ngFor="let c of classes" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+
+    <!-- Parent (optionnel) -->
+    <div class="mb-3">
+      <label for="parentUserId" class="form-label">ID du parent (optionnel)</label>
+      <input type="number" id="parentUserId" formControlName="parentUserId" class="form-control" />
+    </div>
+
+    <!-- Numéro étudiant -->
+    <div class="mb-3">
+      <label for="studentIdNumber" class="form-label">Numéro d'identification élève</label>
+      <input type="text" id="studentIdNumber" formControlName="studentIdNumber" class="form-control" />
+    </div>
+
+    <!-- Bouton -->
+    <button class="btn btn-primary" type="submit" [disabled]="studentForm.invalid">
+      Enregistrer
+    </button>
+  </form>
+</div>
+
