@@ -9,6 +9,8 @@ import { DashboardHomeComponent } from './features/dashboard/components/dashboar
 import { TeacherListComponent } from './features/teachers/components/teacher-list/teacher-list.component';
 import { SubjectListComponent } from './features/subjects/components/subject-list/subject-list.component';
 import { GradeEntryComponent } from './features/grades/components/grade-entry/grade-entry.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { RegisterComponent } from './features/auth/components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,13 @@ import { GradeEntryComponent } from './features/grades/components/grade-entry/gr
     DashboardHomeComponent,
     TeacherListComponent,
     SubjectListComponent,
-    GradeEntryComponent
+    GradeEntryComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
