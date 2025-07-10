@@ -11,6 +11,7 @@ import { SubjectListComponent } from './features/subjects/components/subject-lis
 import { GradeEntryComponent } from './features/grades/components/grade-entry/grade-entry.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './features/auth/components/register/register.component';
+import { AddStudentComponent } from './features/students/components/add-student/add-student.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RegisterComponent } from './features/auth/components/register/register.
     TeacherListComponent,
     SubjectListComponent,
     GradeEntryComponent,
-    RegisterComponent
+    RegisterComponent,
+    AddStudentComponent
   ],
   imports: [
     BrowserModule,

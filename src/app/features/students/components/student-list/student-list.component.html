@@ -1,1 +1,37 @@
-<p>student-list works!</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Liste des élèves</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-primary">
+    <tr>
+      <th>#</th>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Classe</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Exemple statique, tu pourras le remplacer par *ngFor plus tard -->
+    <tr>
+      <td>1</td>
+      <td>Fatou</td>
+      <td>Diop</td>
+      <td>6e A</td>
+      <td>fatou</td>
+      <td>77 123 45 67</td>
+      <td>
+        <button class="btn btn-sm btn-info me-2">Voir</button>
+        <button class="btn btn-sm btn-warning me-2">Modifier</button>
+        <button class="btn btn-sm btn-danger">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-end mt-3">
+    <a class="btn btn-primary" routerLink="/student">+ Ajouter un élève</a>
+  </div>
+</div>
+
