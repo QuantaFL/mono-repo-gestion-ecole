@@ -1,1 +1,73 @@
-<p>dashboard-home works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users">Utilisateurs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/students">Élèves</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/teachers">Enseignants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/subjects">Matières</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/grades">Notes</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Élèves</div>
+        <div class="card-body">
+          <h5 class="card-title">245</h5>
+          <p class="card-text">Nombre total d'élèves enregistrés</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">Enseignants</div>
+        <div class="card-body">
+          <h5 class="card-title">32</h5>
+          <p class="card-text">Nombre total d'enseignants</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-header">Bulletins</div>
+        <div class="card-body">
+          <h5 class="card-title">173</h5>
+          <p class="card-text">Bulletins générés à ce jour</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-md-4">
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-header">Matieres</div>
+        <div class="card-body">
+          <h5 class="card-title">67</h5>
+          <p class="card-text">L'ecole dispense plusieurs matieres</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
