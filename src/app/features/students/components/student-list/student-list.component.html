@@ -13,14 +13,13 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Exemple statique, tu pourras le remplacer par *ngFor plus tard -->
-    <tr>
-      <td>1</td>
-      <td>Fatou</td>
-      <td>Diop</td>
-      <td>6e A</td>
-      <td>fatou</td>
-      <td>77 123 45 67</td>
+    <tr *ngFor="let student of students; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ student.user?.firstName }}</td>
+      <td>{{ student.user?.lastName }}</td>
+      <td>{{ student.classModel?.name || 'Non attribuée' }}</td>
+      <td>{{ student.user?.email }}</td>
+      <td>{{ student.user?.phone }}</td>
       <td>
         <button class="btn btn-sm btn-info me-2">Voir</button>
         <button class="btn btn-sm btn-warning me-2">Modifier</button>
@@ -28,9 +27,10 @@
       </td>
     </tr>
     </tbody>
+
   </table>
+
   <div class="text-end mt-3">
     <a class="btn btn-primary" routerLink="/student">+ Ajouter un élève</a>
   </div>
 </div>
-
