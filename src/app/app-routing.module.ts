@@ -8,20 +8,23 @@ import {TeacherListComponent} from "./features/teachers/components/teacher-list/
 import {AddTeacherComponent} from "./features/teachers/components/add-teacher/add-teacher.component";
 import {ClassAddComponent} from "./features/class/components/class-add/class-add.component";
 import {ClassListComponent} from "./features/class/components/class-list/class-list.component";
+import {authGuard} from "./core/guards/auth.guard";
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'dashboard', component: DashboardHomeComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: DashboardHomeComponent,},
   { path: 'list_student', component: StudentListComponent },
   { path: 'student', component: AddStudentComponent },
   { path: 'teacher', component: AddTeacherComponent },
   { path: 'list_teacher', component: TeacherListComponent},
-  { path: 'list_class', component: ClassAddComponent},
-  { path: 'class', component: ClassListComponent},
+  { path: 'list_class', component: ClassListComponent},
+  { path: 'class', component: ClassAddComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+
 })
 export class AppRoutingModule { }
