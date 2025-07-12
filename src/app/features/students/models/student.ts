@@ -1,16 +1,16 @@
+import {User} from "../../auth/models/user";
+import {ClassModel} from "../../class/models/class";
+
 export interface Student {
   id: number;
   userId: number;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  gender?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
+  user?:User;
   enrollmentDate: string;
   classId: number;
-  parentUserId?: number;
+  parentUserId: number;
+  parentUser?:User;
+  matricule:String;
+  classModel?:ClassModel;
   studentIdNumber: string;
   createdAt?: string;
   updatedAt?: string;
