@@ -15,6 +15,7 @@ import { AddStudentComponent } from './features/students/components/add-student/
 import { AddTeacherComponent } from './features/teachers/components/add-teacher/add-teacher.component';
 import {ClassAddComponent} from "./features/class/components/class-add/class-add.component";
 import {ClassListComponent} from "./features/class/components/class-list/class-list.component";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {ClassListComponent} from "./features/class/components/class-list/class-l
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
