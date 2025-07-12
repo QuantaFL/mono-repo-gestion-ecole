@@ -1,7 +1,11 @@
 export interface User {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  adresse:string;
+  dateOfBirth:string;
   email: string;
+  phone: string;
   password: string;
   roleId: number;
   rememberToken?: string;
