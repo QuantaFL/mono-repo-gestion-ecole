@@ -1,0 +1,208 @@
+
+# Documentation de l'API pour l'intégration Frontend (Angular)
+
+Ce document détaille les points de terminaison (endpoints) de l'API REST pour le projet portailEducationApi. Chaque section correspond à un module et décrit les opérations CRUD disponibles.
+
+---
+
+## Module: Authentification (Auth)
+
+Ce module gère l'authentification des utilisateurs.
+
+### 1. Enregistrer un nouvel utilisateur
+
+- **Endpoint**: `POST /api/auth/register`
+- **Description**: Crée un nouvel utilisateur dans le système.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "name": "Nom de l'utilisateur",
+    "email": "email@example.com",
+    "password": "votre_mot_de_passe",
+    "password_confirmation": "votre_mot_de_passe"
+  }
+  ```
+- **Réponses**:
+  - `201 Created`: Utilisateur créé avec succès.
+  - `422 Unprocessable Entity`: Erreurs de validation.
+
+### 2. Connecter un utilisateur
+
+- **Endpoint**: `POST /api/auth/login`
+- **Description**: Connecte un utilisateur et retourne un token JWT.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "email": "email@example.com",
+    "password": "votre_mot_de_passe"
+  }
+  ```
+- **Réponses**:
+  - `200 OK`: Connexion réussie. Retourne un token d'accès.
+    ```json
+    {
+      "access_token": "VOTRE_TOKEN_JWT",
+      "token_type": "bearer",
+      "expires_in": 3600
+    }
+    ```
+  - `401 Unauthorized`: Identifiants invalides.
+
+### 3. Obtenir l'utilisateur actuellement authentifié
+
+- **Endpoint**: `GET /api/me`
+- **Description**: Retourne les informations de l'utilisateur actuellement authentifié.
+- **En-têtes (Headers)**:
+  ```
+  Authorization: Bearer VOTRE_TOKEN_JWT
+  ```
+- **Réponses**:
+  - `200 OK`: Retourne les données de l'utilisateur.
+  - `401 Unauthorized`: Token invalide ou expiré.
+
+### 4. Déconnecter un utilisateur
+
+- **Endpoint**: `POST /api/logout`
+- **Description**: Invalide le token JWT de l'utilisateur.
+- **En-têtes (Headers)**:
+  ```
+  Authorization: Bearer VOTRE_TOKEN_JWT
+  ```
+- **Réponses**:
+  - `200 OK`: Déconnexion réussie.
+  - `401 Unauthorized`: Token invalide ou expiré.
+
+---
+
+## Module: Étudiants (Etudiant)
+
+Ce module gère les opérations CRUD pour les étudiants.
+
+### 1. Lister tous les étudiants
+
+- **Endpoint**: `GET /api/etudiants`
+- **Description**: Récupère une liste de tous les étudiants.
+- **Réponses**:
+  - `200 OK`: Retourne un tableau d'étudiants.
+
+### 2. Créer un nouvel étudiant
+
+- **Endpoint**: `POST /api/etudiants`
+- **Description**: Ajoute un nouvel étudiant.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "nom": "Nom de l'étudiant",
+    "prenom": "Prénom de l'étudiant",
+    "date_naissance": "YYYY-MM-DD",
+    "adresse": "Adresse de l'étudiant"
+  }
+  ```
+- **Réponses**:
+  - `201 Created`: Étudiant créé avec succès.
+  - `422 Unprocessable Entity`: Erreurs de validation.
+
+### 3. Obtenir un étudiant spécifique
+
+- **Endpoint**: `GET /api/etudiants/{etudiant}`
+- **Description**: Récupère les informations d'un étudiant spécifique.
+- **Paramètres d'URL**:
+  - `etudiant` (integer): L'ID de l'étudiant.
+- **Réponses**:
+  - `200 OK`: Retourne les données de l'étudiant.
+  - `404 Not Found`: Étudiant non trouvé.
+
+### 4. Mettre à jour un étudiant
+
+- **Endpoint**: `PUT/PATCH /api/etudiants/{etudiant}`
+- **Description**: Met à jour les informations d'un étudiant.
+- **Paramètres d'URL**:
+  - `etudiant` (integer): L'ID de l'étudiant.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "nom": "Nouveau nom",
+    "prenom": "Nouveau prénom",
+    ...
+  }
+  ```
+- **Réponses**:
+  - `200 OK`: Mise à jour réussie.
+  - `404 Not Found`: Étudiant non trouvé.
+  - `422 Unprocessable Entity`: Erreurs de validation.
+
+### 5. Supprimer un étudiant
+
+- **Endpoint**: `DELETE /api/etudiants/{etudiant}`
+- **Description**: Supprime un étudiant.
+- **Paramètres d'URL**:
+  - `etudiant` (integer): L'ID de l'étudiant.
+- **Réponses**:
+  - `204 No Content`: Suppression réussie.
+  - `404 Not Found`: Étudiant non trouvé.
+
+---
+
+## Module: Classes
+
+Ce module gère les opérations CRUD pour les classes.
+
+### 1. Lister toutes les classes
+
+- **Endpoint**: `GET /api/v1/classes`
+- **Description**: Récupère une liste de toutes les classes.
+- **Réponses**:
+  - `200 OK`: Retourne un tableau de classes.
+
+### 2. Créer une nouvelle classe
+
+- **Endpoint**: `POST /api/v1/classes`
+- **Description**: Ajoute une nouvelle classe.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "nom": "Nom de la classe",
+    "niveau": "Niveau de la classe"
+  }
+  ```
+- **Réponses**:
+  - `201 Created`: Classe créée avec succès.
+  - `422 Unprocessable Entity`: Erreurs de validation.
+
+### 3. Obtenir une classe spécifique
+
+- **Endpoint**: `GET /api/v1/classes/{class}`
+- **Description**: Récupère les informations d'une classe spécifique.
+- **Paramètres d'URL**:
+  - `class` (integer): L'ID de la classe.
+- **Réponses**:
+  - `200 OK`: Retourne les données de la classe.
+  - `404 Not Found`: Classe non trouvée.
+
+### 4. Mettre à jour une classe
+
+- **Endpoint**: `PUT/PATCH /api/v1/classes/{class}`
+- **Description**: Met à jour les informations d'une classe.
+- **Paramètres d'URL**:
+  - `class` (integer): L'ID de la classe.
+- **Corps de la requête (Request Body)**:
+  ```json
+  {
+    "nom": "Nouveau nom de la classe",
+    ...
+  }
+  ```
+- **Réponses**:
+  - `200 OK`: Mise à jour réussie.
+  - `404 Not Found`: Classe non trouvée.
+  - `422 Unprocessable Entity`: Erreurs de validation.
+
+### 5. Supprimer une classe
+
+- **Endpoint**: `DELETE /api/v1/classes/{class}`
+- **Description**: Supprime une classe.
+- **Paramètres d'URL**:
+  - `class` (integer): L'ID de la classe.
+- **Réponses**:
+  - `204 No Content`: Suppression réussie.
+  - `404 Not Found`: Classe non trouvée.
