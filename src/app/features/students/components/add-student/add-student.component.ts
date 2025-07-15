@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-add-student',
@@ -17,6 +21,11 @@ export class AddStudentComponent implements OnInit {
     // À remplacer plus tard par un appel à l’API
   ];
 
+<<<<<<< Updated upstream
+=======
+  constructor() {}
+
+>>>>>>> Stashed changes
   ngOnInit(): void {
     this.studentForm = new FormGroup({
       // Étape 1 — infos de l'élève
@@ -92,8 +101,15 @@ export class AddStudentComponent implements OnInit {
     if (this.studentForm.valid) {
       console.log('Formulaire élève :', this.studentForm.value);
       // TODO: envoyer au backend quand prêt
+<<<<<<< Updated upstream
     } else {
       console.log('Formulaire invalide');
+=======
+      //this.notificationService.showSuccess('Élève ajouté avec succès !');
+    } else {
+      console.log('Formulaire invalide');
+     // this.notificationService.showError('Veuillez remplir tous les champs obligatoires.');
+>>>>>>> Stashed changes
     }
   }
 }
