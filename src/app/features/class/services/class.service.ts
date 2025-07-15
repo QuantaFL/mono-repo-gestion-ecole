@@ -1,21 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ClassModel } from '../models/class';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClassService {
-  private classes: ClassModel[] = [
-    { id: 1, name: 'Math 101', academicYear: '2024-2025' },
-    { id: 2, name: 'Science 101', academicYear: '2024-2025' },
-    { id: 3, name: 'History 101', academicYear: '2024-2025' }
-  ];
+  private apiUrl = 'http://localhost:8000/api/v1/classes'; // Adapter l'URL si besoin
 
+  constructor(private http: HttpClient) {}
 
-  constructor() { }
+  getAll(): Observable<{ success: boolean; classes: ClassModel[] }> {
+    return this.http.get<{ success: boolean; classes: ClassModel[] }>(`${this.apiUrl}`);
+  }
 
-  getAll(): Observable<ClassModel[]> {
-    return of(this.classes);
+  getById(id: number): Observable<{ success: boolean; classe: ClassModel }> {
+    return this.http.get<{ success: boolean; classe: ClassModel }>(`${this.apiUrl}/${id}`);
+  }
+
+  create(classe: { name: string; academicYear: string }): Observable<ClassModel> {
+    return this.http.post<any>(`${this.apiUrl}`, classe);
+  }
+
+  update(id: number, classe: { name: string; academicYear: string }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, classe);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 }
