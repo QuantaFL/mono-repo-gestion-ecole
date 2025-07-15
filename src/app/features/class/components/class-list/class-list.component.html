@@ -4,7 +4,10 @@
     <a routerLink="/class" class="btn btn-primary">+ Ajouter une classe</a>
   </div>
 
-  <table class="table table-bordered table-hover">
+  <div *ngIf="loading" class="alert alert-info">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <table class="table table-bordered table-hover" *ngIf="classes.length">
     <thead class="table-light">
     <tr>
       <th>ID</th>
@@ -14,25 +17,16 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>6ème A</td>
-      <td>2024-2025</td>
+    <tr *ngFor="let classe of classes">
+      <td>{{ classe.id }}</td>
+      <td>{{ classe.name }}</td>
+      <td>{{ classe.academicYear }}</td>
       <td>
-        <button class="btn btn-sm btn-warning me-1">Modifier</button>
-        <button class="btn btn-sm btn-danger">Supprimer</button>
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>3ème B</td>
-      <td>2024-2025</td>
-      <td>
-        <button class="btn btn-sm btn-warning me-1">Modifier</button>
-        <button class="btn btn-sm btn-danger">Supprimer</button>
+        <a [routerLink]="['/class/edit', classe.id]" class="btn btn-sm btn-warning me-1">Modifier</a>
+        <button class="btn btn-sm btn-danger" (click)="deleteClass(classe.id)">Supprimer</button>
       </td>
     </tr>
     </tbody>
   </table>
+  <div *ngIf="!loading && !classes.length" class="alert alert-secondary">Aucune classe trouvée.</div>
 </div>
-
