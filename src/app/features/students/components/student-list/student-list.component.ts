@@ -26,7 +26,7 @@ export class StudentListComponent implements OnInit {
     this.studentService.getAllStudents().subscribe({
       next: (res) => {
         console.log(res);
-        this.students = res.students || [];
+        this.students = res || [];
       },
       error: () => {
         alert('Erreur lors du chargement des étudiants.');
