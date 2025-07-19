@@ -4,6 +4,7 @@ import { ClassService } from '../../../class/services/class.service';
 import { ClassModel } from '../../../class/models/class';
 import { StudentService } from '../../services/student.service';
 import { Router } from '@angular/router';
+import {CreateStudentRequest} from "../../requests/createStudentRequest";
 
 @Component({
   selector: 'app-add-student',
@@ -45,15 +46,15 @@ export class AddStudentComponent implements OnInit {
 
       // Étape 4 — parent (optionnel)
       parentUserId: new FormControl(null, Validators.min(1)),
-      // parentFirstName: new FormControl(''),
-      // parentLastName: new FormControl(''),
-      // parentPhone: new FormControl(''),
-      // parentEmail: new FormControl(''),
-      // parentAddress: new FormControl('')
+      parentFirstName: new FormControl(''),
+      parentLastName: new FormControl(''),
+      parentPhone: new FormControl(''),
+      parentEmail: new FormControl(''),
+      parentAddress: new FormControl('')
     });
     this.classService.getAll().subscribe({
       next: (res) => {
-        this.classes = res.classes || [];
+        this.classes = res || [];
       },
       error: () => {
         this.classes = [];
@@ -102,35 +103,31 @@ export class AddStudentComponent implements OnInit {
   }
 
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.studentForm.valid) {
       const formValue = this.studentForm.value;
       // Construction du payload attendu par le backend
-      const payload = {
-        firstName: formValue.firstName,
-        lastName: formValue.lastName,
-        dateOfBirth: formValue.dateOfBirth,
+      const payload: CreateStudentRequest = {
+        first_name: formValue.firstName,
+        last_name: formValue.lastName,
+        date_of_birth: formValue.dateOfBirth,
         gender: formValue.gender,
         phone: formValue.phone,
         email: formValue.email,
         address: formValue.address,
-        enrollmentDate: formValue.enrollmentDate,
-        classId: formValue.classId,
-        studentIdNumber: formValue.studentIdNumber,
-        matricule: formValue.matricule,
-        parentUserId: formValue.parentUserId,
-        roleId: 3 // ou autre valeur selon la logique métier
+        enrollment_date: formValue.enrollmentDate,
+        class_id: formValue.classId,
+        parent_user_id: formValue.parentUserId,
+        role_id: 3,
+        tutor_phone_number: formValue.parentPhone
       };
-      this.studentService.createStudent(payload).subscribe({
-        next: () => {
-          this.router.navigate(['/students/list']);
-        },
-        error: () => {
-          alert('Erreur lors de l\'ajout de l\'étudiant.');
-        }
-      });
-    } else {
-      alert('Veuillez remplir tous les champs obligatoires.');
+      try {
+
+        this.studentService.createStudent(payload)
+        await this.router.navigate(['/students/list']);
+      } catch (e) {
+        alert('Erreur lors de l\'ajout de l\'étudiant.: ' + e);
+      }
     }
   }
 }
