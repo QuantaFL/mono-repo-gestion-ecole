@@ -11,12 +11,12 @@ export class ClassService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<{ success: boolean; classes: ClassModel[] }> {
-    return this.http.get<{ success: boolean; classes: ClassModel[] }>(`${this.apiUrl}`);
+  getAll(): Observable<ClassModel[] > {
+    return this.http.get<ClassModel[]>(`${this.apiUrl}`);
   }
 
-  getById(id: number): Observable<{ success: boolean; classe: ClassModel }> {
-    return this.http.get<{ success: boolean; classe: ClassModel }>(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<ClassModel> {
+    return this.http.get<ClassModel>(`${this.apiUrl}/${id}`);
   }
 
   create(classe: { name: string; academic_year: string }): Observable<any> {

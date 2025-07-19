@@ -32,8 +32,8 @@ export class ClassAddComponent implements OnInit {
       this.classService.getById(this.classId).subscribe({
         next: (res) => {
           this.classForm.patchValue({
-            name: res.classe.name,
-            academic_year: res.classe.academicYear
+            name: res.name,
+            academic_year: res.academicYear
           });
         },
         error: () => {
