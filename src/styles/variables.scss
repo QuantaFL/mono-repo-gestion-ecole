@@ -1,0 +1,28 @@
+/* Color Palette */
+:root {
+  --primary-color: #3b82f6;
+  --primary-color-dark: #6366f1;
+  --text-color: #222;
+  --text-color-light: #94a3b8;
+  --background-color: #f5f5f5;
+  --border-color: rgba(148, 163, 184, 0.1);
+  --danger-color: #ef4444;
+  --success-color: #10b981;
+}
+
+/* Typography */
+:root {
+  --font-family: sans-serif;
+  --font-size-base: 14px;
+  --font-size-lg: 20px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+}
+
+/* Borders and Shadows */
+:root {
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  --box-shadow-lg: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
