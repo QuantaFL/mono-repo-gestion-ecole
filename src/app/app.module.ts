@@ -16,6 +16,8 @@ import { AddTeacherComponent } from './features/teachers/components/add-teacher/
 import {ClassAddComponent} from "./features/class/components/class-add/class-add.component";
 import {ClassListComponent} from "./features/class/components/class-list/class-list.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     AddStudentComponent,
     AddTeacherComponent,
     ClassAddComponent,
-    ClassListComponent
+    ClassListComponent,
+    SidebarComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
