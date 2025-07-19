@@ -1,20 +1,25 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <h2 class="text-center mb-4">Connexion</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" class="form-control" formControlName="email" placeholder="Entrez votre email" />
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Mot de passe</label>
-          <input type="password" id="password" class="form-control" formControlName="password" placeholder="Entrez votre mot de passe" />
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Se connecter</button>
-      </form>
+<div class="login-container">
+  <div class="login-box">
+    <div class="logo-container">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h1 class="logo-text">Portail Admin</h1>
     </div>
+    <h2 class="login-title">Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Entrez votre email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" formControlName="password" placeholder="Entrez votre mot de passe" />
+      </div>
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">Se connecter</button>
+    </form>
   </div>
 </div>
 
