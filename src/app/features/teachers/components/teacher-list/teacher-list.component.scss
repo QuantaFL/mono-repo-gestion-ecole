@@ -1,0 +1,129 @@
+.page-container {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--box-shadow-lg);
+}
+
+.btn-primary .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+
+.card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+  background-color: var(--background-color);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background-color: rgba(var(--primary-color), 0.05);
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+.btn-icon.btn-info {
+  color: var(--primary-color);
+}
+
+.btn-icon.btn-info:hover {
+  background-color: rgba(var(--primary-color), 0.1);
+}
+
+.btn-icon.btn-warning {
+  color: orange;
+}
+
+.btn-icon.btn-warning:hover {
+  background-color: rgba(255, 165, 0, 0.1);
+}
+
+.btn-icon.btn-danger {
+  color: var(--danger-color);
+}
+
+.btn-icon.btn-danger:hover {
+  background-color: rgba(var(--danger-color), 0.1);
+}

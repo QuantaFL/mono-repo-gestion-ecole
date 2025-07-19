@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Teacher} from "../../models/teacher";
 
 @Component({
   selector: 'app-teacher-list',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './teacher-list.component.scss'
 })
 export class TeacherListComponent {
-
+ teachers:Teacher[] = [];
 }

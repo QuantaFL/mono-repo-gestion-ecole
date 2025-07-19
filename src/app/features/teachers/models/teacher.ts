@@ -1,3 +1,5 @@
+import {User} from "../../auth/models/user";
+
 export interface Teacher {
   id: number;
   userId: number;
@@ -6,6 +8,7 @@ export interface Teacher {
   email: string;
   phone?: string;
   hireDate: string;
+  user?:User
   createdAt?: string;
   updatedAt?: string;
 }
