@@ -51,18 +51,18 @@
       </div>
     </div>
 
-    <!-- ÉTAPE 3 — Scolarité -->
+    <!-- ÉTAPE 3 — Infos scolaires -->
     <div *ngIf="currentStep === 3" class="row g-3">
+      <div class="col-md-6">
+        <label for="classId" class="form-label">Classe</label>
+        <select id="classId" class="form-select" formControlName="classId" required>
+          <option value="" disabled selected>Choisir une classe</option>
+          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }} ({{ classe.academic_year }})</option>
+        </select>
+      </div>
       <div class="col-md-6">
         <label class="form-label">Date d'inscription</label>
         <input type="date" formControlName="enrollmentDate" class="form-control" />
-      </div>
-      <div class="col-md-6">
-        <label class="form-label">Classe</label>
-        <select class="form-select" formControlName="classId">
-          <option value="">-- Sélectionnez une classe --</option>
-          <option *ngFor="let c of classes" [value]="c.id">{{ c.name }}</option>
-        </select>
       </div>
       <div class="col-md-6">
         <label class="form-label">Numéro étudiant</label>
@@ -107,7 +107,6 @@
       <button type="button" class="btn btn-outline-secondary" (click)="prevStep()" [disabled]="currentStep === 1">
         ← Précédent
       </button>
-
       <button type="button" class="btn btn-primary" *ngIf="currentStep < 4" (click)="nextStep()" [disabled]="!isStepValid()">
         Suivant →
       </button>

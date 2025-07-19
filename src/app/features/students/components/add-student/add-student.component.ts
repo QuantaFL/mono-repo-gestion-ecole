@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
+import { ClassService } from '../../../class/services/class.service';
+import { ClassModel } from '../../../class/models/class';
+import { StudentService } from '../../services/student.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-student',
@@ -14,18 +14,10 @@ export class AddStudentComponent implements OnInit {
   studentForm!: FormGroup;
   currentStep: number = 1;
 
-  classes = [
-    { id: 1, name: '6ème A' },
-    { id: 2, name: '5ème B' },
-    { id: 3, name: '4ème C' }
-    // À remplacer plus tard par un appel à l’API
-  ];
+  classes: ClassModel[] = [];
 
-<<<<<<< Updated upstream
-=======
-  constructor() {}
+  constructor(private classService: ClassService, private studentService: StudentService, private router: Router) {}
 
->>>>>>> Stashed changes
   ngOnInit(): void {
     this.studentForm = new FormGroup({
       // Étape 1 — infos de l'élève
@@ -52,7 +44,20 @@ export class AddStudentComponent implements OnInit {
       matricule: new FormControl('', Validators.required),
 
       // Étape 4 — parent (optionnel)
-      parentUserId: new FormControl(null, Validators.min(1))
+      parentUserId: new FormControl(null, Validators.min(1)),
+      // parentFirstName: new FormControl(''),
+      // parentLastName: new FormControl(''),
+      // parentPhone: new FormControl(''),
+      // parentEmail: new FormControl(''),
+      // parentAddress: new FormControl('')
+    });
+    this.classService.getAll().subscribe({
+      next: (res) => {
+        this.classes = res.classes || [];
+      },
+      error: () => {
+        this.classes = [];
+      }
     });
   }
 
@@ -99,17 +104,33 @@ export class AddStudentComponent implements OnInit {
 
   onSubmit(): void {
     if (this.studentForm.valid) {
-      console.log('Formulaire élève :', this.studentForm.value);
-      // TODO: envoyer au backend quand prêt
-<<<<<<< Updated upstream
+      const formValue = this.studentForm.value;
+      // Construction du payload attendu par le backend
+      const payload = {
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        dateOfBirth: formValue.dateOfBirth,
+        gender: formValue.gender,
+        phone: formValue.phone,
+        email: formValue.email,
+        address: formValue.address,
+        enrollmentDate: formValue.enrollmentDate,
+        classId: formValue.classId,
+        studentIdNumber: formValue.studentIdNumber,
+        matricule: formValue.matricule,
+        parentUserId: formValue.parentUserId,
+        roleId: 3 // ou autre valeur selon la logique métier
+      };
+      this.studentService.createStudent(payload).subscribe({
+        next: () => {
+          this.router.navigate(['/students/list']);
+        },
+        error: () => {
+          alert('Erreur lors de l\'ajout de l\'étudiant.');
+        }
+      });
     } else {
-      console.log('Formulaire invalide');
-=======
-      //this.notificationService.showSuccess('Élève ajouté avec succès !');
-    } else {
-      console.log('Formulaire invalide');
-     // this.notificationService.showError('Veuillez remplir tous les champs obligatoires.');
->>>>>>> Stashed changes
+      alert('Veuillez remplir tous les champs obligatoires.');
     }
   }
 }

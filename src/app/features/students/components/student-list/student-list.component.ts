@@ -1,36 +1,20 @@
-<<<<<<< Updated upstream
-import { Component } from '@angular/core';
-import {StudentService} from "../../services/student.service";
-import {Router} from "@angular/router";
-import {Student} from "../../models/student";
-import {Observable} from "rxjs";
-=======
+// @ts-ignore
+
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from "../../services/student.service";
 import { Router } from "@angular/router";
 import { Student } from "../../models/student";
-
-declare var window: any;
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-student-list',
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.scss'
 })
-<<<<<<< Updated upstream
-export class StudentListComponent {
-constructor(private studentService: StudentService,router:Router) {
-}
-students:Student[] = [];
-ngOnInit() {
-  this.studentService.getAllStudents().subscribe(data=>this.students=data);
-}
-=======
+
 export class StudentListComponent implements OnInit {
   students: Student[] = [];
+  // SUPPRESSION SANS MODAL
   studentToDelete: Student | null = null;
-  deleteModal: any;
 
   constructor(
     private studentService: StudentService,
@@ -38,25 +22,33 @@ export class StudentListComponent implements OnInit {
     //private notificationService: NotificationService
   ) { }
 
-  ngOnInit() {
-    this.studentService.getAllStudents().subscribe(data => this.students = data);
-    this.deleteModal = new window.bootstrap.Modal(
-      document.getElementById('deleteModal')
-    );
+  ngOnInit(): void {
+    this.studentService.getAllStudents().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.students = res.students || [];
+      },
+      error: () => {
+        alert('Erreur lors du chargement des étudiants.');
+      }
+    });
   }
 
-  openDeleteModal(student: Student) {
-    this.studentToDelete = student;
-    this.deleteModal.show();
+  // ngOnInit() {
+  //   this.studentService.getAllStudents().subscribe(data => this.students = data);
+  // }
+  // SUPPRESSION SANS MODAL
+  deleteStudent(student: Student) {
+    // if (confirm(`Voulez-vous vraiment supprimer l'étudiant ${student.firstName} ${student.lastName} ?`)) {
+    //   this.studentService.deleteStudent(student.id).subscribe({
+    //     next: () => {
+    //       this.students = this.students.filter(s => s.id !== student.id);
+    //     },
+    //     error: () => {
+    //       alert('Erreur lors de la suppression de l\'étudiant.');
+    //     }
+    //   });
+    // }
   }
 
-  confirmDelete() {
-    if (this.studentToDelete) {
-      // Logique de suppression ici, par exemple appeler un service
-      console.log('Suppression de l\'étudiant:', this.studentToDelete);
-      //this.notificationService.showSuccess('Élève supprimé avec succès !');
-      this.deleteModal.hide();
-    }
-  }
->>>>>>> Stashed changes
 }

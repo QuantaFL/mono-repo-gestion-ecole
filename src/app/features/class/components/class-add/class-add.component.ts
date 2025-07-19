@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ClassService } from '../../services/class.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-class-add',
   templateUrl: './class-add.component.html',
   styleUrls: ['./class-add.component.scss']
 })
-export class ClassAddComponent {
+export class ClassAddComponent implements OnInit {
   classForm = new FormGroup({
     name: new FormControl('', Validators.required),
     academic_year: new FormControl('', Validators.required)
@@ -15,27 +16,64 @@ export class ClassAddComponent {
 
   success: string | null = null;
   error: string | null = null;
+  isEdit = false;
+  classId: number | null = null;
 
-  constructor(private classService: ClassService) {}
+  constructor(
+    private classService: ClassService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
+  ngOnInit(): void {
+    this.classId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.classId) {
+      this.isEdit = true;
+      this.classService.getById(this.classId).subscribe({
+        next: (res) => {
+          this.classForm.patchValue({
+            name: res.classe.name,
+            academic_year: res.classe.academicYear
+          });
+        },
+        error: () => {
+          this.error = 'Erreur lors du chargement de la classe.';
+        }
+      });
+    }
+  }
   onSubmit(): void {
     this.success = null;
     this.error = null;
     if (this.classForm.valid) {
-      const newClass = this.classForm.value;
-      console.log(newClass);
-      this.classService.create({
-        name: newClass.name!,
-        academicYear: newClass.academic_year!
-      }).subscribe({
-        next: (res) => {
-          this.success = 'Classe ajoutée avec succès';
-          this.classForm.reset();
-        },
-        error: (err) => {
-          this.error = 'Erreur lors de l\'ajout de la classe';
-        }
-      });
+      const formValue = this.classForm.value;
+      if (this.isEdit && this.classId) {
+        this.classService.update(this.classId, {
+          name: formValue.name!,
+          academic_year: formValue.academic_year!
+        }).subscribe({
+          next: () => {
+            this.success = 'Classe modifiée avec succès';
+            this.router.navigate(['/class/list']);
+          },
+          error: () => {
+            this.error = 'Erreur lors de la modification de la classe';
+          }
+        });
+      } else {
+        this.classService.create({
+          name: formValue.name!,
+          academic_year: formValue.academic_year!
+        }).subscribe({
+          next: () => {
+            this.success = 'Classe ajoutée avec succès';
+            this.classForm.reset();
+          },
+          error: () => {
+            this.error = 'Erreur lors de l\'ajout de la classe';
+          }
+        });
+      }
     }
   }
 }

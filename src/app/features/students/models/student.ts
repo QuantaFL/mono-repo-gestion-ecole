@@ -14,4 +14,13 @@ export interface Student {
   studentIdNumber: string;
   createdAt?: string;
   updatedAt?: string;
+  // Champs nécessaires pour la création côté front (correspondant au backend)
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  roleId?: number;
+  address?: string;
+  dateOfBirth?: string;
+  gender?: string;
 }
