@@ -23,7 +23,7 @@
       <td>{{ classe.academicYear }}</td>
       <td>
         <a [routerLink]="['/class/edit', classe.id]" class="btn btn-sm btn-warning me-1">Modifier</a>
-        <button class="btn btn-sm btn-danger" (click)="deleteClass(classe.id)">Supprimer</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteClass(classe.id!)">Supprimer</button>
       </td>
     </tr>
     </tbody>

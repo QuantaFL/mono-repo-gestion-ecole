@@ -22,7 +22,7 @@ export class ClassListComponent implements OnInit {
     this.loading = true;
     this.classService.getAll().subscribe({
       next: (res) => {
-        this.classes = res.classes || [];
+        this.classes = res || [];
         this.loading = false;
       },
       error: (err) => {
