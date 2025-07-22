@@ -25,9 +25,18 @@ export class AddSubjectComponent {
 
   onSubmit(): void {
     if (this.subjectForm.valid) {
-        const subjectData = this.subjectForm.value;
-
-
+      const subjectData = this.subjectForm.value;
+      this.subjectService.createSubject(subjectData).subscribe({
+        next: (res) => {
+          console.log(res);
+          // Optionally handle success, e.g. redirect or show a message
+          this.router.navigate(['/subjects']);
+        },
+        error: (err) => {
+          // Optionally handle error
+          console.error(err);
+        }
+      });
     }
   }
 }
