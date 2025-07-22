@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
+import {TeacherService} from "../../services/teacher.service";
 
 @Component({
   selector: 'app-add-teacher',
@@ -16,13 +17,28 @@ export class AddTeacherComponent {
     hireDate: new FormControl(''),
   });
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private teacherService:TeacherService) {}
 
   onSubmit(): void {
     if (this.teacherForm.valid) {
-      console.log('Form submitted:', this.teacherForm.value);
-      // TODO: appeler le service ici une fois qu'il sera prêt
-      this.router.navigate(['/teachers/list']);
+      const formValue = this.teacherForm.value;
+      const teacherData = {
+        first_name: formValue.firstName ?? '',
+        last_name: formValue.lastName ?? '',
+        email: formValue.email ?? '',
+        phone: formValue.phone ?? '',
+        hire_date: formValue.hireDate ?? '',
+        role_id: 2 // Set the appropriate role_id value
+      };
+      this.teacherService.createTeacher(teacherData).subscribe({
+        next: (res) => {
+          console.log('Teacher created:', res);
+          this.router.navigate(['/teachers/list']);
+        },
+        error: (err) => {
+          console.error('Error creating teacher:', err);
+        }
+      });
     }
   }
 }
