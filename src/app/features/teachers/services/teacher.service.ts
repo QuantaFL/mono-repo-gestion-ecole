@@ -12,17 +12,12 @@ import {UpdateTeacherRequest} from "../requests/updateTeacherRequest";
   providedIn: 'root'
 })
 export class TeacherService {
-  private apiUrl = 'http://localhost:8000/api/teachers'; // adapte l'URL si besoin
+  private apiUrl = 'http://localhost:8000/api/v1/teachers';
 
   constructor(private http: HttpClient) {}
 
-  createTeacher(teacher: CreateTeacherRequest): void {
-    try{
-      this.http.post(`${this.apiUrl}`, teacher);
-      console.log("Teacher created successfully");
-    }catch (e){
-      throw e
-    }
+  createTeacher(teacher: CreateTeacherRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, teacher);
   }
   getAllTeacher(): Observable<Teacher[]> {
     return this.http.get<Teacher[]>(`${this.apiUrl}`);
