@@ -9,7 +9,7 @@ import {UpdateStudentRequest} from "../requests/updateStudentRequest";
   providedIn: 'root'
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:8000/api/etudiants';
+  private apiUrl = 'http://localhost:8000/api/v1/etudiants';
 
   constructor(private http: HttpClient) {}
 
