@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrl: './subject-list.component.scss'
 })
 export class SubjectListComponent {
-
 }
