@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'list_class', component: ClassListComponent},
   { path: 'class', component: ClassAddComponent},
   { path: 'list_subject', component: SubjectListComponent},
+  {path: 'subject', component: AddSubjectComponent},
   // Assuming you meant to use AddSubjectComponent here
 ];
 
