@@ -10,7 +10,7 @@ import {Subject} from "../models/subject";
   providedIn: 'root'
 })
 export class SubjectService {
-  private apiUrl = 'http://localhost:8000/api/subjects'; // adapte l'URL si besoin
+  private apiUrl = 'http://localhost:8000/api/v1/subjects'; // adapte l'URL si besoin
 
   constructor(private http: HttpClient) {}
 
@@ -22,6 +22,8 @@ export class SubjectService {
       throw e
     }
   }
+
+
   getAllSubject(): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}`);
   }
