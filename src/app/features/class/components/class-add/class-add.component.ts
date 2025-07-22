@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClassAddComponent implements OnInit {
   classForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    academic_year: new FormControl('', Validators.required)
+    academicYear: new FormControl('', Validators.required)
   });
 
   success: string | null = null;
@@ -33,7 +33,7 @@ export class ClassAddComponent implements OnInit {
         next: (res) => {
           this.classForm.patchValue({
             name: res.name,
-            academic_year: res.academicYear
+            academicYear: res.academicYear
           });
         },
         error: () => {
@@ -50,7 +50,7 @@ export class ClassAddComponent implements OnInit {
       if (this.isEdit && this.classId) {
         this.classService.update(this.classId, {
           name: formValue.name!,
-          academic_year: formValue.academic_year!
+          academicYear: formValue.academicYear!
         }).subscribe({
           next: () => {
             this.success = 'Classe modifiée avec succès';
@@ -63,7 +63,7 @@ export class ClassAddComponent implements OnInit {
       } else {
         this.classService.create({
           name: formValue.name!,
-          academic_year: formValue.academic_year!
+          academicYear: formValue.academicYear!
         }).subscribe({
           next: () => {
             this.success = 'Classe ajoutée avec succès';
