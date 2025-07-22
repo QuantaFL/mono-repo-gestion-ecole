@@ -19,11 +19,11 @@ export class ClassService {
     return this.http.get<ClassModel>(`${this.apiUrl}/${id}`);
   }
 
-  create(classe: { name: string; academic_year: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, classe);
+  create(classe:ClassModel): Observable<ClassModel> {
+    return this.http.post<ClassModel>(`${this.apiUrl}`, classe);
   }
 
-  update(id: number, classe: { name: string; academic_year: string }): Observable<any> {
+  update(id: number, classe: { name: string; academicYear: string }): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, classe);
   }
 
