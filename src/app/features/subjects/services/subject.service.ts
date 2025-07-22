@@ -14,13 +14,8 @@ export class SubjectService {
 
   constructor(private http: HttpClient) {}
 
-  createSubject(student: CreateSubjectRequest): void {
-    try{
-      this.http.post(`${this.apiUrl}`, student);
-      console.log("Subject created successfully");
-    }catch (e){
-      throw e
-    }
+  createSubject(student: CreateSubjectRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, student);
   }
 
 
