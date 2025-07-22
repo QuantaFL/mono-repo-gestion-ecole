@@ -18,6 +18,7 @@ import {ClassListComponent} from "./features/class/components/class-list/class-l
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
+import { AddSubjectComponent } from './features/subjects/components/add-subject/add-subject.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { HeaderComponent } from './components/header/header.component';
     ClassAddComponent,
     ClassListComponent,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    AddSubjectComponent
   ],
   imports: [
     BrowserModule,
