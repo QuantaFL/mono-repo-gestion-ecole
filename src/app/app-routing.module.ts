@@ -9,6 +9,8 @@ import {AddTeacherComponent} from "./features/teachers/components/add-teacher/ad
 import {ClassAddComponent} from "./features/class/components/class-add/class-add.component";
 import {ClassListComponent} from "./features/class/components/class-list/class-list.component";
 import {authGuard} from "./core/guards/auth.guard";
+import {SubjectListComponent} from "./features/subjects/components/subject-list/subject-list.component";
+import {AddSubjectComponent} from "./features/subjects/components/add-subject/add-subject.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'list_teacher', component: TeacherListComponent},
   { path: 'list_class', component: ClassListComponent},
   { path: 'class', component: ClassAddComponent},
+  { path: 'list_subject', component: SubjectListComponent},
+  // Assuming you meant to use AddSubjectComponent here
 ];
 
 @NgModule({
