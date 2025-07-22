@@ -1,0 +1,23 @@
+<h2>Add Subject</h2>
+<form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" formControlName="name" />
+    <div *ngIf="subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched">
+      Name is required.
+    </div>
+  </div>
+  <div>
+    <label for="coefficient">Coefficient:</label>
+    <input id="coefficient" type="number" formControlName="coefficient" />
+    <div *ngIf="subjectForm.get('coefficient')?.invalid && subjectForm.get('coefficient')?.touched">
+      Coefficient is required and must be at least 1.
+    </div>
+  </div>
+  <div>
+    <label for="level">Level:</label>
+    <input id="level" formControlName="level" />
+  </div>
+  <button type="submit" [disabled]="subjectForm.invalid">Add Subject</button>
+</form>
+
