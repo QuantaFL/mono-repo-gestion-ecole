@@ -22,23 +22,18 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Formulaire soumis', this.loginForm.value);
-        const { email, password } = this.loginForm.value;
-        const loginRequest:LoginRequest = {
-          email,
-          password,
+      const { email, password } = this.loginForm.value;
+      const loginRequest: LoginRequest = { email, password };
+      this.authService.login(loginRequest).subscribe({
+        next: (response: any) => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          this.errorMessage = 'Identifiants incorrects';
         }
-      //   this.authService.login(loginRequest).subscribe({
-      //     next: (response: any) => {
-      //       localStorage.setItem('token', response.token);
-      //       console.log(localStorage.getItem("token"));// stockage du token
-      //       this.router.navigate(['/dashboard']);
-      //     },
-      //     error: (err) => {
-      //       this.errorMessage = 'Identifiants incorrects';
-      //     }
-      //   });
-       this.router.navigate(['/dashboard']);
+      });
     } else {
       console.log('Formulaire invalide');
     }

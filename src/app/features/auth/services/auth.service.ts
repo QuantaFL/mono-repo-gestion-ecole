@@ -9,7 +9,7 @@ import {LoginResponse} from "../requests/LoginResponse";
 })
 export class AuthService {
   constructor(private http:HttpClient) { }
-  private baseUrl = 'http://localhost:8000';
+  private baseUrl = 'http://localhost:8000/api/v1/auth';
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, data);
   }
