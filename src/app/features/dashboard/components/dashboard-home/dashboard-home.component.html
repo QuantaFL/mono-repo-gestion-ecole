@@ -1,34 +1,94 @@
-<div class="dashboard-container">
-  <h2 class="page-title">Tableau de bord</h2>
+<div class="layout">
+  <!-- Sidebar à gauche -->
+<aside class="sidebar" [class.collapsed]="isCollapsed">
 
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <h6 class="kpi-label">Total Élèves</h6>
-      <h3 class="kpi-value">512</h3>
-    </div>
-    <div class="kpi-card">
-      <h6 class="kpi-label">Enseignants</h6>
-      <h3 class="kpi-value">42</h3>
-    </div>
-    <div class="kpi-card">
-      <h6 class="kpi-label">Classes</h6>
-      <h3 class="kpi-value">18</h3>
-    </div>
-    <div class="kpi-card">
-      <h6 class="kpi-label">Présences aujourd'hui</h6>
-      <h3 class="kpi-value">457</h3>
+  <!-- Contenu principal centré -->
+  <div class="sidebar-content">
+    <nav class="nav-menu">
+      <ul class="menu-list">
+
+        <!-- Utilisateur -->
+        <li class="menu-item">
+          <div class="menu-link" (click)="toggleMenu('user')">
+            <div class="menu-icon-container">👤</div>
+            <span class="menu-text" *ngIf="!isCollapsed">Utilisateur</span>
+          </div>
+          <ul class="submenu-list" *ngIf="activeMenu === 'user' && !isCollapsed">
+            <li><a routerLink="/users/parent" class="submenu-link">Parent</a></li>
+            <li><a routerLink="/users/prof" class="submenu-link">Prof</a></li>
+            <li><a routerLink="/users/eleve" class="submenu-link">Élève</a></li>
+          </ul>
+        </li>
+
+        <!-- Paramètres -->
+        <li class="menu-item">
+          <div class="menu-link" (click)="toggleMenu('settings')">
+            <div class="menu-icon-container">⚙️</div>
+            <span class="menu-text" *ngIf="!isCollapsed">Paramètres</span>
+          </div>
+          <ul class="submenu-list" *ngIf="activeMenu === 'settings' && !isCollapsed">
+            <li><a routerLink="/settings/roles" class="submenu-link">Rôle</a></li>
+          </ul>
+        </li>
+
+        <!-- Classe -->
+        <li class="menu-item">
+          <a routerLink="/list_class" class="menu-link" routerLinkActive="active">
+            <div class="menu-icon-container">🏫</div>
+            <span class="menu-text" *ngIf="!isCollapsed">Classe</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Footer optionnel (logout, user info, etc.) -->
+  <div class="sidebar-footer" *ngIf="!isCollapsed">
+    <div class="user-info">
+      <div class="user-avatar"><span>A</span></div>
+      <div class="user-details">
+        <p class="user-name">Administrateur</p>
+        <p class="user-role">Super Admin</p>
+      </div>
     </div>
   </div>
 
-  <!-- Charts -->
-  <div class="chart-grid">
-    <div class="chart-card">
-      <canvas id="studentsChart"></canvas>
+</aside>
+
+
+  <!-- Contenu principal à droite -->
+  <div class="dashboard-container">
+    <h2 class="page-title">Tableau de bord</h2>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <h6 class="kpi-label">Total Élèves</h6>
+        <h3 class="kpi-value">512</h3>
+      </div>
+      <div class="kpi-card">
+        <h6 class="kpi-label">Enseignants</h6>
+        <h3 class="kpi-value">42</h3>
+      </div>
+      <div class="kpi-card">
+        <h6 class="kpi-label">Classes</h6>
+        <h3 class="kpi-value">18</h3>
+      </div>
+      <div class="kpi-card">
+        <h6 class="kpi-label">Présences aujourd'hui</h6>
+        <h3 class="kpi-value">457</h3>
+      </div>
     </div>
-    <div class="chart-card">
-      <canvas id="presenceChart"></canvas>
+
+    <!-- Charts -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <canvas id="studentsChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <canvas id="presenceChart"></canvas>
+      </div>
     </div>
   </div>
 </div>
-

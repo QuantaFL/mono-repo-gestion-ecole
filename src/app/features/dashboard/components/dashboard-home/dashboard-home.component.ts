@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -12,6 +13,15 @@ export class DashboardHomeComponent implements OnInit {
     this.createStudentsChart();
     this.createPresenceChart();
   }
+   constructor(  private router: Router) {
+    this.checkScreen();
+  }
+  activeMenu: string | null = null;
+
+toggleMenu(menu: string): void {
+  this.activeMenu = this.activeMenu === menu ? null : menu;
+}
+
 
   createStudentsChart(): void {
     const ctx = document.getElementById('studentsChart') as HTMLCanvasElement;
@@ -74,4 +84,32 @@ export class DashboardHomeComponent implements OnInit {
       });
     }
   }
+   isCollapsed = false;
+  isMobile = false;
+
+ 
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreen();
+  }
+
+  checkScreen() {
+    this.isMobile = window.innerWidth < 992;
+    if (this.isMobile) {
+      this.isCollapsed = true;
+    }
+  }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
+
 }
