@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { StudentSession } from '../../models/student-session';
+import { Student } from '../../../students/models/student';
+import {StudentSession} from "../../models/student-session";
 
 @Component({
   selector: 'app-student-details-modal',
@@ -8,9 +9,10 @@ import { StudentSession } from '../../models/student-session';
   styleUrl: './student-details-modal.component.scss'
 })
 export class StudentDetailsModalComponent {
+  studentSession: StudentSession | undefined ;
   constructor(
     public dialogRef: DialogRef<StudentDetailsModalComponent>,
-    @Inject(DIALOG_DATA) public studentSession: StudentSession
+    @Inject(DIALOG_DATA) public student: StudentSession
   ) { }
 
   closeModal(): void {

@@ -26,8 +26,8 @@
         <tbody>
         <tr *ngFor="let student of students; let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ student.user?.firstName }}</td>
-          <td>{{ student.user?.lastName }}</td>
+          <td>{{ student.user?.first_name }}</td>
+          <td>{{ student.user?.last_name }}</td>
           <td>{{ student.classModel?.name || 'Non attribuée' }}</td>
           <td>{{ student.user?.email }}</td>
           <td>{{ student.user?.phone }}</td>
