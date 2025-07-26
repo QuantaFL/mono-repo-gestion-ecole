@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { AuthService } from '../../features/auth/services/auth.service';
 
 interface MenuItem {
   label: string;
@@ -50,7 +52,7 @@ export class SidebarComponent implements OnInit {
     }
   ];
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.menuItems.forEach(item => {
@@ -78,6 +80,6 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
-    console.log('Déconnexion');
+    this.authService.logout(this.router);
   }
 }
