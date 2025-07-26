@@ -28,7 +28,11 @@ export class LoginComponent {
         next: (response: any) => {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.router.navigate(['/dashboard']);
+          if (response.user.isFirstLogin) {
+            this.router.navigate(['/change-password']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (err) => {
           this.errorMessage = 'Identifiants incorrects';
