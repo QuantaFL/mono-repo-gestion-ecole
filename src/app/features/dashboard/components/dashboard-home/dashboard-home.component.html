@@ -1,60 +1,7 @@
+<app-sidebar></app-sidebar>
 <div class="layout">
   <!-- Sidebar à gauche -->
-<aside class="sidebar" [class.collapsed]="isCollapsed">
 
-  <!-- Contenu principal centré -->
-  <div class="sidebar-content">
-    <nav class="nav-menu">
-      <ul class="menu-list">
-
-        <!-- Utilisateur -->
-        <li class="menu-item">
-          <div class="menu-link" (click)="toggleMenu('user')">
-            <div class="menu-icon-container">👤</div>
-            <span class="menu-text" *ngIf="!isCollapsed">Utilisateur</span>
-          </div>
-          <ul class="submenu-list" *ngIf="activeMenu === 'user' && !isCollapsed">
-            <li><a routerLink="/users/parent" class="submenu-link">Parent</a></li>
-            <li><a routerLink="/users/prof" class="submenu-link">Prof</a></li>
-            <li><a routerLink="/users/eleve" class="submenu-link">Élève</a></li>
-          </ul>
-        </li>
-
-        <!-- Paramètres -->
-        <li class="menu-item">
-          <div class="menu-link" (click)="toggleMenu('settings')">
-            <div class="menu-icon-container">⚙️</div>
-            <span class="menu-text" *ngIf="!isCollapsed">Paramètres</span>
-          </div>
-          <ul class="submenu-list" *ngIf="activeMenu === 'settings' && !isCollapsed">
-            <li><a routerLink="/settings/roles" class="submenu-link">Rôle</a></li>
-          </ul>
-        </li>
-
-        <!-- Classe -->
-        <li class="menu-item">
-          <a routerLink="/list_class" class="menu-link" routerLinkActive="active">
-            <div class="menu-icon-container">🏫</div>
-            <span class="menu-text" *ngIf="!isCollapsed">Classe</span>
-          </a>
-        </li>
-
-      </ul>
-    </nav>
-  </div>
-
-  <!-- Footer optionnel (logout, user info, etc.) -->
-  <div class="sidebar-footer" *ngIf="!isCollapsed">
-    <div class="user-info">
-      <div class="user-avatar"><span>A</span></div>
-      <div class="user-details">
-        <p class="user-name">Administrateur</p>
-        <p class="user-role">Super Admin</p>
-      </div>
-    </div>
-  </div>
-
-</aside>
 
 
   <!-- Contenu principal à droite -->
