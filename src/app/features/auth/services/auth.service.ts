@@ -14,7 +14,6 @@ export class AuthService {
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, data);
   }
-
   changePassword(data: any): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.post(
@@ -23,7 +22,6 @@ export class AuthService {
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
-
   logout(router: any) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
