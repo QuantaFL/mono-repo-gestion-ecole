@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ClassService } from '../../services/class.service';
-import { ClassModel } from '../../models/class';
 
 @Component({
   selector: 'app-class-list',
@@ -8,39 +6,42 @@ import { ClassModel } from '../../models/class';
   styleUrls: ['./class-list.component.scss']
 })
 export class ClassListComponent implements OnInit {
-  classes: ClassModel[] = [];
+  classes: any[] = [
+    {
+      id: 1,
+      name: '6e',
+      level: 'Collège',
+      latest_student_session: [
+        { id: 1, student_id: 1, student_name: 'Alice', grade: 15 },
+        { id: 2, student_id: 2, student_name: 'Bob', grade: null },
+        { id: 3, student_id: 3, student_name: 'Charlie', grade: 12 }
+      ]
+    },
+    {
+      id: 2,
+      name: '5e',
+      level: 'Collège',
+      latest_student_session: [
+        { id: 4, student_id: 4, student_name: 'David', grade: 14 },
+        { id: 5, student_id: 5, student_name: 'Eva', grade: null }
+      ]
+    },
+    {
+      id: 3,
+      name: '4e',
+      level: 'Collège',
+      latest_student_session: []
+    }
+    // Add more mocked classes as needed
+  ];
   loading = false;
   error: string | null = null;
 
-  constructor(private classService: ClassService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.fetchClasses();
-  }
+  ngOnInit(): void {}
 
-  fetchClasses(): void {
-    this.loading = true;
-    this.classService.getAll().subscribe({
-      next: (res) => {
-        this.classes = res || [];
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Erreur lors du chargement des classes';
-        this.loading = false;
-      }
-    });
-  }
-
-  deleteClass(id: number): void {
-    if (!confirm('Voulez-vous vraiment supprimer cette classe ?')) return;
-    this.classService.delete(id).subscribe({
-      next: () => {
-        this.classes = this.classes.filter(c => c.id !== id);
-      },
-      error: () => {
-        this.error = 'Erreur lors de la suppression';
-      }
-    });
+  showInfo(classe: any): void {
+    alert('Classe: ' + classe.name + '\nNiveau: ' + classe.level);
   }
 }
