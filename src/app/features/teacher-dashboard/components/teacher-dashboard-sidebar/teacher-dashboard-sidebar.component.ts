@@ -4,6 +4,9 @@ import { TeacherDashboardService } from '../../services/teacher-dashboard.servic
 import { ClassModel } from '../../models/class-model';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import {AuthService} from "../../../auth/services/auth.service";
+import { TeacherStore } from '../../services/teacher.store';
+import { Teacher } from '../../../teachers/models/teacher';
 
 interface MenuItem {
   label: string;
@@ -29,18 +32,24 @@ export class TeacherDashboardSidebarComponent implements OnInit {
   teacherClasses: ClassModel[] = [];
   selectedClass: ClassModel | null = null;
 
-  // Placeholder for current teacher ID
-  currentTeacherId: number = 1;
+  currentTeacher: Teacher | null = null;
 
   constructor(
+    private authService: AuthService,
     private sanitizer: DomSanitizer,
     private teacherDashboardService: TeacherDashboardService,
-    private router: Router
+    private router: Router,
+    private teacherStore: TeacherStore
   ) { }
 
   ngOnInit() {
-    this.initializeMenuItems();
-    this.loadTeacherClasses();
+    this.teacherStore.currentTeacher$.subscribe(teacher => {
+      this.currentTeacher = teacher;
+      if (this.currentTeacher && this.currentTeacher.userModel) {
+        this.initializeMenuItems();
+        this.loadTeacherClasses();
+      }
+    });
 
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
@@ -81,12 +90,8 @@ export class TeacherDashboardSidebarComponent implements OnInit {
     }
   }
 
-  logout(): void {
-    // Implement your logout logic here
-    console.log('Logout clicked');
-    // Example: Clear local storage, navigate to login page
-    // localStorage.clear();
-    // this.router.navigate(['/login']);
+  logout() {
+    this.authService.logout(this.router);
   }
 
   initializeMenuItems() {
@@ -117,7 +122,6 @@ export class TeacherDashboardSidebarComponent implements OnInit {
   }
 
   updateActiveMenuItem(url: string): void {
-    // First, deactivate all menu items
     this.menuItems.forEach(item => {
       item.isActive = false;
       if (item.children) {
@@ -125,9 +129,8 @@ export class TeacherDashboardSidebarComponent implements OnInit {
       }
     });
 
-    // Then, activate the current one
     this.menuItems.forEach(item => {
-      if (item.path && url === item.path) { // Exact match for top-level items
+      if (item.path && url === item.path) {
         item.isActive = true;
       } else if (item.children) {
         item.children.forEach(child => {
@@ -141,12 +144,12 @@ export class TeacherDashboardSidebarComponent implements OnInit {
   }
 
   loadTeacherClasses(): void {
-    if (this.currentTeacherId) {
+    if (this.currentTeacher && this.currentTeacher.userModel && this.currentTeacher.userModel.id) {
       this.teacherDashboardService.getAcademicYears().subscribe({
         next: (years) => {
           const activeYear = years.find(year => year.status === 'active') || years[0];
           if (activeYear) {
-            this.teacherDashboardService.getTeacherClasses(this.currentTeacherId, activeYear.id).subscribe({
+            this.teacherDashboardService.getTeacherClasses(this.currentTeacher!.id!, activeYear.id).subscribe({
               next: (classes) => {
                 this.teacherClasses = classes;
                 this.updateMyClassesMenuItem();

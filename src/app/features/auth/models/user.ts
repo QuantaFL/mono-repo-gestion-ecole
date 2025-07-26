@@ -1,14 +1,15 @@
 export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  adresse:string;
-  dateOfBirth:string;
+  id?: number;
+  first_name: string;
+  last_name: string;
+  birthday:string;
   email: string;
+  password?: string;
+  adress:string;
   phone: string;
-  password: string;
-  roleId: number;
-  rememberToken?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  role_id: number;
+  role: { id: number; name: string };
+  created_at?: string;
+  updated_at?: string;
+  isFirstLogin?: boolean;
 }

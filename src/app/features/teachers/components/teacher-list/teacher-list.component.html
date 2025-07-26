@@ -24,11 +24,11 @@
         </thead>
         <tbody>
         <tr *ngFor="let teacher of teachers">
-          <td>{{ teacher.user?.lastName }}</td>
-          <td>{{ teacher.user?.firstName }}</td>
-          <td>{{ teacher.user?.email }}</td>
-          <td>{{ teacher.user?.phone }}</td>
-          <td>{{ teacher.hireDate | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ teacher.userModel?.last_name }}</td>
+          <td>{{ teacher.userModel?.first_name }}</td>
+          <td>{{ teacher.userModel?.email }}</td>
+          <td>{{ teacher.userModel.phone }}</td>
+          <td>{{ teacher.hire_date | date: 'dd/MM/yyyy' }}</td>
           <td class="actions-cell">
             <button class="btn-icon btn-warning">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon">
