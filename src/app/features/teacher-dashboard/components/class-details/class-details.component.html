@@ -5,9 +5,7 @@
   <div class="card-content">
     <div class="form-group">
       <label for="term-select">Sélectionner le Terme</label>
-      <select id="term-select" class="form-control" [(ngModel)]="selectedTerm" (change)="onTermChange()">
-        <option *ngFor="let term of terms" [value]="term">{{ term.name }}</option>
-      </select>
+
     </div>
 
     <h3 class="section-title">Notes des Étudiants</h3>
@@ -26,24 +24,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let studentSession of students">
-            <td>{{ studentSession.student.user_model.first_name }} {{ studentSession.student.user_model.last_name }}</td>
+          <tr *ngFor="let student of students">
+            <td>{{ student!.user!.first_name }} {{ student!.user!.last_name }}</td>
             <ng-container *ngFor="let subject of subjects">
               <td>
                 <input type="number" min="0" max="20" step="0.01" class="form-control grade-input"
-                       [value]="getGrade(studentSession.id, subject.id, 'quiz')"
-                       (change)="updateGrade(studentSession.id, subject.id, 'quiz', $event)"
+                       [value]="getGrade(student.id, subject.id, 'quiz')"
+                       (change)="updateGrade(student.id, subject.id, 'quiz', $event)"
                        [disabled]="isTermClosed()">
               </td>
               <td>
                 <input type="number" min="0" max="20" step="0.01" class="form-control grade-input"
-                       [value]="getGrade(studentSession.id, subject.id, 'exam')"
-                       (change)="updateGrade(studentSession.id, subject.id, 'exam', $event)"
+                       [value]="getGrade(student.id, subject.id, 'exam')"
+                       (change)="updateGrade(student.id, subject.id, 'exam', $event)"
                        [disabled]="isTermClosed()">
               </td>
             </ng-container>
             <td>
-              <button class="btn btn-icon" (click)="showStudentInfo(studentSession)">
+              <button class="btn btn-icon" (click)="showStudentInfo(student)">
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               </button>
             </td>

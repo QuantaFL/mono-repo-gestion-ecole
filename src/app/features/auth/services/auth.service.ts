@@ -4,11 +4,13 @@ import {User} from "../models/user";
 import {LoginRequest} from "../requests/loginRequest";
 import {Observable} from "rxjs";
 import {LoginResponse} from "../requests/LoginResponse";
+import { TeacherStore } from '../../teacher-dashboard/services/teacher.store';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private teacherStore: TeacherStore) { }
   private baseUrl = 'http://localhost:8000/api/v1/auth';
 
   login(data: LoginRequest): Observable<LoginResponse> {
@@ -25,6 +27,7 @@ export class AuthService {
   logout(router: any) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    this.teacherStore.setTeacher(null);
     router.navigate(['/login']);
   }
 }
