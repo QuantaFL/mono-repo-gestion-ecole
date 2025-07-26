@@ -1,14 +1,24 @@
-import {User} from "../../auth/models/user";
+import { User } from "../../auth/models/user";
+
+export interface Subject {
+  id: number;
+  name: string;
+  level: string;
+  coefficient: number;
+  created_at: string;
+  updated_at: string;
+  pivot: {
+    teacher_id: number;
+    subject_id: number;
+  };
+}
 
 export interface Teacher {
   id: number;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  hireDate: string;
-  user?:User
-  createdAt?: string;
-  updatedAt?: string;
+  hire_date: string;
+  created_at: string;
+  updated_at: string;
+  user_model_id: number;
+  subjects: Subject[];
+  userModel: User;
 }

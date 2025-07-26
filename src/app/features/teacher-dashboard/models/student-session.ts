@@ -1,6 +1,6 @@
-import { UserModel } from './user-model';
 import { ClassModel } from './class-model';
 import { AcademicYear } from './academic-year';
+import {User} from "../../auth/models/user";
 
 export interface StudentSession {
   id: number;
@@ -19,6 +19,6 @@ export interface StudentSession {
     user_model_id: number;
     created_at: string;
     updated_at: string;
-    user_model: UserModel;
+    user_model: User;
   };
 }

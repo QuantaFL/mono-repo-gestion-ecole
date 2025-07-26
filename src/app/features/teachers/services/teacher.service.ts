@@ -30,4 +30,9 @@ export class TeacherService {
       throw e;
     }
   }
+
+  getTeacherByUserId(id: number): Observable<Teacher> {
+    return this.http.get<Teacher>(`${this.apiUrl}/user/${id}`);
+
+  }
 }
