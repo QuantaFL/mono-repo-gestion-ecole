@@ -1,234 +1,324 @@
-## Product Requirements Document: Teacher Dashboard
+# Product Requirements Document: Teacher Dashboard
 
-**1. Introduction**
+## 1. Introduction
+This document outlines the requirements for the Teacher Dashboard, a web-based interface designed to provide teachers with a centralized platform to manage their classes, view student information, and track academic progress within the current academic year.
 
-This document outlines the functional requirements for the Teacher Dashboard module within the Portail Education API system. The primary goal of this module is to provide teachers with a centralized, intuitive interface to manage their classes, record student grades, and access relevant academic information for the current academic year and term.
+## 2. Goals
+*   To provide teachers with an intuitive and efficient way to access their assigned classes and student data.
+*   To display relevant academic year information and teacher's profile at a glance.
+*   To enable teachers to view student grades for the current term within their assigned classes.
 
-**2. Target Audience**
+## 3. User Roles
+*   **Teacher:** The primary user of this dashboard. Teachers will have access to their specific classes and associated student data.
 
-*   Teachers using the Portail Education API system.
+## 4. Features
 
-**3. Features and Functionality**
+### 4.1. Dashboard Overview
+*   **Description:** The main landing page for the teacher, providing a summary of key information.
+*   **Components:**
+  *   **Current Academic Year Display:** Clearly shows the active academic year.
+  *   **Teacher Profile Information:** Displays the teacher's name, email, and other relevant profile details.
 
-The Teacher Dashboard will consist of the following main sections:
+### 4.2. My Classes (Sidebar Navigation)
+*   **Description:** A navigation section in the sidebar listing all classes assigned to the teacher for the current academic year.
+*   **Functionality:**
+  *   Each class listed should be clickable, leading to the "Class Details" view for that specific class.
 
-**3.1. Global Navigation (Sidebar)**
+### 4.3. Class Details
+*   **Description:** Upon selecting a class from the sidebar, this view displays the students enrolled in that class for the current academic year, along with their grades for the current term.
+*   **Components:**
+  *   **Class Name/Identifier:** Prominently displayed.
+  *   **Student List:** A table or list of students enrolled in the selected class.
+    *   Each student entry should include their name and other relevant identifiers.
+  *   **Grades Display:** For each student, display their grades for the *current term only*.
+    *   If a student has no grade recorded for the current term, an empty or "N/A" indicator should be shown.
 
-The sidebar will provide quick access to the main sections of the teacher's interface:
+### 4.4. Teacher Profile Display
+*   **Description:** A dedicated section or page accessible from the dashboard that displays the teacher's detailed profile information.
+*   **Components:**
+  *   Teacher's Name
+  *   Email Address
+  *   Phone Number (if applicable)
+  *   List of assigned subjects (as seen in `getTeacherProfile` method).
 
-*   **Dashboard:** Overview of key information.
-*   **Mes Classes:** List of classes assigned to the teacher.
-*   **Mon Profile:** Teacher's personal and professional profile.
-*   **Logout:** Securely log out of the system.
+## 5. Technical Considerations
 
-**3.2. Dashboard Section**
+### 5.1. Resource Responses
 
-This section will serve as the teacher's landing page, providing an at-a-glance summary of relevant academic information.
+#### AcademicYearResource
+```json
+{
+    "id": 1,
+    "label": "2024-2025",
+    "start_date": "2024-09-01",
+    "end_date": "2025-06-30",
+    "status": "en_cours",
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z"
+}
+```
 
-*   **Current Academic Year Display:** Clearly show the active academic year.
-*   **Current Term Display:** Clearly show the active term within the current academic year.
-*   **Key Metrics/Summaries (Future Consideration):** Potentially display quick summaries like upcoming assignments, unsubmitted grades, etc. (Not explicitly requested but good to note for future).
+#### AssignementResource
+```json
+{
+    "id": 1,
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "teacher_id": 1,
+    "class_model_id": 1,
+    "subject_id": 1,
+    "term_id": 1,
+    "teacher": { /* TeacherResource */ },
+    "classModel": { /* ClassModelResource */ },
+    "subject": { /* SubjectResource */ },
+    "term": { /* AcademicYearResource (Note: This seems incorrect, should be TermResource) */ }
+}
+```
 
-**3.3. Mes Classes Section**
+#### ClassModelResource
+```json
+{
+    "id": 1,
+    "name": "Grade 7A",
+    "level": "Middle School",
+    "current_academic_year_student_sessions": null, // or { /* StudentSession details */ }
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z"
+}
+```
 
-This section allows teachers to manage their assigned classes.
+#### GradeResource
+```json
+{
+    "id": 1,
+    "mark": 85.5,
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "assignement_id": 1,
+    "student_session_id": 1,
+    "term_id": 1,
+    "assignement": { /* AssignementResource */ },
+    "student_session": { /* StudentSession details */ },
+    "subject": { /* SubjectResource (Note: This seems incorrect, subject is part of assignement) */ },
+    "term": { /* TermResource */ }
+}
+```
 
-*   **List of Assigned Classes:** Display a list of all classes currently assigned to the teacher for the *current academic year*. Each class entry should be clickable.
-*   **Class Selection:** Upon clicking a specific class from the list, the system will navigate to the "Class Details" view for that selected class.
+#### ParentResource
+```json
+{
+    "id": 1,
+    "userModel": { /* UserModelResource */ },
+    "children": [] // or [ { /* StudentResource */ } ]
+}
+```
 
-**3.4. Class Details & Note Entry Section**
+#### ReportCardResource
+```json
+{
+    "id": 1,
+    "average_grade": 88.0,
+    "honors": "Cum Laude",
+    "path": "public/reports/report_card_1.pdf",
+    "pdf_url": "http://localhost/storage/reports/report_card_1.pdf",
+    "rank": 5,
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "student_session_id": 1,
+    "term_id": 1,
+    "student": { /* StudentResource */ },
+    "term": { /* TermResource */ }
+}
+```
 
-This is the core functionality for grade management.
+#### StudentResource
+```json
+{
+    "id": 1,
+    "matricule": "STU001",
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "parent_model_id": 1,
+    "user_model_id": 1,
+    "current_academic_year_student_sessions": null, // or { /* StudentSession details */ }
+    "parentModel": { /* ParentResource */ },
+    "userModel": { /* UserModelResource */ },
+    "academic_records_url": "http://localhost/storage/academic_records/stu001.pdf"
+}
+```
 
-*   **Student List Display:** For the selected class, display a comprehensive list of all students enrolled in that class for the *current term*.
-*   **Note Saisie (Grade Entry) Interface:**
-  *   For each student, provide an input mechanism to enter their grades/notes for the *current term*.
-  *   The interface should be designed for efficient data entry for all students in the class.
-  *   Validation: Implement appropriate validation for grade inputs (e.g., numerical range, format).
-*   **Save/Update Notes:**
-  *   **"Send to Update" Action:** A button or similar control will allow the teacher to save the entered/modified notes for the current class and term. This action should update the grades in the system without necessarily finalizing them for the term. This allows for iterative saving.
-*   **Submit Notes for Term:**
-  *   **"Submit Notes for Term" Action:** A distinct button or control will allow the teacher to finalize and submit all notes for the *current term* for the selected class. This action should ideally lock the grades for that term, preventing further edits unless explicitly unlocked by an administrator. This action is available when the term is completed or the teacher decides to finalize.
+#### SubjectResource
+```json
+{
+    "id": 1,
+    "name": "Mathematics",
+    "level": "High School",
+    "coefficient": 4,
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z"
+}
+```
 
-**3.5. Mon Profile Section**
+#### TeacherResource
+```json
+{
+    "id": 1,
+    "hire_date": "2020-09-01",
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "user_model_id": 1,
+    "subjects": [], // or [ { /* SubjectResource */ } ]
+    "assigned_classes": [], // or [ { /* ClassModelResource */ } ]
+    "userModel": { /* UserModelResource */ }
+}
+```
 
-This section allows teachers to view their personal and professional information.
+#### TermResource
+```json
+{
+    "id": 1,
+    "name": "Term 1",
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "academic_year_id": 1,
+    "academic_year": { /* AcademicYearResource */ }
+}
+```
 
-*   **View Profile Information:** Display the teacher's name, contact details, assigned subjects, and any other relevant profile information.
-*   **Edit Profile (Future Consideration):** Ability to edit certain profile fields (e.g., contact information) if allowed by system policies. (Not explicitly requested but common).
+#### UserModelResource
+```json
+{
+    "id": 1,
+    "first_name": "John",
+    "last_name": "Doe",
+    "birthday": "1980-01-01",
+    "email": "john.doe@example.com",
+    "password": "********", // Password should not be exposed in actual API responses
+    "adress": "123 Main St",
+    "phone": "123-456-7890",
+    "role_id": 1,
+    "role": {
+        "id": 1,
+        "name": "Teacher"
+    },
+    "created_at": "2024-07-26T12:00:00.000000Z",
+    "updated_at": "2024-07-26T12:00:00.000000Z",
+    "isFirstLogin": false
+}
+```
 
-**4. User Flow Examples**
+### 5.2. API Endpoints
 
-**4.1. Viewing Class and Entering Notes**
+*   `GET /api/teacher/profile`: To fetch teacher's profile details (already exists as `getTeacherProfile` in `TeacherController`).
+    *   **Expected Response:** `TeacherResource`
 
-1.  Teacher logs in and lands on the "Dashboard" section.
-2.  Teacher clicks "Mes Classes" in the sidebar.
-3.  System displays a list of classes assigned to the teacher for the current academic year. (Leverages existing API)
-4.  Teacher clicks on "Class A - Grade 7".
-5.  System displays the list of students in "Class A - Grade 7" for the current term, with input fields for notes. (Leverages existing API, potentially with enhancements)
-6.  Teacher enters notes for multiple students.
-7.  Teacher clicks "Send to Update" to save progress. (Leverages existing API)
-8.  Teacher continues entering notes or navigates away.
+*   `GET /api/teacher/{teacherId}/classes`: To retrieve classes assigned to the teacher for the current academic year (already exists as `getClasses` in `TeacherController`).
+    *   **Expected Response:** Array of `ClassModelResource`
 
-**4.2. Submitting Notes for a Term**
+*   `GET /api/academic-year/current`: To determine the current academic year (can be implemented in `AcademicYearController` or a helper). The `AcademicYear::getCurrentAcademicYear()` method already exists.
+    *   **Expected Response:** `AcademicYearResource`
 
-1.  Teacher is in the "Class Details" view for "Class A - Grade 7".
-2.  Teacher has completed entering all notes for the current term for all students.
-3.  Teacher clicks "Submit Notes for Term".
-4.  System prompts for confirmation.
-5.  Upon confirmation, notes are finalized and submitted for the term. (New API)
+*   `GET /api/terms/current`: **EXISTING** To retrieve the current term for the active academic year. This will likely involve using `AcademicYear::getCurrentAcademicYear()` and then finding the current term within that academic year.
+    *   **Expected Response:** `TermResource`
 
-**5. API Endpoints**
+*   `GET /api/classes/{classId}/students`: **EXISTING** To retrieve students enrolled in a specific class for the current academic year. This will likely involve querying the `student_sessions` table.
+    *   **Expected Response:** Array of objects with `id`, `name`, `matricule`, `user_model_id`, `student_session_id` (derived from `StudentResource` and `UserModelResource`)
+    ```json
+    [
+        {
+            "id": 201,
+            "name": "Alice Smith",
+            "matricule": "STU001",
+            "user_model_id": 501,
+            "student_session_id": 301
+        },
+        {
+            "id": 202,
+            "name": "Bob Johnson",
+            "matricule": "STU002",
+            "user_model_id": 502,
+            "student_session_id": 302
+        }
+    ]
+    ```
 
-This section outlines the necessary API endpoints for the Teacher Dashboard functionality. All endpoints should be authenticated and authorized for teacher roles.
+*   `GET /api/grades/class/{classId}/term/{termId}/students/{studentId}`: **EXISTING** To retrieve all grades for a specific student within a given class and term. The existing `getGradesByTerm` in `GradeController` requires a `subject_id`, which is not suitable for displaying all grades for a student across all subjects in a class. A new or modified endpoint is needed to fetch all grades for a student in a class for the current term, regardless of subject.
+    *   **Expected Response:** Array of objects with `id`, `mark`, `type`, `subject_name`, `assignement_id`, `student_session_id`, `term_id` (derived from `GradeResource` and `SubjectResource`)
+    ```json
+    [
+        {
+            "id": 1,
+            "mark": 85.5,
+            "type": "exam",
+            "subject_name": "Mathematics",
+            "assignement_id": 10,
+            "student_session_id": 301,
+            "term_id": 1
+        },
+        {
+            "id": 2,
+            "mark": 92.0,
+            "type": "quiz",
+            "subject_name": "Physics",
+            "assignement_id": 11,
+            "student_session_id": 301,
+            "term_id": 1
+        },
+        {
+            "id": 3,
+            "mark": null,
+            "type": null,
+            "subject_name": "Chemistry",
+            "assignement_id": 12,
+            "student_session_id": 301,
+            "term_id": 1
+        }
+    ]
+    ```
 
-**5.1. Dashboard Data**
+*   `PUT /api/grades/update`: **EXISTING** To update student grades (exists as `updateGrades` in `GradeController`).
+    *   **Expected Request Body:**
+    ```json
+    {
+        "grades": [
+            {
+                "id": 1, // Optional, if updating existing grade
+                "mark": 88.0,
+                "type": "exam",
+                "assignement_id": 10,
+                "student_session_id": 301,
+                "term_id": 1
+            },
+            {
+                "mark": 75.0, // New grade
+                "type": "quiz",
+                "assignement_id": 13,
+                "student_session_id": 301,
+                "term_id": 1
+            }
+        ]
+    }
+    ```
+    *   **Expected Response:**
+    ```json
+    {
+        "message": "Grades updated successfully"
+    }
+    ```
 
-*   **GET /api/v1/academic-years/current**
-  *   **Description:** Retrieves the current academic year. (Existing API)
-  *   **Response Example:**
-      ```json
-      {
-          "id": 1,
-          "name": "2024-2025",
-          "start_date": "2024-09-01",
-          "end_date": "2025-06-30"
-      }
-      ```
+*   `POST /api/grades/submit-term-notes/{class_id}`: **EXISTING** To submit grades for a term for a specific class (exists as `submitTermNotes` in `GradeController`).
+    *   **Expected Request Body:**
+    ```json
+    {
+        "term_id": 1
+    }
+    ```
+    *   **Expected Response:**
+    ```json
+    {
+        "message": "Notes submitted successfully for the term."
+    }
+    ```
 
-*   **GET /api/v1/terms/current**
-  *   **Description:** Retrieves the current active term. (Existing API)
-  *   **Response Example:**
-      ```json
-      {
-          "id": 1,
-          "name": "Term 1",
-          "start_date": "2024-09-01",
-          "end_date": "2024-12-31"
-      }
-      ```
-
-*   **GET /api/teacher/dashboard** (Proposed New Endpoint - Optional, for combined data)
-  *   **Description:** Retrieves combined dashboard data including current academic year and active term. This can be an aggregation of the above two endpoints for a single frontend call.
-  *   **Response Example:**
-      ```json
-      {
-          "current_academic_year": { ... },
-          "current_term": { ... }
-      }
-      ```
-
-**5.2. Mes Classes (Teacher's Classes)**
-
-*   **GET /api/v1/teachers/{teacher_id}/classes**
-  *   **Description:** Retrieves a list of classes assigned to the authenticated teacher for the current academic year. The `{teacher_id}` can be obtained from the authenticated user's context.
-  *   **Response Example:**
-      ```json
-      [
-          {
-              "id": 101,
-              "name": "Math - Grade 7",
-              "academic_year_id": 1,
-              "teacher_id": 501
-          },
-          {
-              "id": 102,
-              "name": "Science - Grade 8",
-              "academic_year_id": 1,
-              "teacher_id": 501
-          }
-      ]
-      ```
-
-**5.3. Class Details & Student Notes**
-
-*   **GET /api/v1/grades?term_id={term_id}&class_id={class_id}** (Leveraging and potentially enhancing existing API)
-  *   **Description:** Retrieves the list of students for a specific class and their current notes for the specified term. This assumes the existing `/grades` endpoint can be filtered by `term_id` and `class_id`.
-  *   **Parameters:**
-    *   `term_id`: The ID of the current term.
-    *   `class_id`: The ID of the class.
-  *   **Response Example:**
-      ```json
-      [
-          {
-              "student_id": 201,
-              "student_name": "Alice Smith",
-              "grade_id": 1001, // Existing grade ID if applicable
-              "value": 85,
-              "status": "draft" // e.g., draft, submitted
-          },
-          {
-              "student_id": 202,
-              "student_name": "Bob Johnson",
-              "grade_id": null,
-              "value": null,
-              "status": "pending"
-          }
-      ]
-      ```
-
-*   **POST /api/v1/grades** (Leveraging existing API)
-  *   **Description:** Saves/updates notes for multiple students. This is for iterative saving. The existing `/grades` POST endpoint is assumed to handle an array of grade objects.
-  *   **Request Body Example:**
-      ```json
-      [
-          {
-              "student_id": 201,
-              "class_id": 101,
-              "term_id": 1,
-              "value": 88
-          },
-          {
-              "student_id": 202,
-              "class_id": 101,
-              "term_id": 1,
-              "value": 75
-          }
-      ]
-      ```
-  *   **Response Example:**
-      ```json
-      {
-          "message": "Grades updated successfully."
-      }
-      ```
-
-*   **POST /api/v1/classes/{class_id}/notes/submit** (Proposed New Endpoint)
-  *   **Description:** Submits and finalizes notes for all students in a specific class for the current term. This action should update the status of all grades for the given class and term to 'submitted' and potentially lock them.
-  *   **Parameters:**
-    *   `class_id`: The ID of the class.
-  *   **Request Body Example:**
-      ```json
-      {
-          "term_id": 1
-      }
-      ```
-  *   **Response Example:**
-      ```json
-      {
-          "message": "Notes submitted successfully for the term."
-      }
-      ```
-
-**5.4. Mon Profile (Teacher Profile)**
-
-*   **GET /api/teacher/profile** (Proposed New Endpoint)
-  *   **Description:** Retrieves the authenticated teacher's profile information.
-  *   **Response Example:**
-      ```json
-      {
-          "id": 501,
-          "name": "John Doe",
-          "email": "john.doe@example.com",
-          "phone": "123-456-7890",
-          "assigned_subjects": ["Math", "Physics"]
-      }
-      ```
-
-**6. Non-Functional Requirements (Considerations)**
-
-*   **Security:** All data entry and retrieval must be secure, with proper authentication and authorization checks.
-*   **Performance:** The dashboard and note entry interfaces should load quickly and respond efficiently, even with large class sizes.
-*   **Usability:** The interface should be intuitive and easy to navigate for teachers.
-*   **Data Integrity:** Ensure that grades are accurately saved and associated with the correct student, class, and term.
-*   **Error Handling:** Provide clear feedback to the user in case of errors (e.g., invalid input, network issues).
+## 6. Future Enhancements (Optional)
+*   Ability to input/edit grades directly from the dashboard.
