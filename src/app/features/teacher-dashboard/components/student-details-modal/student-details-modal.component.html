@@ -9,15 +9,15 @@
     <div class="student-info-section">
       <div class="info-item">
         <span class="info-label">Nom Complet:</span>
-        <span class="info-value">{{ studentSession!.student.user_model.first_name }} {{ studentSession!.student.user_model.last_name }}</span>
+        <span class="info-value">{{ studentSession!.user?.first_name }} {{ studentSession!.lastName}}</span>
       </div>
       <div class="info-item">
         <span class="info-label">Email:</span>
-        <span class="info-value">{{ studentSession!.student.user_model.email }}</span>
+        <span class="info-value">{{ studentSession!.email }}</span>
       </div>
       <div class="info-item">
         <span class="info-label">Téléphone:</span>
-        <span class="info-value">{{ student.student.user_model!.phone || 'N/A' }}</span>
+        <span class="info-value">{{ studentSession!.phone || 'N/A' }}</span>
       </div>
       <!-- Add more student details as needed -->
     </div>
