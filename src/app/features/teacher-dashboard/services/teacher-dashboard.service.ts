@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { ClassModel } from '../models/class-model';
 import { Grade } from '../models/grade';
 
+import { Teacher } from '../../teachers/models/teacher';
+import {Student} from "../../students/models/student";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -45,5 +48,13 @@ export class TeacherDashboardService {
 
   getAcademicYears(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/academic-years`);
+  }
+
+  getTeacherByUserId(userId: number): Observable<Teacher> {
+    return this.http.get<Teacher>(`${this.apiUrl}/teachers/users/${userId}`);
+  }
+
+  getStudentsByClassId(classId: number): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.apiUrl}/classes/${classId}/students`);
   }
 }

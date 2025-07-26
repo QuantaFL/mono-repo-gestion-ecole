@@ -1,5 +1,8 @@
 <div class="dashboard-home-container">
   <h2>Bienvenue sur le Tableau de bord Enseignant !</h2>
+  <div *ngIf="currentTeacher">
+    <h3>{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
+  </div>
   <p>Ceci est votre centre de gestion pour les classes, les années académiques, les termes et les notes des étudiants.</p>
 
   <div class="overview-cards">
