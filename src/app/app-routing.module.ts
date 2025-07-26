@@ -11,6 +11,7 @@ import {ClassListComponent} from "./features/class/components/class-list/class-l
 import {authGuard} from "./core/guards/auth.guard";
 import {SubjectListComponent} from "./features/subjects/components/subject-list/subject-list.component";
 import {AddSubjectComponent} from "./features/subjects/components/add-subject/add-subject.component";
+import { ChangePasswordComponent } from './features/auth/components/change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'class', component: ClassAddComponent},
   { path: 'list_subject', component: SubjectListComponent},
   {path: 'subject', component: AddSubjectComponent},
-  // Assuming you meant to use AddSubjectComponent here
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({
