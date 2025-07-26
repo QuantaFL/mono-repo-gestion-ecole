@@ -11,7 +11,7 @@ import {ClassListComponent} from "./features/class/components/class-list/class-l
 import {authGuard} from "./core/guards/auth.guard";
 import {SubjectListComponent} from "./features/subjects/components/subject-list/subject-list.component";
 import {AddSubjectComponent} from "./features/subjects/components/add-subject/add-subject.component";
-import { ChangePasswordComponent } from './features/auth/components/change-password/change-password.component';
+import {ChangePasswordComponent} from "./features/auth/components/change-password/change-password.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -26,6 +26,8 @@ const routes: Routes = [
   { path: 'list_subject', component: SubjectListComponent},
   {path: 'subject', component: AddSubjectComponent},
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },
+  { path: 'teacher-dashboard', loadChildren: () => import('./features/teacher-dashboard/teacher-dashboard.module').then(m => m.TeacherDashboardModule), canActivate: [authGuard] },
+  { path: '**', redirectTo: 'login' } // Wildcard route
 ];
 
 @NgModule({
