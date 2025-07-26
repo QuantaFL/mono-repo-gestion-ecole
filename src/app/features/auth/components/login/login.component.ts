@@ -4,6 +4,8 @@ import {Router, RouterModule} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {LoginRequest} from "../../requests/loginRequest";
 import {LoginResponse} from "../../requests/LoginResponse";
+import { TeacherStore } from '../../../teacher-dashboard/services/teacher.store';
+import { TeacherDashboardService } from '../../../teacher-dashboard/services/teacher-dashboard.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage = "";
 
-  constructor(private router:Router,private authService:AuthService) {
+  constructor(private router:Router,private authService:AuthService, private teacherStore: TeacherStore, private teacherDashboardService: TeacherDashboardService) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
@@ -32,10 +34,31 @@ export class LoginComponent {
       this.authService.login(loginRequest).subscribe({
           next: async (response: LoginResponse) => {
             localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('user', JSON.stringify(response.user)); // Keep for getUserFromLocalStorage
             console.log(localStorage.getItem("token"));
+
             if(response.user.role.name === 'teacher') {
-              await this.router.navigate(['/teacher-dashboard']);
+              if (response.user.id) {
+                this.teacherDashboardService.getTeacherByUserId(response.user.id).subscribe({
+                  next: async (teacher) => {
+                    this.teacherStore.setTeacher(teacher);
+                    await this.router.navigate(['/teacher-dashboard']);
+                  },
+                  error: (err) => {
+                    console.error('Error fetching teacher details:', err);
+                    this.errorMessage = 'Failed to load teacher data.';
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    this.teacherStore.setTeacher(null);
+                  }
+                });
+              } else {
+                console.error('User ID is missing for teacher role.');
+                this.errorMessage = 'User ID is missing.';
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                this.teacherStore.setTeacher(null);
+              }
             } else if(response.user.role.name === 'admin') {
             await this.router.navigate(['/dashboard']);
             }else{
@@ -45,10 +68,14 @@ export class LoginComponent {
               //TODO navigate to unauthorized page as its either a student or parent
               localStorage.removeItem('token');
               localStorage.removeItem('user');
+              this.teacherStore.setTeacher(null);
             }
           },
           error: (err) => {
             this.errorMessage = 'Identifiants incorrects';
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            this.teacherStore.setTeacher(null);
           }
         });
     } else {

@@ -9,7 +9,7 @@ export interface Student {
   classId: number;
   parentUserId: number;
   parentUser?:User;
-  matricule:String;
+  matricule:string;
   classModel?:ClassModel;
   studentIdNumber: string;
   createdAt?: string;

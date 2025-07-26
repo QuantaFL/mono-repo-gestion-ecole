@@ -7,7 +7,11 @@ import { StudentSession } from '../../models/student-session';
 import { Subject } from '../../models/subject';
 import { Dialog } from '@angular/cdk/dialog';
 import { StudentDetailsModalComponent } from '../student-details-modal/student-details-modal.component';
-import {Assignment} from "../../models/assignment";
+import { Assignment } from "../../models/assignment";
+import { Student } from '../../../students/models/student';
+import { forkJoin } from 'rxjs';
+import { TeacherStore } from '../../services/teacher.store';
+import {StudentService} from "../../../students/services/student.service";
 
 @Component({
   selector: 'app-class-details',
@@ -20,54 +24,81 @@ export class ClassDetailsComponent implements OnInit {
   assignement: Assignment | null = null;
   selectedTerm: Term | null = null;
   grades: Grade[] = [];
-  students: StudentSession[] = [];
+  students: Student[] = []; // This will hold all students in the class
   subjects: Subject[] = []; // To store subjects taught in this class by the teacher
 
   displayedColumns: string[] = [];
 
   // Placeholder for academic year. In a real app, this would be passed or fetched.
   currentAcademicYearId: number = 1;
-  currentTeacherId: number = 3; // Placeholder
+  currentTeacherId: number | null = null; // Now fetched from TeacherStore
 
   constructor(
     private route: ActivatedRoute,
     private teacherDashboardService: TeacherDashboardService,
-    private dialog: Dialog
+    private dialog: Dialog,
+    private teacherStore: TeacherStore,
+    private studentService: StudentService
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.classId = Number(params.get('id'));
-      if (this.classId) {
-        this.fetchTerms();
+    this.teacherStore.currentTeacher$.subscribe(teacher => {
+      if (teacher && teacher.userModel && teacher.userModel.id) {
+        this.currentTeacherId = teacher.userModel.id;
+        this.route.paramMap.subscribe(params => {
+          this.classId = Number(params.get('id'));
+          if (this.classId) {
+            this.fetchTermsAndStudents();
+          }
+        });
+      } else {
+        console.warn('Teacher data not available in store.');
       }
     });
   }
 
-  fetchTerms(): void {
-    this.teacherDashboardService.getTerms(this.currentAcademicYearId).subscribe({
-      next: (terms: Term[]) => {
+  fetchTermsAndStudents(): void {
+    if (!this.classId) return;
+
+    forkJoin({
+      terms: this.teacherDashboardService.getTerms(this.currentAcademicYearId),
+      students: this.teacherDashboardService.getStudentsByClassId(this.classId)
+    }).subscribe({
+      next: ({ terms, students }) => {
         this.terms = terms;
-        // Select the first term by default or the active one
+        this.students = students;
         this.selectedTerm = terms[0];
         if (this.selectedTerm && this.classId) {
           this.fetchGrades();
         }
       },
       error: (err: any) => {
-        console.error('Error fetching terms:', err);
+        console.error('Error fetching terms or students:', err);
       }
     });
   }
 
   fetchGrades(): void {
-    if (this.selectedTerm && this.classId) {
-      const defaultSubjectId = this.grades.at(0)?.subject?.id!;
-      this.teacherDashboardService.getGrades(this.selectedTerm.id, this.classId, defaultSubjectId).subscribe({
+    if (this.selectedTerm && this.classId && this.currentTeacherId) {
+      const teacher = this.teacherStore.getCurrentTeacherValue();
+      if (!teacher || !teacher.subjects) {
+        console.warn('Teacher or teacher subjects not available in store.');
+        return;
+      }
+
+      const relevantSubject = teacher.subjects.find(s => s.pivot.teacher_id === teacher.id);
+
+      if (!relevantSubject) {
+        console.warn('No relevant subject found for this teacher in this class.');
+        this.grades = [];
+        this.subjects = [];
+        return;
+      }
+
+      this.teacherDashboardService.getGrades(this.selectedTerm.id, this.classId, relevantSubject.id).subscribe({
         next: (grades) => {
           this.grades = grades;
-          this.extractStudentsAndSubjects(grades);
-          this.setDisplayedColumns();
+          this.setSubjectsForGradeDisplay();
         },
         error: (err) => {
           console.error('Error fetching grades:', err);
@@ -76,91 +107,79 @@ export class ClassDetailsComponent implements OnInit {
     }
   }
 
-  extractStudentsAndSubjects(grades: Grade[]): void {
-    const uniqueStudents = new Map<number, StudentSession>();
-    const uniqueSubjects = new Map<number, Subject>();
-
-    grades.forEach(grade => {
-      if (!uniqueStudents.has(grade.student_session.id)) {
-        uniqueStudents.set(grade.student_session.id, grade.student_session);
-      }
-      if (!uniqueSubjects.has(grade.assignement.subject!.id!)) {
-        uniqueSubjects.set(grade!.assignement!.subject!.id!, grade!.assignement!.subject!);
-      }
-    });
-
-    this.students = Array.from(uniqueStudents.values());
-    this.subjects = Array.from(uniqueSubjects.values());
-  }
-
-  setDisplayedColumns(): void {
-    this.displayedColumns = ['studentName'];
-    this.subjects.forEach(subject => {
-      this.displayedColumns.push(`${subject.id}-quiz`);
-      this.displayedColumns.push(`${subject.id}-exam`);
-    });
-    this.displayedColumns.push('info');
-  }
-
-  onTermChange(): void {
-    if (this.selectedTerm && this.classId) {
-      this.fetchGrades();
+  setSubjectsForGradeDisplay(): void {
+    const teacher = this.teacherStore.getCurrentTeacherValue();
+    if (!teacher || !teacher.subjects) {
+      console.warn('Teacher or teacher subjects not available for processing.');
+      return;
     }
+
+    // Populate subjects with the relevant subject(s) for this teacher in this class
+    // For now, we'll use the first relevant subject found, as per fetchGrades assumption.
+    const relevantSubject = teacher.subjects.find(s => s.pivot.teacher_id === teacher.id);
+    if (relevantSubject) {
+      this.subjects = [relevantSubject];
+    } else {
+      this.subjects = [];
+    }
+
+    // Ensure all students are represented, with their grades or placeholders
+    const combinedStudents: Student[] = [];
+    this.students.forEach(student => {
+      // For each student, check if they have grades for the relevant subject
+      const studentGrades = this.grades.filter(g => g.student_session.student.id === student.id);
+
+      // You might want to create a more complex structure here if you need to display
+      // grades for multiple subjects or different assignment types for each student.
+      // For now, we'll just ensure the student is in the list.
+      combinedStudents.push(student);
+    });
+    // This `this.students = combinedStudents;` is redundant as `this.students` is already populated from `fetchTermsAndStudents`
+    // and we are just ensuring subjects are correctly set.
   }
 
-  getGrade(studentSessionId: number, subjectId: number, type: 'quiz' | 'exam'): string {
+  getGrade(studentId: number, subjectId: number, type: 'quiz' | 'exam'): string {
     const grade = this.grades.find(g =>
-      g.student_session.id === studentSessionId &&
-      g.assignement!.subject!.id! === subjectId &&
+      g.student_session.student.id === studentId &&
+      g.assignement?.subject?.id === subjectId &&
       g.type === type
     );
     return grade ? grade.mark : '';
   }
 
-  updateGrade(studentSessionId: number, subjectId: number, type: 'quiz' | 'exam', event: Event): void {
+  updateGrade(studentId: number, subjectId: number, type: 'quiz' | 'exam', event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const mark = inputElement.value;
 
-    // Validate mark input
     const parsedMark = parseFloat(mark);
     if (isNaN(parsedMark) || parsedMark < 0 || parsedMark > 20) {
       alert('Veuillez entrer une note valide entre 0 et 20.');
-      inputElement.value = this.getGrade(studentSessionId, subjectId, type); // Revert to previous valid value
+      inputElement.value = this.getGrade(studentId, subjectId, type);
       return;
     }
 
     let grade = this.grades.find(g =>
-      g.student_session.id === studentSessionId &&
-      g.assignement.subject!.id! === subjectId &&
+      g.student_session.student.id === studentId &&
+      g.assignement?.subject?.id === subjectId &&
       g.type === type
     );
 
     if (grade) {
       grade.mark = mark;
     } else {
-      // Find the assignment_id for the given subject and class
-      const assignment = this.grades.find(g =>
-        g.assignement.subject!.id! === subjectId &&
-        g.assignement.class_model_id === this.classId
+      const student = this.students.find(s => s.id === studentId);
+      if (!student) {
+        console.warn('Student not found for ID:', studentId);
+        return;
+      }
+
+
+      let assignment = this.grades.find(g =>
+        g.assignement?.subject?.id === subjectId &&
+        g.assignement?.class_model_id === this.classId
       )?.assignement;
 
-      if (assignment) {
-        this.grades.push({
-          id: 0, // Placeholder, will be assigned by backend
-          mark: mark,
-          type: type,
-          assignement_id: assignment.id,
-          student_session_id: studentSessionId,
-          subject_id: subjectId,
-          term_id: this.selectedTerm?.id || 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          student_session: this.students.find(s => s.id === studentSessionId) as StudentSession,
-          assignement: assignment
-        });
-      } else {
-        console.warn('Assignment not found for subject', subjectId, 'and class', this.classId);
-      }
+
     }
   }
 
@@ -222,9 +241,11 @@ export class ClassDetailsComponent implements OnInit {
     }
   }
 
-  showStudentInfo(studentSession: StudentSession) {
+  showStudentInfo(student: Student) {
+    // You might need to adjust StudentDetailsModalComponent to accept Student instead of StudentSession
+    // Or fetch StudentSession here if needed for the modal
     this.dialog.open(StudentDetailsModalComponent, {
-      data: studentSession,
+      data: student,
       panelClass: 'custom-dialog-container' // Optional: for custom styling
     });
   }
