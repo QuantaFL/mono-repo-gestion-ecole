@@ -1,0 +1,27 @@
+@import './../../src/styles/variables';
+
+.teacher-dashboard-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 280px; /* Default sidebar width */
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px;
+  overflow-y: auto;
+  background-color: var(--background-color);
+}
+
+.main-content.collapsed {
+  margin-left: 72px; /* Collapsed sidebar width */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}
