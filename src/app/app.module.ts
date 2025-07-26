@@ -19,6 +19,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AddSubjectComponent } from './features/subjects/components/add-subject/add-subject.component';
+import { ChangePasswordComponent } from './features/auth/components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AddSubjectComponent } from './features/subjects/components/add-subject/
     ClassListComponent,
     SidebarComponent,
     HeaderComponent,
-    AddSubjectComponent
+    AddSubjectComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
