@@ -1,0 +1,96 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <div class="logo-container" (click)="toggleSidebar()">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h1 class="logo-text" *ngIf="!isCollapsed">Tableau de bord Enseignant</h1>
+    </div>
+    <button class="collapse-btn" (click)="toggleSidebar()" *ngIf="!isMobile">
+      <svg class="collapse-icon" [class.rotated]="isCollapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <ul class="menu-list">
+      <li class="menu-item"
+          *ngFor="let item of menuItems; trackBy: trackByPath"
+          [class.active]="item.isActive">
+        <a *ngIf="item.path" [routerLink]="item.path"
+           class="menu-link"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: true}">
+          <div class="menu-icon-container">
+            <svg class="menu-icon"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 [innerHTML]="item.icon">
+            </svg>
+          </div>
+          <span class="menu-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </a>
+        <div *ngIf="!item.path" class="menu-link" (click)="onMenuClick(item)">
+          <div class="menu-icon-container">
+            <svg class="menu-icon"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 [innerHTML]="item.icon">
+            </svg>
+          </div>
+          <span class="menu-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </div>
+
+        <!-- Sub-menu for My Classes -->
+        <ul *ngIf="item.children && item.children.length > 0 && !isCollapsed" class="sub-menu-list">
+          <li *ngFor="let child of item.children; trackBy: trackByPath" class="sub-menu-item">
+            <a [routerLink]="child.path"
+               class="sub-menu-link"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}">
+              <span class="sub-menu-text">{{ child.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Logout Section -->
+  <div class="logout-section">
+    <button class="logout-btn" (click)="logout()">
+      <div class="menu-icon-container">
+        <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>
+      </div>
+      <span class="menu-text" *ngIf="!isCollapsed">Déconnexion</span>
+    </button>
+  </div>
+
+  <!-- Footer Info -->
+  <div class="sidebar-footer" *ngIf="!isCollapsed">
+    <div class="user-info">
+      <div class="user-avatar">
+        <span>T</span>
+      </div>
+      <div class="user-details">
+        <p class="user-name">Enseignant</p>
+        <p class="user-role">Professeur</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay"
+       *ngIf="isMobile && !isCollapsed"
+       (click)="toggleSidebar()">
+  </div>
+</aside>
