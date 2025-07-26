@@ -6,3 +6,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
 }
+
+html, body { height: 100%; }
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
