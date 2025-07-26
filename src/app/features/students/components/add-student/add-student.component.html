@@ -57,9 +57,7 @@
         <label for="classId" class="form-label">Classe</label>
         <select id="classId" class="form-select" formControlName="classId" required>
           <option value="" disabled selected>Choisir une classe</option>
-          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }}  ({{ classe.level }})<!--
-            ({{ classe.academicYear }}) // commenter pour s'aligner avec  le modèle de classe
-          --></option>
+          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }} ({{ classe.academicYear }})</option>
         </select>
       </div>
       <div class="col-md-6">
