@@ -1,26 +1,16 @@
 import {User} from "../../auth/models/user";
 import {ClassModel} from "../../class/models/class";
+import { StudentSession } from "./studentSession";
 
 export interface Student {
   id: number;
-  userId: number;
-  user?:User;
-  enrollmentDate: string;
-  classId: number;
-  parentUserId: number;
-  parentUser?:User;
-  matricule:string;
-  classModel?:ClassModel;
-  studentIdNumber: string;
-  createdAt?: string;
-  updatedAt?: string;
-  // Champs nécessaires pour la création côté front (correspondant au backend)
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
-  roleId?: number;
-  address?: string;
-  dateOfBirth?: string;
-  gender?: string;
+  matricule: string;
+  created_at: string;
+  updated_at: string;
+  parent_model_id: number;
+  user_model_id: number;
+  latest_student_session?: StudentSession;
+  parentModel?: any;
+  userModel?: any;
+  academic_records_url?: string;
 }
