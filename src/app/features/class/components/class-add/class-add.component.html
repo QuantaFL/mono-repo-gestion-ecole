@@ -1,16 +1,25 @@
-<div class="container mt-4">
-  <h3>Ajouter une classe</h3>
-  <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="name" class="form-label">Nom de la classe</label>
-      <input type="text" id="name" class="form-control" formControlName="name">
-    </div>
-    <div class="mb-3">
-      <label for="level" class="form-label">Niveau de la classe</label>
-      <input type="text" id="level" class="form-control" formControlName="level" placeholder="Terminal">
-    </div>
-    <button class="btn btn-success" type="submit">Enregistrer</button>
-  </form>
+<div class="add-class-wrapper">
+ 
+
+
+  <div class="form-card">
+    <h2 class="form-title">Ajouter une classe</h2>
+
+    <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name" class="form-label">Nom de la classe</label>
+        <input type="text" id="name" class="form-control" formControlName="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="level" class="form-label">Niveau de la classe</label>
+        <input type="text" id="level" class="form-control" formControlName="level" placeholder="Terminale" />
+      </div>
+
+      <button type="submit" class="btn-primary full-width">Enregistrer</button>
+    </form>
+
+    <div *ngIf="success" class="alert success-alert mt-3">{{ success }}</div>
+    <div *ngIf="error" class="alert error-alert mt-3">{{ error }}</div>
+  </div>
 </div>
-  <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
-  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
