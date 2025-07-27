@@ -1,18 +1,21 @@
 <div class="dashboard-home-container">
   <h2>Bienvenue sur le Tableau de bord Enseignant !</h2>
   <div *ngIf="currentTeacher">
-    <h3>{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
+    <h3>{{ currentTeacher.userModel?.first_name }} {{ currentTeacher.userModel?.last_name }}</h3>
+    <p>Email: {{ currentTeacher.userModel?.email }}</p>
+    <p>Phone: {{ currentTeacher.userModel?.phone }}</p>
+    <p>Assigned Subjects: {{ assignedSubjectsNames }}</p>
   </div>
   <p>Ceci est votre centre de gestion pour les classes, les années académiques, les termes et les notes des étudiants.</p>
 
   <div class="overview-cards">
     <div class="card">
       <h3>Année Académique Actuelle</h3>
-      <p>2025-2026</p>
+      <p>{{ academicYearLabel }}</p>
     </div>
     <div class="card">
       <h3>Terme Actif</h3>
-      <p>Terme 1</p>
+      <p>{{ termName }}</p>
     </div>
     <div class="card">
       <h3>Mes Classes</h3>

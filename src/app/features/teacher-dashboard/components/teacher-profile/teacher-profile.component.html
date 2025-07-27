@@ -2,7 +2,7 @@
   <div class="card-header">
     <h2 class="card-title">Informations Personnelles</h2>
   </div>
-  <div class="card-content">
+  <div class="card-content" *ngIf="teacher">
     <ul class="info-list">
       <li class="info-list-item">
         <div class="icon-container">
@@ -10,7 +10,7 @@
         </div>
         <div class="item-details">
           <div class="item-title">Nom:</div>
-          <div class="item-line">John Doe</div>
+          <div class="item-line">{{ teacher.userModel.first_name }} {{ teacher.userModel.last_name }}</div>
         </div>
       </li>
       <li class="info-list-item">
@@ -19,7 +19,7 @@
         </div>
         <div class="item-details">
           <div class="item-title">Email:</div>
-          <div class="item-line">john.doe&#64;example.com</div>
+          <div class="item-line">{{ teacher.userModel.email }}</div>
         </div>
       </li>
       <li class="info-list-item">
@@ -27,8 +27,17 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
         </div>
         <div class="item-details">
-          <div class="item-title">Rôle:</div>
-          <div class="item-line">Professeur</div>
+          <div class="item-title">Téléphone:</div>
+          <div class="item-line">{{ teacher.userModel?.phone }}</div>
+        </div>
+      </li>
+      <li class="info-list-item">
+        <div class="icon-container">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="item-details">
+          <div class="item-title">Matières Enseignées:</div>
+          <div class="item-line">{{ assignedSubjectsNames }}</div>
         </div>
       </li>
     </ul>

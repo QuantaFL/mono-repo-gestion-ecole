@@ -9,10 +9,10 @@ import {StudentSession} from "../../models/student-session";
   styleUrl: './student-details-modal.component.scss'
 })
 export class StudentDetailsModalComponent {
-  studentSession: StudentSession | undefined ;
+  studentSession: Student| undefined ;
   constructor(
     public dialogRef: DialogRef<StudentDetailsModalComponent>,
-    @Inject(DIALOG_DATA) public student: StudentSession
+    @Inject(DIALOG_DATA) public student: Student
   ) { }
 
   closeModal(): void {

@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ClassModel } from '../models/class-model';
 import { Grade } from '../models/grade';
+import { AcademicYear } from '../models/academic-year';
+import { Term } from '../models/term';
 
-import { Teacher } from '../../teachers/models/teacher';
-import {Student} from "../../students/models/student";
+import { Teacher } from '../models/teacher';
+import { Student } from '../models/student';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,14 @@ export class TeacherDashboardService {
     return this.http.get<ClassModel[]>(`${this.apiUrl}/teachers/${teacherId}/classes`, {
       params: {
         academic_year_id: academicYearId.toString()
+      }
+    });
+  }
+
+  getStudentByClassAndSession(classId: number, sessionId: number): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.apiUrl}/class-models/${classId}/students`, {
+      params: {
+        session_id: sessionId.toString()
       }
     });
   }
@@ -42,12 +52,28 @@ export class TeacherDashboardService {
     return this.http.put<any>(`${this.apiUrl}/terms/${termId}/close`, {});
   }
 
+  submitTermNotes(classId: number, termId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/grades/submit-term-notes/${classId}`, { term_id: termId });
+  }
+
   getTerms(academicYearId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/academic-years/${academicYearId}/terms`);
   }
 
-  getAcademicYears(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/academic-years`);
+  getCurrentAcademicYear(): Observable<AcademicYear> {
+    return this.http.get<AcademicYear>(`${this.apiUrl}/academic-year/current`);
+  }
+
+  getCurrentTerm(): Observable<Term> {
+    return this.http.get<Term>(`${this.apiUrl}/terms/current`);
+  }
+
+  getTeacherProfile(): Observable<Teacher> {
+    return this.http.get<Teacher>(`${this.apiUrl}/teacher/profile`);
+  }
+
+  getGradesForStudentInClassTerm(classId: number, termId: number, studentId: number): Observable<Grade[]> {
+    return this.http.get<Grade[]>(`${this.apiUrl}/grades/class/${classId}/term/${termId}/students/${studentId}`);
   }
 
   getTeacherByUserId(userId: number): Observable<Teacher> {
@@ -55,6 +81,10 @@ export class TeacherDashboardService {
   }
 
   getStudentsByClassId(classId: number): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}/classes/${classId}/students`);
+    return this.http.get<Student[]>(`${this.apiUrl}/class-models/${classId}/students`);
+  }
+
+  getClassById(classId: number): Observable<ClassModel> {
+    return this.http.get<ClassModel>(`${this.apiUrl}/class-models/${classId}`);
   }
 }
