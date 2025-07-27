@@ -1,26 +1,204 @@
-<div class="dashboard-home-container">
-  <h2>Bienvenue sur le Tableau de bord Enseignant !</h2>
-  <div *ngIf="currentTeacher">
-    <h3>{{ currentTeacher.userModel?.first_name }} {{ currentTeacher.userModel?.last_name }}</h3>
-    <p>Email: {{ currentTeacher.userModel?.email }}</p>
-    <p>Phone: {{ currentTeacher.userModel?.phone }}</p>
-    <p>Assigned Subjects: {{ assignedSubjectsNames }}</p>
+<div class="dashboard-home-container" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <div class="dashboard-background">
+    <div class="floating-elements">
+      <div class="floating-circle"></div>
+      <div class="floating-circle"></div>
+      <div class="floating-circle"></div>
+    </div>
   </div>
-  <p>Ceci est votre centre de gestion pour les classes, les années académiques, les termes et les notes des étudiants.</p>
+
+  <div class="header-section">
+    <h1 class="welcome-title">Bienvenue sur le Tableau de bord Enseignant !</h1>
+    <p class="subtitle">Votre centre de gestion pour les classes, années académiques et performances étudiantes</p>
+  </div>
+
+  <div class="teacher-info-card" *ngIf="currentTeacher">
+    <div class="teacher-avatar">
+      <div class="avatar-icon">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+    </div>
+    <div class="teacher-details">
+      <h3 class="teacher-name">{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <span>{{ currentTeacher.userModel.email }}</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <span>{{ currentTeacher.userModel.phone }}</span>
+        </div>
+        <div class="contact-item subjects">
+          <div class="contact-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <span>
+            <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
+              {{ getUniqueSubjectNames() }}
+            </ng-container>
+            <ng-template #noSubjects>
+              <span>Aucune matière assignée</span>
+            </ng-template>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="overview-cards">
-    <div class="card">
-      <h3>Année Académique Actuelle</h3>
-      <p>{{ academicYearLabel }}</p>
+    <div class="card academic-year">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Année Académique Actuelle</h3>
+        <div class="card-value">{{ academicYearLabel }}</div>
+        <p class="card-description">Année en cours avec évaluations continues</p>
+      </div>
+      <div class="card-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="--progress: 65%"></div>
+        </div>
+        <span class="progress-text">65% terminé</span>
+      </div>
     </div>
-    <div class="card">
-      <h3>Terme Actif</h3>
-      <p>{{ termName }}</p>
+
+    <div class="card active-term">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Terme Actif</h3>
+        <div class="card-value">{{ termName }}</div>
+        <p class="card-description">Période d'évaluation en cours</p>
+      </div>
+      <div class="card-stats">
+        <div class="stat-item">
+          <span class="stat-number">42</span>
+          <span class="stat-label">Jours restants</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">8</span>
+          <span class="stat-label">Examens prévus</span>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <h3>Mes Classes</h3>
-      <p>Visualisez et gérez vos classes assignées.</p>
-      <button class="btn btn-primary">Aller à Mes Classes</button>
+
+    <div class="card my-classes">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Mes Classes</h3>
+        <div class="card-value">8 Classes</div>
+        <p class="card-description">Visualisez et gérez vos classes assignées</p>
+      </div>
+      <div class="card-action">
+        <button class="btn btn-primary">
+          <span>Aller à Mes Classes</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="card top-student">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Étudiant le Plus Performant</h3>
+        <div class="student-profile">
+          <div class="student-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="student-info">
+            <div class="student-name">Antoine Laurent</div>
+            <div class="student-details">
+              <span class="student-class">Terminale S</span>
+              <div class="student-score">
+                <span class="score-value">18.5</span>
+                <span class="score-max">/20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="performance-metrics">
+          <div class="metric">
+            <span class="metric-label">Mathématiques</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="--metric: 95%"></div>
+            </div>
+            <span class="metric-value">19/20</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Physique</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="--metric: 90%"></div>
+            </div>
+            <span class="metric-value">18/20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- here etudiant le moins performant-->
+    <div class="card bottom-student">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-user-times"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Étudiant le Moins Performant</h3>
+        <div class="student-profile">
+          <div class="student-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="student-info">
+            <div class="student-name">Fatou Ndiaye</div>
+            <div class="student-details">
+              <span class="student-class">Seconde L</span>
+              <div class="student-score">
+                <span class="score-value">7.5</span>
+                <span class="score-max">/20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="performance-metrics">
+          <div class="metric">
+            <span class="metric-label">Mathématiques</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="--metric: 40%"></div>
+            </div>
+            <span class="metric-value">8/20</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Physique</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="--metric: 35%"></div>
+            </div>
+            <span class="metric-value">7/20</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

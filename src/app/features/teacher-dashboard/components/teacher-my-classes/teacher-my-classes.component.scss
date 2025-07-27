@@ -1,0 +1,61 @@
+.my-classes-container {
+  padding: 32px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: var(--primary-color);
+}
+
+.classes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.class-card {
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.class-card:hover {
+  box-shadow: var(--box-shadow-lg);
+  transform: translateY(-2px) scale(1.02);
+  border-color: var(--primary-color);
+}
+
+.class-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color-dark);
+}
+
+.class-level {
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+}
+
+.class-meta {
+  font-size: 0.95rem;
+  color: var(--text-color-light);
+}
+
+.loading, .no-classes {
+  color: var(--text-color-light);
+  font-size: 1.1rem;
+  margin-top: 32px;
+  text-align: center;
+}
+

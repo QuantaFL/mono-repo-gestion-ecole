@@ -8,6 +8,8 @@ import { Term } from '../models/term';
 
 import { Teacher } from '../models/teacher';
 import { Student } from '../models/student';
+import {Assignment} from "../models/assignment";
+import {Subject} from "../models/subject";
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +46,10 @@ export class TeacherDashboardService {
     });
   }
 
-  updateGrades(grades: any[]): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/grades`, { grades });
+  updateGrades(grades: {
+    grades: Grade[]
+  }): Observable<Grade[]> {
+    return this.http.post<Grade[]>(`${this.apiUrl}/grades`, { grades });
   }
 
   closeTerm(termId: number): Observable<any> {
@@ -73,7 +77,7 @@ export class TeacherDashboardService {
   }
 
   getGradesForStudentInClassTerm(classId: number, termId: number, studentId: number): Observable<Grade[]> {
-    return this.http.get<Grade[]>(`${this.apiUrl}/grades/class/${classId}/term/${termId}/students/${studentId}`);
+    return this.http.get<Grade[]>(`${this.apiUrl}/grades/class/${classId}/students/${studentId}`);
   }
 
   getTeacherByUserId(userId: number): Observable<Teacher> {
@@ -86,5 +90,36 @@ export class TeacherDashboardService {
 
   getClassById(classId: number): Observable<ClassModel> {
     return this.http.get<ClassModel>(`${this.apiUrl}/class-models/${classId}`);
+  }
+
+  /**
+   * Fetch multiple students by an array of IDs
+   */
+  fetchStudentsByIds(studentIds: number[]): Observable<Student[]> {
+    return this.http.post<Student[]>(`${this.apiUrl}/students/bulk`, { ids: studentIds });
+  }
+
+  getAssignmentsForTeacher(id: number): Observable<Assignment[]> {
+    return this.http.get<Assignment[]>(`${this.apiUrl}/assignments/teacher/${id}`);
+  }
+  fetchSubjectsByIds(ids: number[]): Observable<Subject[]> {
+    return this.http.post<Subject[]>(`${this.apiUrl}/subjects/bulk`, { ids });
+  }
+
+  /**
+   * Update a single grade by ID.
+   * @param id Grade ID
+   * @param payload Grade update payload
+   */
+  updateGrade(id: number, payload: any): Observable<Grade> {
+    return this.http.put<Grade>(`${this.apiUrl}/grades/${id}`, payload);
+  }
+
+  /**
+   * Add a new grade.
+   * @param payload Grade creation payload
+   */
+  addGrade(payload: any): Observable<Grade> {
+    return this.http.post<Grade>(`${this.apiUrl}/grades`, payload);
   }
 }
