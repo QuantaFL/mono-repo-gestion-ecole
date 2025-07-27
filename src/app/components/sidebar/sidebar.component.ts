@@ -67,12 +67,6 @@ export class SidebarComponent implements OnInit {
       path: '/teacher-dashboard/my-classes',
       icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.25 2.25 0 01-2.25 2.25h-10.5a2.25 2.25 0 01-2.25-2.25m0 0v3.378c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V12.128" />',
       isActive: false
-    },
-    {
-      label: 'Profile',
-      path: '/teacher-dashboard/profile',
-      icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.318.239-.636.354-.961M14.023 9.348a3.75 3.75 0 01-4.997 0 3.75 3.75 0 01-4.996-4.997 3.75 3.75 0 014.997 0 3.75 3.75 0 014.996 4.997z" />',
-      isActive: false
     }
   ];
 
@@ -83,16 +77,15 @@ export class SidebarComponent implements OnInit {
     if (userString) {
       this.currentUser = JSON.parse(userString);
       console.log('Current User:', this.currentUser);
-    } else {
-      console.log('No user found in localStorage.');
-    }
-
-    if (this.currentUser && this.currentUser.role.name === 'teacher') {
-      this.menuItems = this.teacherMenuItems;
-      console.log('Assigned Teacher Menu Items:', this.menuItems);
-    } else {
-      this.menuItems = this.adminMenuItems;
-      console.log('Assigned Admin Menu Items:', this.menuItems);
+      if(this.currentUser?.role?.name === 'admin'){
+        this.menuItems = this.adminMenuItems;
+      }else if(this.currentUser?.role?.name === 'teacher'){
+        this.menuItems = this.teacherMenuItems;
+      }
+    }  else {
+      console.warn('No user found in localStorage');
+      this.currentUser = null;
+      this.menuItems = [];
     }
 
     this.menuItems.forEach(item => {
@@ -101,7 +94,6 @@ export class SidebarComponent implements OnInit {
   }
 
   @Output() collapsedStateChanged = new EventEmitter<boolean>();
-
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
     this.collapsedStateChanged.emit(this.isCollapsed);
@@ -121,5 +113,13 @@ export class SidebarComponent implements OnInit {
 
   logout() {
     this.authService.logout(this.router);
+  }
+
+  getCurrentUser(): User | null {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      return JSON.parse(userString);
+    }
+    return null;
   }
 }

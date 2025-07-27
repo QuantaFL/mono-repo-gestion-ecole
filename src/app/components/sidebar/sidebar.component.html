@@ -1,19 +1,14 @@
 <aside class="sidebar" [class.collapsed]="isCollapsed">
   <!-- Header -->
   <div class="sidebar-header">
-    <div class="logo-container" (click)="toggleSidebar()">
+    <div class="logo-container">
       <div class="logo">
         <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
       </div>
-      <h1 class="logo-text" *ngIf="!isCollapsed">Portail Admin</h1>
+      <h1 class="logo-text" *ngIf="!isCollapsed">{{ getCurrentUser()!.role.name === 'admin' ? 'portail admin':'portail prof' }}</h1>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()" *ngIf="!isMobile">
-      <svg class="collapse-icon" [class.rotated]="isCollapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <polyline points="15,18 9,12 15,6"></polyline>
-      </svg>
-    </button>
   </div>
 
   <!-- Navigation Menu -->
@@ -60,8 +55,8 @@
         <span>A</span>
       </div>
       <div class="user-details">
-        <p class="user-name">Administrateur</p>
-        <p class="user-role">Super Admin</p>
+        <p class="user-name">{{getCurrentUser()!.email}}</p>
+        <p class="user-role">{{getCurrentUser()!.role.name}}</p>
       </div>
     </div>
   </div>

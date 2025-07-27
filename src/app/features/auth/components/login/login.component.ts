@@ -36,7 +36,10 @@ export class LoginComponent {
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(response.user)); // Keep for getUserFromLocalStorage
             console.log(localStorage.getItem("token"));
-
+            // if(response.user.isFirstLogin){
+            //   await this.router.navigate(['/change-password']);
+            //   return;
+            // }
             if(response.user.role.name === 'teacher') {
               if (response.user.id) {
                 this.teacherDashboardService.getTeacherByUserId(response.user.id).subscribe({
