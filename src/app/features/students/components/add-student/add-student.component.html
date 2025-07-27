@@ -65,7 +65,8 @@
       </div>
       <div class="col-md-6">
         <label class="form-label">Année académique</label>
-        <input type="number" formControlName="academic_year_id" class="form-control" placeholder="ex. 2025" />
+        <input type="text" class="form-control" [value]="currentAcademicYear?.label || ''" readonly />
+        <input type="hidden" formControlName="academic_year_id" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Justificatif (nom du fichier ou chemin)</label>
