@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ClassService } from '../../services/class.service';
+import { ClassModel } from '../../../teacher-dashboard/models/class-model';
 
 @Component({
   selector: 'app-class-list',
@@ -6,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./class-list.component.scss']
 })
 export class ClassListComponent implements OnInit {
-  classes: any[] = [
+ /*
+   classes: any[] = [
     {
       id: 1,
       name: '6e',
@@ -34,14 +37,31 @@ export class ClassListComponent implements OnInit {
     }
     // Add more mocked classes as needed
   ];
+ */
+   classes: ClassModel[] = [];
   loading = false;
   error: string | null = null;
 
-  constructor() {}
+  constructor(
+    private classService: ClassService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+        this.getAllClasses();
+
+  }
 
   showInfo(classe: any): void {
     alert('Classe: ' + classe.name + '\nNiveau: ' + classe.level);
+  }
+    getAllClasses(): void {
+    this.classService.getAll().subscribe({
+      next: (classesResponse) => {
+        this.classes = classesResponse;
+      },
+      error: () => {
+        this.error = 'Erreur lors de la récupération des classes.';
+      }
+    });
   }
 }
