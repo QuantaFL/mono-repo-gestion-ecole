@@ -1,6 +1,7 @@
 import {User} from "../../auth/models/user";
 import {ClassModel} from "../../class/models/class";
-import { StudentSession } from "./studentSession";
+import {StudentSession} from "../../teacher-dashboard/models/student-session";
+
 
 export interface Student {
   id: number;

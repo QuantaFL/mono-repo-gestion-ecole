@@ -1,5 +1,6 @@
 import { Student } from "../models/student";
-import { StudentSession } from "../models/studentSession";
+import {StudentSession} from "../../teacher-dashboard/models/student-session";
+
 
 export interface CreateStudentResponse {
   student: Student;
