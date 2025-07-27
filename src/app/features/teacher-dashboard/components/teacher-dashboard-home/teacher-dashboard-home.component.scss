@@ -275,7 +275,7 @@
 }
 
 .card.top-student {
-  --gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --gradient: linear-gradient(135deg, var(--success-color) 0%,var(--success-color) 100%);
   --index: 4;
 }
 
@@ -290,6 +290,8 @@
 }
 
 .card.bottom-student {
+  --gradient: linear-gradient(135deg, #374151 0%, #374151 100%); // light gray gradient
+  --index: 1;// dark gray text for contrast
   background: var(--background-color);
   border: 1px solid var(--danger-color);
   box-shadow: var(--box-shadow);
@@ -349,45 +351,18 @@
 
       .student-score {
         font-size: 1.1rem;
-        color: #dc3545;
+        color: #000000;
         font-weight: 600;
       }
-    }
-  }
 
-  .performance-metrics {
-    .metric {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
+      .student-details {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
 
-      .metric-label {
-        width: 120px;
-        color: #b71c1c;
-        font-weight: 500;
-      }
-
-      .metric-bar {
-        flex: 1;
-        height: 8px;
-        background: #f5c6cb;
-        border-radius: 4px;
-        margin: 0 10px;
-
-        .metric-fill {
-          height: 100%;
-          border-radius: 4px;
-          background: linear-gradient(90deg, #dc3545 60%, #f8d7da 100%);
-          width: var(--metric, 0%);
-          transition: width 0.4s;
+        .student-score {
+          font-size: 1.2rem;
         }
-      }
-
-      .metric-value {
-        color: #dc3545;
-        font-weight: 500;
-        min-width: 48px;
-        text-align: right;
       }
     }
   }
@@ -777,3 +752,24 @@
     transform: translateY(0);
   }
 }
+
+.subject-badge-0 { background: #2563eb; color: #fff; }
+.subject-badge-1 { background: #22c55e; color: #fff; }
+.subject-badge-2 { background: #f59e42; color: #fff; }
+.subject-badge-3 { background: #ef4444; color: #fff; }
+.subject-badge-4 { background: #a21caf; color: #fff; }
+.subject-badge-5 { background: #0ea5e9; color: #fff; }
+.subject-badge-6 { background: #eab308; color: #fff; }
+.subject-badge-7 { background: #f472b6; color: #fff; }
+.subject-badge-8 { background: #14b8a6; color: #fff; }
+.subject-badge-9 { background: #7c3aed; color: #fff; }
+.subject-badge-10 { background: #f43f5e; color: #fff; }
+.subject-badge-11 { background: #65a30d; color: #fff; }
+.subject-badge-12 { background: #f97316; color: #fff; }
+.subject-badge-13 { background: #0d9488; color: #fff; }
+.subject-badge-14 { background: #e11d48; color: #fff; }
+.subject-badge-15 { background: #a3e635; color: #22223b; }
+.subject-badge-16 { background: #facc15; color: #22223b; }
+.subject-badge-17 { background: #38bdf8; color: #fff; }
+.subject-badge-18 { background: #fbbf24; color: #22223b; }
+.subject-badge-19 { background: #c026d3; color: #fff; }
