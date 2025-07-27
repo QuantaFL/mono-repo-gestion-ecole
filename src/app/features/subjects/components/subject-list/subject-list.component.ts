@@ -8,6 +8,9 @@ import { Subject } from '../../models/subject';
   styleUrl: './subject-list.component.scss'
 })
 export class SubjectListComponent implements OnInit {
+assignTeacher(_t30: Subject) {
+throw new Error('Method not implemented.');
+}
   subjects: Subject[] = [];
   loading = false;
   error: string | null = null;
