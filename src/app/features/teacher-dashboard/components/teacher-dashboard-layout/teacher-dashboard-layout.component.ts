@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-teacher-dashboard-layout',
@@ -6,9 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./teacher-dashboard-layout.component.scss']
 })
 export class TeacherDashboardLayoutComponent {
-  isSidebarCollapsed = false;
-
-  onSidebarCollapsedStateChanged(state: boolean) {
-    this.isSidebarCollapsed = state;
-  }
+  @Input() isSidebarCollapsed = false;
 }
