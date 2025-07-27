@@ -4,12 +4,13 @@ import {Observable} from "rxjs";
 import { HttpClient } from '@angular/common/http';
 import {CreateStudentRequest} from "../requests/createStudentRequest";
 import {UpdateStudentRequest} from "../requests/updateStudentRequest";
+import { CreateStudentResponse } from "../requests/createStudentResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:8000/api/v1/etudiants';
+  private apiUrl = 'http://localhost:8000/api/v1/student/inscription';
 
   constructor(private http: HttpClient) {}
 
@@ -21,20 +22,11 @@ export class StudentService {
     return this.http.get<Student>(`${this.apiUrl}/${id}`);
   }
 
-  createStudent(student: CreateStudentRequest): void {
-    try{
-      this.http.post(`${this.apiUrl}`, student);
-      console.log("Student created successfully");
-    }catch (e){
-      throw e
-    }
+  createStudent(student: CreateStudentRequest): Observable<CreateStudentResponse> {
+    return this.http.post<CreateStudentResponse>(`${this.apiUrl}`, student);
   }
 
-  updateStudent(id: number, student: UpdateStudentRequest): void {
-    try{
-      this.http.put<any>(`${this.apiUrl}/${id}`, student);
-    }catch (e){
-      throw e;
-    }
+  updateStudent(id: number, student: UpdateStudentRequest): Observable<Student> {
+    return this.http.put<Student>(`${this.apiUrl}/${id}`, student);
   }
 }

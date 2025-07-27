@@ -2,7 +2,6 @@
   <h3 class="mb-4 text-primary">👩‍🎓 Ajouter un élève</h3>
 
   <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="shadow-sm p-4 bg-white rounded">
-
     <!-- ETAPES -->
     <div class="mb-4">
       <div class="progress" style="height: 8px;">
@@ -11,111 +10,117 @@
       <div class="text-end mt-1 small text-muted">Étape {{ currentStep }} / 4</div>
     </div>
 
-    <!-- ÉTAPE 1 — Infos personnelles -->
+    <!-- ÉTAPE 1 — Infos élève -->
     <div *ngIf="currentStep === 1" class="row g-3">
       <div class="col-md-6">
-        <label class="form-label">Prénom</label>
-        <input type="text" formControlName="firstName" class="form-control" placeholder="ex. Fatou" />
+        <label class="form-label">Prénom de l'élève</label>
+        <input type="text" formControlName="student_first_name" class="form-control" placeholder="ex. Fatou" />
       </div>
       <div class="col-md-6">
-        <label class="form-label">Nom</label>
-        <input type="text" formControlName="lastName" class="form-control" placeholder="ex. Ndiaye" />
+        <label class="form-label">Nom de l'élève</label>
+        <input type="text" formControlName="student_last_name" class="form-control" placeholder="ex. Ndiaye" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Date de naissance</label>
-        <input type="date" formControlName="dateOfBirth" class="form-control" />
+        <input type="date" formControlName="student_birthday" class="form-control" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Sexe</label>
-        <select class="form-select" formControlName="gender">
+        <select class="form-select" formControlName="student_gender">
           <option value="">-- Sélectionnez --</option>
-          <option value="Homme">Homme</option>
-          <option value="Femme">Femme</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
         </select>
       </div>
-    </div>
-
-    <!-- ÉTAPE 2 — Coordonnées -->
-    <div *ngIf="currentStep === 2" class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Téléphone</label>
-        <input type="text" formControlName="phone" class="form-control" placeholder="77xxxxxxx" />
+        <input type="text" formControlName="student_phone" class="form-control" placeholder="77xxxxxxx" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Email</label>
-        <input type="email" formControlName="email" class="form-control" />
+        <input type="email" formControlName="student_email" class="form-control" />
       </div>
       <div class="col-12">
         <label class="form-label">Adresse</label>
-        <textarea formControlName="address" class="form-control" rows="2" placeholder="Adresse complète..."></textarea>
-      </div>
-    </div>
-
-    <!-- ÉTAPE 3 — Infos scolaires -->
-    <div *ngIf="currentStep === 3" class="row g-3">
-      <div class="col-md-6">
-        <label for="classId" class="form-label">Classe</label>
-        <select id="classId" class="form-select" formControlName="classId" required>
-          <option value="" disabled selected>Choisir une classe</option>
-          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }}  ({{ classe.level }})<!--
-            ({{ classe.academicYear }}) // commenter pour s'aligner avec  le modèle de classe
-          --></option>
-        </select>
+        <textarea formControlName="student_adress" class="form-control" rows="2" placeholder="Adresse complète..."></textarea>
       </div>
       <div class="col-md-6">
-        <label class="form-label">Date d'inscription</label>
-        <input type="date" formControlName="enrollmentDate" class="form-control" />
-      </div>
-      <div class="col-md-6">
-        <label class="form-label">Numéro étudiant</label>
-        <input type="text" formControlName="studentIdNumber" class="form-control" placeholder="e.g. 2024-045" />
+        <label class="form-label">Mot de passe</label>
+        <input type="password" formControlName="student_password" class="form-control" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Matricule</label>
-        <input type="text" formControlName="matricule" class="form-control" />
+        <input type="text" formControlName="student_matricule" class="form-control" />
       </div>
     </div>
 
-    <!-- ÉTAPE 4 — Informations du parent -->
-    <div *ngIf="currentStep === 4" class="row g-3">
+    <!-- ÉTAPE 2 — Infos scolaires -->
+    <div *ngIf="currentStep === 2" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Classe</label>
+        <select class="form-select" formControlName="class_model_id">
+          <option value="" disabled selected>Choisir une classe</option>
+          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Année académique</label>
+        <input type="number" formControlName="academic_year_id" class="form-control" placeholder="ex. 2025" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Justificatif (nom du fichier ou chemin)</label>
+        <input type="text" formControlName="academic_records" class="form-control" placeholder="ex. ouly.pdf" />
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 — Infos parent -->
+    <div *ngIf="currentStep === 3" class="row g-3">
       <div class="col-12">
         <h5 class="text-primary">👨‍👩‍👧 Informations sur le parent</h5>
       </div>
       <div class="col-md-6">
         <label class="form-label">Prénom du parent</label>
-        <input type="text" formControlName="parentFirstName" class="form-control" placeholder="ex. Ousmane" />
+        <input type="text" formControlName="parent_first_name" class="form-control" placeholder="ex. Ousmane" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Nom du parent</label>
-        <input type="text" formControlName="parentLastName" class="form-control" placeholder="ex. Fall" />
+        <input type="text" formControlName="parent_last_name" class="form-control" placeholder="ex. Fall" />
       </div>
       <div class="col-md-6">
         <label class="form-label">Téléphone</label>
-        <input type="text" formControlName="parentPhone" class="form-control" placeholder="77xxxxxxx" />
+        <input type="text" formControlName="parent_phone" class="form-control" placeholder="77xxxxxxx" />
       </div>
-
       <div class="col-md-6">
         <label class="form-label">Email</label>
-        <input type="email" formControlName="parentEmail" class="form-control" />
+        <input type="email" formControlName="parent_email" class="form-control" />
       </div>
-
-      <div class="col-12">
+      <div class="col-md-6">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" formControlName="parent_password" class="form-control" />
+      </div>
+      <div class="col-md-6">
         <label class="form-label">Adresse</label>
-        <textarea formControlName="parentAddress" class="form-control" rows="2"></textarea>
+        <input type="text" formControlName="parent_adress" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Date de naissance</label>
+        <input type="date" formControlName="parent_birthday" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sexe</label>
+        <select class="form-select" formControlName="parent_gender">
+          <option value="">-- Sélectionnez --</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+        </select>
       </div>
     </div>
-    <!-- NAVIGATION -->
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-outline-secondary" (click)="prevStep()" [disabled]="currentStep === 1">
-        ← Précédent
-      </button>
-      <button type="button" class="btn btn-primary" *ngIf="currentStep < 4" (click)="nextStep()" [disabled]="!isStepValid()">
-        Suivant →
-      </button>
 
-      <button type="submit" class="btn btn-success" *ngIf="currentStep === 4" [disabled]="studentForm.invalid">
-        ✅ Enregistrer
-      </button>
+    <!-- Navigation boutons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-outline-primary" (click)="prevStep()" [disabled]="currentStep === 1">Précédent</button>
+      <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">Suivant</button>
+      <button type="submit" class="btn btn-success" *ngIf="currentStep === 3">Enregistrer</button>
     </div>
   </form>
 </div>
