@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Student } from '../../../students/models/student';
-import {StudentSession} from "../../models/student-session";
 
 @Component({
   selector: 'app-student-details-modal',
