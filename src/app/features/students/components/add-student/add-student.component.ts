@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ClassService } from '../../../class/services/class.service';
+import { ClassModel } from '../../../class/models/class';
 import { StudentService } from '../../services/student.service';
 import { Router } from '@angular/router';
 import {CreateStudentRequest} from "../../requests/createStudentRequest";
-import { ClassModel } from '../../../teacher-dashboard/models/class-model';
 
 @Component({
   selector: 'app-add-student',
