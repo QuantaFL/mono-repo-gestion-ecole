@@ -12,6 +12,8 @@ import { Student } from '../../models/student';
 import { forkJoin } from 'rxjs';
 import { TeacherStore } from '../../services/teacher.store';
 import { ClassModel } from '../../models/class-model';
+import {Teacher} from "../../models/teacher";
+
 
 @Component({
   selector: 'app-class-details',
@@ -24,14 +26,22 @@ export class ClassDetailsComponent implements OnInit {
   currentTerm: Term | null = null;
   grades: Grade[] = [];
   students: Student[] = [];
+  uniqueSubjectIds: number[] = []; // Changed to number[] for subject IDs
+  gradeTypes: string[] = ['devoir', 'examen'];
+  assignements: Assignment[] = [];
+  currentTeacher : Teacher | null = null;
+  // Always show these types
+  loading: boolean = false;
+  errorMessage: string = '';
+  gradeInputs: { [key: string]: number | null } = {};
   uniqueSubjects: Subject[] = [];
-  gradeTypes: string[] = ['exam', 'quiz']; // Assuming these are the primary grade types
+  subjectIdToSubject: { [id: number]: Subject } = {};
 
   constructor(
     private route: ActivatedRoute,
     private teacherDashboardService: TeacherDashboardService,
     private dialog: Dialog,
-    private teacherStore: TeacherStore
+    private teacherStore: TeacherStore,
   ) { }
 
   ngOnInit(): void {
@@ -53,9 +63,22 @@ export class ClassDetailsComponent implements OnInit {
       next: ({ currentTerm, currentClass }) => {
         this.currentTerm = currentTerm;
         this.currentClass = currentClass;
-        this.students = currentClass.current_academic_year_student_sessions.map((session: StudentSession) => session.student);
-        this.fetchGradesForAllStudents();
-        console.log('Class details and students fetched successfully:', this.currentClass, this.students);
+        const studentIds = (currentClass.current_academic_year_student_sessions || []).map((session: StudentSession) => session.student_id);
+        if (studentIds.length > 0) {
+          this.teacherDashboardService.fetchStudentsByIds(studentIds).subscribe({
+            next: (students) => {
+              this.students = students;
+              this.fetchTeacherAssignmentsAndGrades();
+              console.log('Class details and students fetched successfully:', this.currentClass, this.students);
+            },
+            error: (err) => {
+              this.students = [];
+              console.error('Error fetching students by IDs:', err);
+            }
+          });
+        } else {
+          this.students = [];
+        }
       },
       error: (err: any) => {
         console.error('Error fetching class details or students:', err);
@@ -63,17 +86,92 @@ export class ClassDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Fetch assignments for this class, then grades. Ensures uniqueSubjects is always set.
+   */
+  fetchTeacherAssignmentsAndGrades(): void {
+    if (!this.classId) return;
+    this.teacherStore.currentTeacher$.subscribe(teacher => {
+      if (!teacher) return;
+      this.teacherDashboardService.getAssignmentsForTeacher(teacher.id).subscribe({
+        next: (assignments) => {
+          console.log('All assignments:', assignments); // Debug: log all assignments before filtering
+          this.assignements = assignments.filter(a => a.class_model_id === this.classId);
+          this.uniqueSubjectIds = this.assignements.map(a => a.subject_id).filter((id): id is number => !!id);
+          this.gradeTypes = ['devoir', 'examen'];
+          // Fetch all subjects in bulk
+          if (this.uniqueSubjectIds.length > 0) {
+            this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).subscribe({
+              next: (subjects: Subject[]) => {
+                this.uniqueSubjects = subjects;
+                this.subjectIdToSubject = {};
+                for (const subj of subjects) {
+                  this.subjectIdToSubject[subj.id] = subj;
+                }
+                this.fetchGradesForAllStudents();
+              },
+              error: (err) => {
+                this.uniqueSubjects = [];
+                this.subjectIdToSubject = {};
+                this.fetchGradesForAllStudents();
+                console.error('Error fetching subjects:', err);
+              }
+            });
+          } else {
+            this.uniqueSubjects = [];
+            this.subjectIdToSubject = {};
+            this.fetchGradesForAllStudents();
+          }
+        },
+        error: (err) => {
+          this.assignements = [];
+          this.uniqueSubjectIds = [];
+          this.uniqueSubjects = [];
+          this.subjectIdToSubject = {};
+          this.gradeTypes = ['devoir', 'examen'];
+          console.error('Error fetching assignments:', err);
+        }
+      });
+    });
+  }
+
   fetchGradesForAllStudents(): void {
     if (!this.classId || !this.currentTerm || this.students.length === 0) return;
 
     const gradeObservables = this.students.filter(student => student && student.id).map(student =>
-      this.teacherDashboardService.getGradesForStudentInClassTerm(this.classId!, this.currentTerm!.id, student!.latest_student_session?.id!)
+      this.teacherDashboardService.getGradesForStudentInClassTerm(this.classId!, this.currentTerm!.id, student!.id!)
     );
+    console.log('Fetching grades for students:', this.students.map(s => s.id));
 
     forkJoin(gradeObservables).subscribe({
       next: (allStudentGrades: Grade[][]) => {
         this.grades = allStudentGrades.flat();
-        this.extractUniqueSubjectsAndGradeTypes();
+        console.log('Grades fetched successfully:', this.grades);
+        // Initialize gradeInputs for all (student_session_id, assignment_id, type) combinations
+        this.gradeInputs = {};
+        for (const student of this.students) {
+          const sessionId = student.latest_student_session?.id;
+          if (!sessionId) {
+            console.warn('Student missing sessionId:', student);
+            continue;
+          }
+          for (const assignment of this.assignements) {
+            for (const type of this.gradeTypes) {
+              const key = `${sessionId}_${assignment.id}_${type}`;
+              const grade = this.grades.find(g =>
+                g.student_session?.id === sessionId &&
+                g.assignement?.id === assignment.id &&
+                g.type === type
+              );
+              this.gradeInputs[key] = grade ? grade.mark : null;
+            }
+          }
+        }
+        // Log for debugging
+        console.log('gradeInputs:', this.gradeInputs);
+        console.log('assignements:', this.assignements);
+        console.log('gradeTypes:', this.gradeTypes);
+        console.log('students:', this.students);
       },
       error: (err: any) => {
         console.error('Error fetching grades for students:', err);
@@ -81,99 +179,74 @@ export class ClassDetailsComponent implements OnInit {
     });
   }
 
-  extractUniqueSubjectsAndGradeTypes(): void {
-    const subjectMap = new Map<number, Subject>();
-    const gradeTypeSet = new Set<string>();
-
-    this.grades.forEach(grade => {
-      if (grade.assignement.subject && !subjectMap.has(grade.assignement.subject.id)) {
-        subjectMap.set(grade.assignement.subject.id, grade.assignement.subject);
-      }
-      if (grade.type) {
-        gradeTypeSet.add(grade.type);
-      }
-    });
-
-    this.uniqueSubjects = Array.from(subjectMap.values());
-    this.gradeTypes = Array.from(gradeTypeSet);
-  }
-
-  getGrade(studentId: number, subjectId: number, type: string): number | null {
+  getGrade(studentSessionId: number, assignmentId: number, type: string): number | null {
+    const key = `${studentSessionId}_${assignmentId}_${type}`;
+    if (this.gradeInputs.hasOwnProperty(key)) {
+      return this.gradeInputs[key];
+    }
     const grade = this.grades.find(g =>
-      g.student_session.student.id === studentId &&
-      g.assignement.subject?.id === subjectId &&
+      g.student_session?.id === studentSessionId &&
+      g.assignement?.id === assignmentId &&
       g.type === type
     );
     return grade ? grade.mark : null;
   }
 
-  updateGrade(studentId: number, subjectId: number, type: string, event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const mark = parseFloat(inputElement.value);
-    if (isNaN(mark) || mark < 0 || mark > 20) {
-      alert('Veuillez entrer une note valide entre 0 et 20.');
-      inputElement.value = this.getGrade(studentId, subjectId, type)?.toString() || '';
-      return;
-    }
-
-    let grade = this.grades.find(g =>
-      g.student_session.student.id === studentId &&
-      g.assignement.subject?.id === subjectId &&
-      g.type === type
-    );
-
-    if (grade) {
-      grade.mark = mark;
-    } else {
-      // Create a new grade object if it doesn't exist
-      const studentSession = this.students.find(s => s.id === studentId)?.latest_student_session; // latest_student_session is not an array
-      const subject = this.uniqueSubjects.find(s => s.id === subjectId);
-
-      if (studentSession && subject && this.currentTerm) {
-        const newGrade: Grade = {
-          id: 0, // Will be assigned by the backend
-          mark: mark,
-          type: type,
-          assignement_id: 0, // This needs to be handled. PRD doesn't specify how assignments are linked.
-          student_session_id: studentSession.id,
-          term_id: this.currentTerm.id,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          student_session: studentSession,
-          assignement: { id: 0, teacher_id: 0, class_model_id: this.classId!, subject_id: subject.id, term_id: this.currentTerm.id, created_at: '', updated_at: '' }, // Placeholder assignment
-          term: this.currentTerm
-        };
-        this.grades.push(newGrade);
-      } else {
-        console.warn('Could not create new grade: missing student session, subject, or current term.');
-      }
-    }
+  updateGrades(studentId: number, subjectId: number, type: string, event: any): void {
+    const value = event.target.value === '' ? null : Number(event.target.value);
+    const key = `${studentId}_${subjectId}_${type}`;
+    this.gradeInputs[key] = value;
   }
 
   saveGrades(): void {
-    const gradesToUpdate = this.grades.map(g => ({
-      id: g.id === 0 ? undefined : g.id, // Send id only if it's an existing grade
-      mark: g.mark as number,
-      type: g.type,
-      assignement_id: g.assignement_id, // This needs to be correctly populated
-      student_session_id: g.student_session_id,
-      term_id: g.term_id
-    }));
-
-    this.teacherDashboardService.updateGrades(gradesToUpdate).subscribe({
-      next: (res) => {
-        console.log('Notes enregistrées avec succès:', res);
-        alert('Notes enregistrées avec succès !');
-        this.fetchGradesForAllStudents(); // Re-fetch to get updated IDs for new grades
-      },
-      error: (err) => {
-        console.error('Erreur lors de l\'enregistrement des notes:', err);
-        alert('Erreur lors de l\'enregistrement des notes. Veuillez vérifier la console pour plus de détails.');
+    if (!this.currentTerm) return;
+    this.loading = true;
+    this.errorMessage = '';
+    const requests = [];
+    for (const student of this.students) {
+      for (const subjectId of this.uniqueSubjectIds) {
+        for (const type of this.gradeTypes) {
+          const key = `${student.id}_${subjectId}_${type}`;
+          const mark = this.gradeInputs[key];
+          if (mark === null || mark === undefined || isNaN(mark)) continue;
+          const existingGrade = this.grades.find(g =>
+            g.student_session?.student?.id === student.id &&
+            g.assignement?.subject?.id === subjectId &&
+            g.type === type
+          );
+          const assignement = this.assignements.find(a => a.subject_id === subjectId && a.class_model_id === this.classId);
+          if (!assignement) continue;
+          const payload = {
+            assignement_id: assignement.id,
+            student_session_id: student.latest_student_session?.id,
+            term_id: this.currentTerm.id,
+            type,
+            mark
+          };
+          if (existingGrade && existingGrade.id != null) {
+            // updateGrade should accept (id, payload)
+            requests.push(this.teacherDashboardService.updateGrade(existingGrade.id as number, payload));
+          } else {
+            // Use the correct method for creating a grade
+            requests.push(this.teacherDashboardService.addGrade(payload));
+          }
+        }
       }
-    });
+    }
+    if (requests.length === 0) {
+      this.loading = false;
+      return;
+    }
+    Promise.all(requests.map(r => r.toPromise()))
+      .then(() => {
+        this.fetchGradesForAllStudents();
+        this.loading = false;
+      })
+      .catch(err => {
+        this.errorMessage = 'Erreur lors de l\'enregistrement des notes.';
+        this.loading = false;
+      });
   }
-
-
 
   submitTermGrades(): void {
     if (!this.currentTerm || !this.classId) {
@@ -202,4 +275,5 @@ export class ClassDetailsComponent implements OnInit {
       panelClass: 'custom-dialog-container'
     });
   }
+
 }

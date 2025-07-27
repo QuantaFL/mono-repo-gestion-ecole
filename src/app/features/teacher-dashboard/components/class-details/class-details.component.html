@@ -1,33 +1,45 @@
 <div class="card class-details-card">
   <div class="card-header">
-    <h2 class="card-title">Feuille de note de: {{ classId }}</h2>
+    <h2 class="card-title">Feuille de note de la classe de {{ currentClass?.name }}</h2>
   </div>
   <div class="card-content">
     <h3 class="section-title">Notes des Étudiants</h3>
     <p *ngIf="students.length === 0" class="no-data-message">Aucun étudiant trouvé pour cette classe.</p>
+
+    <div *ngIf="loading" class="loading-message">Chargement en cours...</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
     <div class="table-responsive" *ngIf="students.length > 0">
       <table class="data-table">
         <thead>
           <tr>
             <th>Nom de l'Étudiant</th>
-            <ng-container *ngFor="let subject of uniqueSubjects">
-              <th *ngFor="let type of gradeTypes">{{ subject.name }} ({{ type | titlecase }})</th>
+            <ng-container *ngFor="let assignment of assignements">
+              <th *ngFor="let type of gradeTypes">
+                {{ subjectIdToSubject[assignment.subject_id]!.name || 'Matière inconnue' }} ({{ type | titlecase }})
+              </th>
             </ng-container>
             <th>Info</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let student of students">
-            <td>{{ student.userModel?.first_name }} {{ student.userModel?.last_name }}</td>
-            <ng-container *ngFor="let subject of uniqueSubjects">
-              <td *ngFor="let type of gradeTypes">
-                <input type="number" min="0" max="20" step="0.01" class="form-control grade-input"
-                       [value]="getGrade(student.id, subject.id, type)"
-                       (change)="updateGrade(student.id, subject.id, type, $event)">
-              </td>
-            </ng-container>
-            <td>
+        <tr *ngFor="let student of students">
+          <td>{{ student.userModel!.first_name }} {{ student.userModel!.last_name }}</td>
+          <ng-container *ngFor="let assignment of assignements">
+            <td *ngFor="let type of gradeTypes">
+              <ng-container *ngIf="student.latest_student_session?.id as sessionId">
+                <input type="number" min="0" max="20" step="1" class="form-control grade-input"
+                       [value]="getGrade(sessionId, assignment.id, type)"
+                       (change)="updateGrades(sessionId, assignment.id, type, $event)"
+                       [placeholder]="'Saisir...'"
+                       [disabled]="!sessionId">
+              </ng-container>
+              <ng-container *ngIf="!student.latest_student_session?.id">
+                <span class="text-danger small">No session ID</span>
+              </ng-container>
+            </td>
+          </ng-container>
+          <td>
               <button class="btn btn-icon" (click)="showStudentInfo(student)">
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               </button>

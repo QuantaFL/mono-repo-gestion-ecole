@@ -9,7 +9,6 @@ import { LoginComponent } from './features/auth/components/login/login.component
 import { DashboardHomeComponent } from './features/dashboard/components/dashboard-home/dashboard-home.component';
 import { TeacherListComponent } from './features/teachers/components/teacher-list/teacher-list.component';
 import { SubjectListComponent } from './features/subjects/components/subject-list/subject-list.component';
-import { GradeEntryComponent } from './features/grades/components/grade-entry/grade-entry.component';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { RegisterComponent } from './features/auth/components/register/register.component';
 import { AddStudentComponent } from './features/students/components/add-student/add-student.component';
@@ -39,7 +38,6 @@ import { AssignementComponent } from './assignement/assignement.component';
     DashboardHomeComponent,
     TeacherListComponent,
     SubjectListComponent,
-    GradeEntryComponent,
     RegisterComponent,
     AddStudentComponent,
     AddTeacherComponent,
@@ -71,6 +69,7 @@ import { AssignementComponent } from './assignement/assignement.component';
     provideAnimationsAsync(),
     DatePipe
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
