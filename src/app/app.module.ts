@@ -29,6 +29,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AddSubjectComponent } from './features/subjects/components/add-subject/add-subject.component';
 import { ChangePasswordComponent } from "./features/auth/components/change-password/change-password.component";
 import { SharedModule } from './shared/shared.module';
+import { AssignementComponent } from './assignement/assignement.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { SharedModule } from './shared/shared.module';
     ClassListComponent,
     HeaderComponent,
     AddSubjectComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AssignementComponent
   ],
   imports: [
     BrowserModule,
