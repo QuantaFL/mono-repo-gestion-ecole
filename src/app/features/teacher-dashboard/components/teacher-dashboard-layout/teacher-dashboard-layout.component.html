@@ -1,5 +1,4 @@
 <div class="teacher-dashboard-layout">
-  <app-sidebar (collapsedStateChanged)="onSidebarCollapsedStateChanged($event)"></app-sidebar>
   <div class="main-content" [class.collapsed]="isSidebarCollapsed">
     <router-outlet></router-outlet>
   </div>
