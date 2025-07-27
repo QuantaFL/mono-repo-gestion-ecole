@@ -22,8 +22,9 @@ export class StudentService {
     return this.http.get<Student>(`${this.apiUrl}/${id}`);
   }
 
-  createStudent(student: CreateStudentRequest): Observable<CreateStudentResponse> {
-    return this.http.post<CreateStudentResponse>(`${this.apiUrl}`, student);
+  createStudent(student: any): Observable<any> {
+    // Si c'est un FormData (upload fichier), laisse Angular gérer le content-type
+    return this.http.post<any>(`${this.apiUrl}`, student);
   }
 
   updateStudent(id: number, student: UpdateStudentRequest): Observable<Student> {
