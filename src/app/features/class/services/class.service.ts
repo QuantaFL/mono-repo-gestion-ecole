@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ClassModel } from '../models/class';
+import { ClassModel } from '../../teacher-dashboard/models/class-model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class ClassService {
     return this.http.post<ClassModel>(`${this.apiUrl}`, classe);
   }
 
-  update(id: number, classe: { name: string; academicYear: string }): Observable<any> {
+  update(id: number, classe: { name: string; level: string }): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, classe);
   }
 
