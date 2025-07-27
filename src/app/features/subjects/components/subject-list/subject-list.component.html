@@ -1,24 +1,45 @@
-<h2>Subjects List</h2>
-<button routerLink="/subject">Add Subject</button>
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Coefficient</th>
-      <th>Level</th>
-      <th>Created At</th>
-      <th>Updated At</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let subject of subjects">
-      <td>{{ subject.id }}</td>
-      <td>{{ subject.name }}</td>
-      <td>{{ subject.coefficient }}</td>
-      <td>{{ subject.level || '-' }}</td>
-      <td>{{ subject.createdAt || '-' }}</td>
-      <td>{{ subject.updatedAt || '-' }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="subject-page-container">
+  <div class="page-header">
+    <h2 class="page-title">Liste des matières</h2>
+    <button class="btn-primary" routerLink="/subject">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      Ajouter une matière
+    </button>
+  </div>
+
+  <div class="card">
+    <div *ngIf="loading" class="info-message">Chargement...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <table class="subject-table" *ngIf="subjects.length">
+      <thead>
+        <tr>
+         <!--  <th>ID</th> -->
+          <th>Nom</th>
+          <th>Coefficient</th>
+          <th>Niveau</th>
+          <th>Créé le</th>
+          <th>Modifié le</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subject of subjects">
+          <!-- <td>{{ subject.id }}</td> -->
+          <td>{{ subject.name }}</td>
+          <td>{{ subject.coefficient }}</td>
+          <td>{{ subject.level || '-' }}</td>
+          <td>{{ subject.createdAt || '-' }}</td>
+          <td>{{ subject.updatedAt || '-' }}</td>
+          <td>
+            <button class="btn-secondary" (click)="assignTeacher(subject)">Affecter à un prof</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading && !subjects.length" class="info-message">Aucune matière trouvée.</div>
+  </div>
+</div>
