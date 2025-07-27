@@ -38,8 +38,8 @@
             <i class="fas fa-book"></i>
           </div>
           <span>
-            <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
-              {{ getUniqueSubjectNames() }}
+            <ng-container *ngIf="(uniqueSubjects$ | async) as uniqueSubjects; else noSubjects">
+              {{ getUniqueSubjectNames() | async }}
             </ng-container>
             <ng-template #noSubjects>
               <span>Aucune matière assignée</span>
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-    <div class="card top-student" *ngIf="performanceSummary && performanceSummary.bestPerformingStudent">
+    <div class="card top-student" *ngIf="(performanceSummary$ | async) as performanceSummary; else noPerformanceSummary">
       <div class="card-header">
         <div class="card-icon">
           <i class="fas fa-trophy"></i>
@@ -129,10 +129,10 @@
             <i class="fas fa-user"></i>
           </div>
           <div class="student-info">
-            <div class="student-name">{{ performanceSummary!.bestPerformingStudent.firstName }} {{ performanceSummary!.bestPerformingStudent.lastName }}</div>
+            <div class="student-name">{{ performanceSummary.bestPerformingStudent.firstName }} {{ performanceSummary.bestPerformingStudent.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
-                <span class="score-value">{{ performanceSummary!.bestPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-value">{{ performanceSummary.bestPerformingStudent.averageGrade | number:'1.1-1' }}</span>
                 <span class="score-max">/100</span>
               </div>
             </div>
@@ -140,7 +140,7 @@
         </div>
       </div>
     </div>
-    <div class="card bottom-student" *ngIf="performanceSummary && performanceSummary.worstPerformingStudent">
+    <div class="card bottom-student" *ngIf="(performanceSummary$ | async) as performanceSummary">
       <div class="card-header">
         <div class="card-icon">
           <i class="fas fa-user-times"></i>
@@ -154,10 +154,10 @@
             <i class="fas fa-user"></i>
           </div>
           <div class="student-info">
-            <div class="student-name">{{ performanceSummary!.worstPerformingStudent.firstName }} {{ performanceSummary!.worstPerformingStudent.lastName }}</div>
+            <div class="student-name">{{ performanceSummary.worstPerformingStudent.firstName }} {{ performanceSummary.worstPerformingStudent.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
-                <span class="score-value">{{ performanceSummary!.worstPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-value">{{ performanceSummary.worstPerformingStudent.averageGrade | number:'1.1-1' }}</span>
                 <span class="score-max">/100</span>
               </div>
             </div>
@@ -165,5 +165,19 @@
         </div>
       </div>
     </div>
+    <ng-template #noPerformanceSummary>
+      <div class="card top-student">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="card-indicator"></div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Performance Summary</h3>
+          <p>No performance data available yet for the current term and assignments.</p>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>
