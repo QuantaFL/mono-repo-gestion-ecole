@@ -66,8 +66,9 @@ export class ClassAddComponent implements OnInit {
             const classModel: ClassModel = {
               name: formValue.name!,
               level: formValue.level!,
-              id: 0,
-              latest_student_session: []
+              // id: 0,
+              latest_student_session: null,
+              current_academic_year_student_sessions: []
             };
      
         this.classService.create(
@@ -76,6 +77,8 @@ export class ClassAddComponent implements OnInit {
           next: () => {
             this.success = 'Classe ajoutée avec succès';
             this.classForm.reset();
+            this.router.navigateByUrl('/list_class');
+            console.log('Classe ajoutée avec succès');
           },
           error: () => {
             this.error = 'Erreur lors de l\'ajout de la classe';
