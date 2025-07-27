@@ -1,23 +1,38 @@
-<h2>Add Subject</h2>
-<form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="name">Name:</label>
-    <input id="name" formControlName="name" />
-    <div *ngIf="subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched">
-      Name is required.
-    </div>
+<div class="subject-form-page">
+  <div class="page-header">
+    <h2 class="page-title">Ajouter une matière</h2>
   </div>
-  <div>
-    <label for="coefficient">Coefficient:</label>
-    <input id="coefficient" type="number" formControlName="coefficient" />
-    <div *ngIf="subjectForm.get('coefficient')?.invalid && subjectForm.get('coefficient')?.touched">
-      Coefficient is required and must be at least 1.
-    </div>
-  </div>
-  <div>
-    <label for="level">Level:</label>
-    <input id="level" formControlName="level" />
-  </div>
-  <button type="submit" [disabled]="subjectForm.invalid">Add Subject</button>
-</form>
 
+  <div class="card">
+    <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <label for="name">Nom :</label>
+        <input id="name" formControlName="name" type="text" />
+        <div class="form-error" *ngIf="subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched">
+          Le nom est requis.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="coefficient">Coefficient :</label>
+        <input id="coefficient" type="number" formControlName="coefficient" />
+        <div class="form-error" *ngIf="subjectForm.get('coefficient')?.invalid && subjectForm.get('coefficient')?.touched">
+          Coefficient requis (min. 1).
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="level">Niveau :</label>
+        <select id="level" formControlName="level" class="form-control">
+    <option *ngFor="let level of levels" [value]="level">
+      {{ level }}
+    </option>
+  </select>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="subjectForm.invalid">
+        Ajouter la matière
+      </button>
+    </form>
+  </div>
+</div>

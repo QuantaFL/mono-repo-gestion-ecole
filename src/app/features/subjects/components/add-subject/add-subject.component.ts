@@ -39,4 +39,27 @@ export class AddSubjectComponent {
       });
     }
   }
+  levels: string[] = [
+  // Collège
+  '6e',
+  '5e',
+  '4e',
+  '3e',
+
+  // Lycée – Seconde
+  'Seconde S1',
+  'Seconde S2',
+  'Seconde L',
+
+  // Lycée – Première
+  'Première S1',
+  'Première S2',
+  'Première L',
+
+  // Lycée – Terminale
+  'Terminale S1',
+  'Terminale S2',
+  'Terminale L'
+];
+
 }
