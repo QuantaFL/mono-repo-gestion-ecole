@@ -14,7 +14,6 @@ import {CreateStudentRequest} from "../../requests/createStudentRequest";
 export class AddStudentComponent implements OnInit {
   studentForm!: FormGroup;
   currentStep: number = 1;
-
   classes: ClassModel[] = [];
 
   constructor(private classService: ClassService, private studentService: StudentService, private router: Router) {}
@@ -22,35 +21,41 @@ export class AddStudentComponent implements OnInit {
   ngOnInit(): void {
     this.studentForm = new FormGroup({
       // Étape 1 — infos de l'élève
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      dateOfBirth: new FormControl('', Validators.required),
-      gender: new FormControl('', Validators.required),
-
-      // Étape 2 — coordonnées
-      phone: new FormControl('', [
+      student_first_name: new FormControl('', Validators.required),
+      student_last_name: new FormControl('', Validators.required),
+      student_birthday: new FormControl('', Validators.required),
+      student_gender: new FormControl('', Validators.required),
+      student_phone: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^(7[05678])[0-9]{7}$/) // format Sénégal
+        Validators.pattern(/^(7[05678])[0-9]{7}$/)
       ]),
-      email: new FormControl('', [
+      student_email: new FormControl('', [
         Validators.required,
         Validators.email
       ]),
-      address: new FormControl(''),
+      student_adress: new FormControl('', Validators.required),
+      student_matricule: new FormControl('', Validators.required),
+      student_password: new FormControl('', Validators.required),
+      student_role_id: new FormControl(3, Validators.required),
 
-      // Étape 3 — infos scolaires
-      enrollmentDate: new FormControl('', Validators.required),
-      classId: new FormControl('', Validators.required),
-      studentIdNumber: new FormControl('', Validators.required),
-      matricule: new FormControl('', Validators.required),
+      // Étape 2 — infos scolaires
+      class_model_id: new FormControl('', Validators.required),
+      academic_year_id: new FormControl('', Validators.required),
+      academic_records: new FormControl(''),
 
-      // Étape 4 — parent (optionnel)
-      parentUserId: new FormControl(null, Validators.min(1)),
-      parentFirstName: new FormControl(''),
-      parentLastName: new FormControl(''),
-      parentPhone: new FormControl(''),
-      parentEmail: new FormControl(''),
-      parentAddress: new FormControl('')
+      // Étape 3 — infos du parent
+      parent_first_name: new FormControl('', Validators.required),
+      parent_last_name: new FormControl('', Validators.required),
+      parent_email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
+      parent_password: new FormControl('', Validators.required),
+      parent_phone: new FormControl('', Validators.required),
+      parent_adress: new FormControl('', Validators.required),
+      parent_birthday: new FormControl('', Validators.required),
+      parent_gender: new FormControl('', Validators.required),
+      parent_role_id: new FormControl(4, Validators.required),
     });
     this.classService.getAll().subscribe({
       next: (res) => {
@@ -106,23 +111,10 @@ export class AddStudentComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.studentForm.valid) {
       const formValue = this.studentForm.value;
-      // Construction du payload attendu par le backend
       const payload: CreateStudentRequest = {
-        first_name: formValue.firstName,
-        last_name: formValue.lastName,
-        date_of_birth: formValue.dateOfBirth,
-        gender: formValue.gender,
-        phone: formValue.phone,
-        email: formValue.email,
-        address: formValue.address,
-        enrollment_date: formValue.enrollmentDate,
-        class_id: formValue.classId,
-        parent_user_id: formValue.parentUserId,
-        role_id: 3,
-        tutor_phone_number: formValue.parentPhone
+        ...formValue
       };
       try {
-
         this.studentService.createStudent(payload)
         await this.router.navigate(['/students/list']);
       } catch (e) {
