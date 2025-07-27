@@ -34,8 +34,11 @@
             <td colspan="2" class="empty-row">Aucun élève</td>
           </tr>
           <tr *ngFor="let student of classe.latest_student_session">
-            <td>{{ student.student_name }}</td>
-            <td>{{ student.grade !== null && student.grade !== undefined ? student.grade : '' }}</td>
+            <td>{{ student.student.user_model.first_name }}</td>
+            <!--
+                        <td>{{ student.grade !== null ? student.grade : 'N/A' }}</td>
+
+            -->
           </tr>
           </tbody>
         </table>

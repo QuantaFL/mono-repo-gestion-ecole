@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ClassService } from '../../services/class.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClassModel } from '../../../teacher-dashboard/models/class-model';
+
 
 @Component({
   selector: 'app-class-add',
@@ -11,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClassAddComponent implements OnInit {
   classForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    academicYear: new FormControl('', Validators.required)
+    level: new FormControl('', Validators.required)
   });
 
   success: string | null = null;
@@ -33,7 +35,7 @@ export class ClassAddComponent implements OnInit {
         next: (res) => {
           this.classForm.patchValue({
             name: res.name,
-            academicYear: res.academicYear
+            level: res.level
           });
         },
         error: () => {
@@ -50,7 +52,7 @@ export class ClassAddComponent implements OnInit {
       if (this.isEdit && this.classId) {
         this.classService.update(this.classId, {
           name: formValue.name!,
-          academicYear: formValue.academicYear!
+          level: formValue.level!
         }).subscribe({
           next: () => {
             this.success = 'Classe modifiée avec succès';
@@ -61,10 +63,16 @@ export class ClassAddComponent implements OnInit {
           }
         });
       } else {
-        this.classService.create({
-          name: formValue.name!,
-          academicYear: formValue.academicYear!
-        }).subscribe({
+            const classModel: ClassModel = {
+              name: formValue.name!,
+              level: formValue.level!,
+              id: 0,
+              latest_student_session: []
+            };
+     
+        this.classService.create(
+          classModel
+        ).subscribe({
           next: () => {
             this.success = 'Classe ajoutée avec succès';
             this.classForm.reset();
@@ -76,4 +84,10 @@ export class ClassAddComponent implements OnInit {
       }
     }
   }
+  onReset(): void {
+    this.classForm.reset();
+    this.success = null;
+    this.error = null;
+  }
+
 }
