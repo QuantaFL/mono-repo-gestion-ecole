@@ -1,6 +1,6 @@
 export interface UpdateStudentRequest {
   enrollment_date: string;
-  class_id: number;
+  class_model_id: number;
   first_name: string;
   last_name: string;
   email: string;

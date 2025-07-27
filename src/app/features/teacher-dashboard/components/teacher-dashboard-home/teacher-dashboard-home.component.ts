@@ -6,7 +6,12 @@ import { Term } from '../../models/term';
 import { TeacherStore } from '../../services/teacher.store';
 import { Teacher } from '../../models/teacher';
 import { Subject } from '../../models/subject';
-import {getUserFromLocalStorage} from "../../../../stores/auth-store";
+import { PerformanceSummary } from '../../models/performance-summary';
+import { Observable, forkJoin, of } from 'rxjs';
+import { map, switchMap, catchError, filter, tap } from 'rxjs/operators';
+import { Student } from '../../models/student';
+import { Grade } from '../../models/grade';
+import {Assignment} from "../../models/assignment";
 
 @Component({
   selector: 'app-teacher-dashboard-home',
@@ -20,62 +25,82 @@ export class TeacherDashboardHomeComponent implements OnInit {
   uniqueSubjects: Subject[] = [];
   subjectIdToSubject: { [id: number]: Subject } = {};
   uniqueSubjectIds: number[] = [];
-  assignements: any[] = [];
+  assignements: Assignment[] = [];
   @Input() isSidebarCollapsed: boolean = false;
+  performanceSummary: PerformanceSummary | null = null;
 
   constructor(private teacherDashboardService: TeacherDashboardService, private teacherStore: TeacherStore) { }
 
   ngOnInit(): void {
-    this.teacherStore.currentTeacher$.subscribe(teacher => {
-      this.currentTeacher = teacher;
-      if (teacher) {
+    this.teacherStore.currentTeacher$.pipe(
+      filter(teacher => !!teacher),
+      tap(teacher => {
+        this.currentTeacher = teacher;
         this.fetchCurrentAcademicYear();
         this.fetchCurrentTerm();
-        this.fetchTeacherAssignmentsAndSubjects(teacher.id);
-      }
-    });
-  }
-
-  /**
-   * Fetches all assignments for the teacher, extracts unique subject IDs, and fetches subject details in bulk.
-   * Populates uniqueSubjects and subjectIdToSubject for the dashboard.
-   */
-  fetchTeacherAssignmentsAndSubjects(teacherId: number): void {
-    this.teacherDashboardService.getAssignmentsForTeacher(teacherId).subscribe({
-      next: (assignments) => {
+      }),
+      switchMap(teacher => this.teacherDashboardService.getAssignmentsForTeacher(teacher!.id)),
+      tap(assignments => {
         this.assignements = assignments;
-        this.uniqueSubjectIds = assignments.map(a => a.subject_id).filter((id: number) => !!id);
-        // Remove duplicates
-        this.uniqueSubjectIds = Array.from(new Set(this.uniqueSubjectIds));
+        this.uniqueSubjectIds = Array.from(new Set(assignments.map(a => a.subject_id).filter((id: number) => !!id)));
+      }),
+      switchMap(() => {
         if (this.uniqueSubjectIds.length > 0) {
-          this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).subscribe({
-            next: (subjects: Subject[]) => {
+          return this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).pipe(
+            tap(subjects => {
               this.uniqueSubjects = subjects;
               this.subjectIdToSubject = {};
               for (const subj of subjects) {
                 this.subjectIdToSubject[subj.id] = subj;
               }
-            },
-            error: (err) => {
+            }),
+            catchError(err => {
+              console.error('Error fetching subjects:', err);
               this.uniqueSubjects = [];
               this.subjectIdToSubject = {};
-              console.error('Error fetching subjects:', err);
-            }
-          });
+              return of([]);
+            })
+          );
         } else {
           this.uniqueSubjects = [];
           this.subjectIdToSubject = {};
+          return of([]);
         }
-      },
-      error: (err) => {
-        this.assignements = [];
-        this.uniqueSubjectIds = [];
-        this.uniqueSubjects = [];
-        this.subjectIdToSubject = {};
-        console.error('Error fetching assignments:', err);
-      }
-    });
+      }),
+      switchMap(() => {
+        // Build classSubjects array for bulk performance summary
+        const classSubjects = this.assignements
+          .filter(a => a.class_model_id && a.subject_id)
+          .map(a => ({ classId: a.class_model_id, subjectId: a.subject_id }));
+        if (classSubjects.length > 0) {
+          return this.teacherDashboardService.getBulkPerformanceSummary(classSubjects).pipe(
+            tap(summary => {
+              this.performanceSummary = summary;
+            }),
+            catchError(err => {
+              this.performanceSummary = null;
+              console.error('Error fetching bulk performance summary:', err);
+              return of(null);
+            })
+          );
+        } else {
+          this.performanceSummary = null;
+          return of(null);
+        }
+      }),
+      catchError(err => {
+        console.error('Error in dashboard data flow:', err);
+        return of(null);
+      })
+    ).subscribe();
   }
+
+  /**
+   * This method is no longer needed as the logic has been moved to ngOnInit using RxJS operators.
+   */
+  // fetchTeacherAssignmentsAndSubjects(teacherId: number): void {
+  //   // Old logic removed
+  // }
 
   fetchCurrentAcademicYear(): void {
     this.teacherDashboardService.getCurrentAcademicYear().subscribe({

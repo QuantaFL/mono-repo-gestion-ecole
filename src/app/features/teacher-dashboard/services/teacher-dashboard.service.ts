@@ -10,6 +10,7 @@ import { Teacher } from '../models/teacher';
 import { Student } from '../models/student';
 import {Assignment} from "../models/assignment";
 import {Subject} from "../models/subject";
+import {PerformanceSummary} from "../models/performance-summary";
 
 @Injectable({
   providedIn: 'root'
@@ -85,11 +86,11 @@ export class TeacherDashboardService {
   }
 
   getStudentsByClassId(classId: number): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}/class-models/${classId}/students`);
+    return this.http.get<Student[]>(`${this.apiUrl}/classes/${classId}/students`);
   }
 
   getClassById(classId: number): Observable<ClassModel> {
-    return this.http.get<ClassModel>(`${this.apiUrl}/class-models/${classId}`);
+    return this.http.get<ClassModel>(`${this.apiUrl}/classes/${classId}`);
   }
 
   /**
@@ -121,5 +122,15 @@ export class TeacherDashboardService {
    */
   addGrade(payload: any): Observable<Grade> {
     return this.http.post<Grade>(`${this.apiUrl}/grades`, payload);
+  }
+
+
+
+  /**
+   * Get best and worst performing students across multiple classes and subjects.
+   * @param classSubjects Array of { classId, subjectId }
+   */
+  getBulkPerformanceSummary(classSubjects: { classId: number, subjectId: number }[]): Observable<PerformanceSummary> {
+    return this.http.post<PerformanceSummary>(`${this.apiUrl}/teachers/dashboard/performance-summary/bulk`, { classSubjects });
   }
 }

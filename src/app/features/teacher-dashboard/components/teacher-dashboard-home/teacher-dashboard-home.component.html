@@ -115,7 +115,7 @@
       </div>
     </div>
 
-    <div class="card top-student">
+    <div class="card top-student" *ngIf="performanceSummary && performanceSummary.bestPerformingStudent">
       <div class="card-header">
         <div class="card-icon">
           <i class="fas fa-trophy"></i>
@@ -129,36 +129,18 @@
             <i class="fas fa-user"></i>
           </div>
           <div class="student-info">
-            <div class="student-name">Antoine Laurent</div>
+            <div class="student-name">{{ performanceSummary!.bestPerformingStudent.firstName }} {{ performanceSummary!.bestPerformingStudent.lastName }}</div>
             <div class="student-details">
-              <span class="student-class">Terminale S</span>
               <div class="student-score">
-                <span class="score-value">18.5</span>
-                <span class="score-max">/20</span>
+                <span class="score-value">{{ performanceSummary!.bestPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-max">/100</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="performance-metrics">
-          <div class="metric">
-            <span class="metric-label">Mathématiques</span>
-            <div class="metric-bar">
-              <div class="metric-fill" style="--metric: 95%"></div>
-            </div>
-            <span class="metric-value">19/20</span>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Physique</span>
-            <div class="metric-bar">
-              <div class="metric-fill" style="--metric: 90%"></div>
-            </div>
-            <span class="metric-value">18/20</span>
-          </div>
-        </div>
       </div>
     </div>
-    <!-- here etudiant le moins performant-->
-    <div class="card bottom-student">
+    <div class="card bottom-student" *ngIf="performanceSummary && performanceSummary.worstPerformingStudent">
       <div class="card-header">
         <div class="card-icon">
           <i class="fas fa-user-times"></i>
@@ -172,30 +154,13 @@
             <i class="fas fa-user"></i>
           </div>
           <div class="student-info">
-            <div class="student-name">Fatou Ndiaye</div>
+            <div class="student-name">{{ performanceSummary!.worstPerformingStudent.firstName }} {{ performanceSummary!.worstPerformingStudent.lastName }}</div>
             <div class="student-details">
-              <span class="student-class">Seconde L</span>
               <div class="student-score">
-                <span class="score-value">7.5</span>
-                <span class="score-max">/20</span>
+                <span class="score-value">{{ performanceSummary!.worstPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-max">/100</span>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="performance-metrics">
-          <div class="metric">
-            <span class="metric-label">Mathématiques</span>
-            <div class="metric-bar">
-              <div class="metric-fill" style="--metric: 40%"></div>
-            </div>
-            <span class="metric-value">8/20</span>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Physique</span>
-            <div class="metric-bar">
-              <div class="metric-fill" style="--metric: 35%"></div>
-            </div>
-            <span class="metric-value">7/20</span>
           </div>
         </div>
       </div>

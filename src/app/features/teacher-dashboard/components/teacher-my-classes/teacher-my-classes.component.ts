@@ -29,6 +29,7 @@ export class TeacherMyClassesComponent implements OnInit {
                 next: (classes) => {
                   this.classes = classes;
                   this.loading = false;
+                  console.log('Classes fetched:', this.classes);
                 },
                 error: () => {
                   this.classes = [];
@@ -46,7 +47,7 @@ export class TeacherMyClassesComponent implements OnInit {
     });
   }
 
-  goToClassDetails(classId: number): void {
-    this.router.navigate(['/teacher-dashboard/class-details', classId]);
+  async goToClassDetails(classId: number): Promise<void> {
+    await this.router.navigate(['/teacher-dashboard/class-details', classId]);
   }
 }
