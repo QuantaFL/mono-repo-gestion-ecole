@@ -10,7 +10,7 @@ import { CreateStudentResponse } from "../requests/createStudentResponse";
   providedIn: 'root'
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:8000/api/v1/student/inscription';
+  private apiUrl = 'http://localhost:8000/api/v1/students';
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +24,7 @@ export class StudentService {
 
   createStudent(student: any): Observable<any> {
     // Si c'est un FormData (upload fichier), laisse Angular gérer le content-type
-    return this.http.post<any>(`${this.apiUrl}`, student);
+    return this.http.post<any>(`${this.apiUrl}/inscription`, student);
   }
 
   updateStudent(id: number, student: UpdateStudentRequest): Observable<Student> {
