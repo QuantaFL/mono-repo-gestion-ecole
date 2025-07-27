@@ -18,6 +18,7 @@ export class AddStudentComponent implements OnInit {
   currentStep: number = 1;
   classes: ClassModel[] = [];
   currentAcademicYear?: AcademicYear;
+  academicRecordsFile: File | null = null;
 
   constructor(
     private classService: ClassService,
@@ -126,16 +127,37 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
+  onAcademicRecordsFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.academicRecordsFile = input.files[0];
+    } else {
+      this.academicRecordsFile = null;
+    }
+  }
 
   async onSubmit(): Promise<void> {
     if (this.studentForm.valid) {
-      const formValue = this.studentForm.getRawValue(); // getRawValue pour inclure les champs disabled
-      console.log('Payload envoyé au backend:', formValue);
-      const payload: CreateStudentRequest = {
-        ...formValue
-      };
+      const formValue = this.studentForm.getRawValue();
+      const formData = new FormData();
+      // Ajoute tous les champs du formulaire dans le FormData
+      Object.keys(formValue).forEach(key => {
+        formData.append(key, formValue[key]);
+      });
+      // Ajoute le fichier s'il existe
+      if (this.academicRecordsFile) {
+        formData.append('academic_records', this.academicRecordsFile);
+        console.log('Nom du fichier academic_records envoyé:', this.academicRecordsFile.name);
+      } else {
+        console.log('Aucun fichier academic_records sélectionné');
+      }
+      // Log du contenu du FormData
+      for (const pair of formData.entries()) {
+        console.log('FormData:', pair[0], pair[1]);
+      }
+      console.log('Payload FormData envoyé au backend:', formData);
       try {
-        this.studentService.createStudent(payload).subscribe({
+        this.studentService.createStudent(formData).subscribe({
           next: (res) => {
             console.log('Réponse du backend:', res);
             this.router.navigate(['/students/list']);

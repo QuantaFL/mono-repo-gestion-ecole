@@ -69,8 +69,8 @@
         <input type="hidden" formControlName="academic_year_id" />
       </div>
       <div class="col-md-6">
-        <label class="form-label">Justificatif (nom du fichier ou chemin)</label>
-        <input type="text" formControlName="academic_records" class="form-control" placeholder="ex. ouly.pdf" />
+        <label class="form-label">Justificatif (fichier)</label>
+        <input type="file" (change)="onAcademicRecordsFileChange($event)" class="form-control" />
       </div>
     </div>
 
@@ -112,7 +112,7 @@
         <select class="form-select" formControlName="parent_gender">
           <option value="">-- Sélectionnez --</option>
           <option value="M">Masculin</option>
-          <option value="F">Féminin</option>
+          <option value="F">F��minin</option>
         </select>
       </div>
     </div>
