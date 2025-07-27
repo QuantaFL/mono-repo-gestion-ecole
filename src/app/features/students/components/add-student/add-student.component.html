@@ -121,7 +121,7 @@
 
     <!-- Navigation boutons -->
     <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-outline-primary" (click)="prevStep()" [disabled]="currentStep === 1">Précédent</button>
+      <button type="button" class="btn btn-outline-primary" (click)="prevStep()" [disabled]="currentStep === 1" *ngIf="currentStep!==1">Précédent</button>
       <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">Suivant</button>
       <button type="submit" class="btn btn-success" *ngIf="currentStep === 3">Enregistrer</button>
     </div>

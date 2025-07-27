@@ -29,7 +29,7 @@ import { AddSubjectComponent } from './features/subjects/components/add-subject/
 import { ChangePasswordComponent } from "./features/auth/components/change-password/change-password.component";
 import { SharedModule } from './shared/shared.module';
 import { AssignementComponent } from './assignement/assignement.component';
-
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +63,12 @@ import { AssignementComponent } from './assignement/assignement.component';
     MatButtonModule,
     MatInputModule,
     MatTabsModule,
-    SharedModule
+    SharedModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
+    })
   ],
   providers: [
     provideAnimationsAsync(),

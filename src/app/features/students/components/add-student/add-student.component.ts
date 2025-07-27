@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import {CreateStudentRequest} from "../../requests/createStudentRequest";
 import { AcademicYearService } from '../../services/academic-year.service';
 import { AcademicYear } from '../../../teacher-dashboard/models/academic-year';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-add-student',
@@ -24,7 +25,8 @@ export class AddStudentComponent implements OnInit {
     private classService: ClassService,
     private studentService: StudentService,
     private academicYearService: AcademicYearService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -82,6 +84,32 @@ export class AddStudentComponent implements OnInit {
         this.studentForm.get('academic_year_id')?.disable();
       }
     });
+
+    // TODO: Remove these default values after testing (for developer convenience)
+    this.studentForm.patchValue({
+      student_first_name: 'TestFirst',
+      student_last_name: 'TestLast',
+      student_birthday: '2010-01-01',
+      student_gender: 'M',
+      student_phone: '770000000',
+      student_email: 'test.student@example.com',
+      student_adress: '123 Test Street',
+      student_matricule: 'MAT123456',
+      student_password: 'TestPass123!',
+      student_role_id: 3,
+      class_model_id: '', // Set after classes load if needed
+      academic_year_id: '', // Set by service
+      academic_records: '',
+      parent_first_name: 'ParentFirst',
+      parent_last_name: 'ParentLast',
+      parent_email: 'parent@example.com',
+      parent_password: 'ParentPass123!',
+      parent_phone: '780000000',
+      parent_adress: '456 Parent Ave',
+      parent_birthday: '1980-01-01',
+      parent_gender: 'F',
+      parent_role_id: 4
+    });
   }
 
   nextStep(): void {
@@ -111,7 +139,6 @@ export class AddStudentComponent implements OnInit {
           this.studentForm.get('student_matricule')?.valid === true &&
           this.studentForm.get('student_password')?.valid === true;
       case 2:
-        // Ne valide que la classe, car academic_year_id est hidden et toujours rempli
         return this.studentForm.get('class_model_id')?.valid === true;
       case 3:
         return this.studentForm.get('parent_first_name')?.valid === true &&
@@ -149,7 +176,7 @@ export class AddStudentComponent implements OnInit {
         formData.append('academic_records', this.academicRecordsFile);
         console.log('Nom du fichier academic_records envoyé:', this.academicRecordsFile.name);
       } else {
-        console.log('Aucun fichier academic_records sélectionné');
+        this.toastr.info("Aucun fichier académique sélectionné, l'envoi se fera sans fichier.", 'Information');
       }
       // Log du contenu du FormData
       for (const pair of formData.entries()) {
@@ -158,17 +185,20 @@ export class AddStudentComponent implements OnInit {
       console.log('Payload FormData envoyé au backend:', formData);
       try {
         this.studentService.createStudent(formData).subscribe({
-          next: (res) => {
+          next: async (res) => {
             console.log('Réponse du backend:', res);
-            this.router.navigate(['/students/list']);
+            this.toastr.success('Étudiant ajouté avec succès !', 'Succès');
+            await this.router.navigate(['/dashboard']);
           },
           error: (e) => {
             console.error('Erreur backend:', e);
-            alert('Erreur lors de l\'ajout de l\'étudiant.: ' + JSON.stringify(e?.error));
+            console.error('Erreur lors de l\'ajout de l\'étudiant.: ' + JSON.stringify(e?.error));
+            this.toastr.error("Erreur lors de l'ajout de l'étudiant: " + e?.error?.message || 'Veuillez vérifier les données saisies.', 'Erreur');
           }
         });
       } catch (e) {
-        alert('Erreur lors de l\'ajout de l\'étudiant.: ' + e);
+        console.error('Erreur lors de l\'ajout de l\'étudiant.: ' + e);
+        this.toastr.error("Erreur lors de l'ajout de l'étudiant: " + e || 'Veuillez vérifier les données saisies.', 'Erreur');
       }
     }
   }
