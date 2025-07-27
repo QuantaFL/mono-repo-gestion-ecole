@@ -6,9 +6,11 @@
       <input type="text" id="name" class="form-control" formControlName="name">
     </div>
     <div class="mb-3">
-      <label for="academicYear" class="form-label">Année académique</label>
-      <input type="text" id="academicYear" class="form-control" formControlName="academicYear" placeholder="2024-2025">
+      <label for="level" class="form-label">Niveau de la classe</label>
+      <input type="text" id="level" class="form-control" formControlName="level" placeholder="Terminal">
     </div>
     <button class="btn btn-success" type="submit">Enregistrer</button>
   </form>
 </div>
+  <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
