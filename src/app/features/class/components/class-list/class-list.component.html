@@ -1,49 +1,54 @@
-<div class="page-container">
-  <div class="page-header">
-    <h2 class="page-title">Liste des classes</h2>
-    <button class="btn-primary" routerLink="/class">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="icon">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-      </svg>
-      Ajouter une classe
-    </button>
-  </div>
+<div class="class-list-wrapper">
+  <div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+      <h2 class="page-title">Liste des classes</h2>
+      <button class="btn-primary" routerLink="/class">
+        Ajouter une classe
+      </button>
+    </div>
 
-  <div class="card">
-    <div *ngIf="loading" class="info-message">Chargement...</div>
-    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <!-- Loading / Error -->
+    <div class="card">
+      <div *ngIf="loading" class="info-message">Chargement...</div>
+      <div *ngIf="error" class="error-message">{{ error }}</div>
 
-    <div class="class-list-container" *ngIf="classes.length">
-      <div *ngFor="let classe of classes" class="class-table-card">
-        <div class="class-header">
-          <span class="class-name">{{ classe.name }}</span>
-          <span class="class-level">{{ classe.level }}</span>
-          <button class="info-btn" (click)="showInfo(classe)" title="Infos">
-            <span class="info-icon">i</span>
-          </button>
+      <!-- Liste des classes -->
+      <div class="class-list-container" *ngIf="classes.length">
+        <div *ngFor="let classe of classes" class="class-table-card">
+          <div class="class-header">
+            <span class="class-name">{{ classe.name }}</span>
+            <span class="class-level">{{ classe.level }}</span>
+            <button class="info-btn" (click)="showInfo(classe)" title="Infos">
+              <span class="info-icon">i</span>
+            </button>
+          </div>
+
+          <!-- Détails -->
+          <div class="class-details">
+            <p><strong>Année académique:</strong> {{ classe.current_academic_year_student_sessions }}</p>
+            <p><strong>Nombre d'élèves:</strong> {{ classe.latest_student_session || 0 }}</p>
+            <p *ngIf="classe.latest_student_session">
+              Dernière session: {{ classe.latest_student_session }}
+            </p>
+
+            <!-- Boutons d'action -->
+            <div class="class-actions">
+              <button class="btn-outline" (click)="generateBulletin(classe)">
+                📄 Générer bulletin
+              </button>
+              <button class="btn-outline" (click)="addSubject(classe)">
+                ➕ Ajouter matière
+              </button>
+            </div>
+          </div>
         </div>
-        <table class="class-table">
-          <thead>
-          <tr>
-            <th>Élève</th>
-            <th>Note</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngIf="!classe.latest_student_session.length">
-            <td colspan="2" class="empty-row">Aucun élève</td>
-          </tr>
-          <tr *ngFor="let student of classe.latest_student_session">
-            <td>{{ student.student.user_model.first_name }}</td>
-            <!--
-                        <td>{{ student.grade !== null ? student.grade : 'N/A' }}</td>
+      </div>
 
-            -->
-          </tr>
-          </tbody>
-        </table>
+      <!-- Aucun résultat -->
+      <div *ngIf="!loading && !classes.length" class="info-message">
+        Aucune classe trouvée.
       </div>
     </div>
-    <div *ngIf="!loading && !classes.length" class="info-message">Aucune classe trouvée.</div>
   </div>
 </div>
