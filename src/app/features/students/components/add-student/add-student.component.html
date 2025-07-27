@@ -1,9 +1,11 @@
-<div class="container py-4">
-  <h3 class="mb-4 text-primary">👩‍🎓 Ajouter un élève</h3>
+<div class="container py-4 ms-150" style="margin-left: 200px;">
 
-  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="shadow-sm p-4 bg-white rounded">
+<h3 class="mb-4 text-primary ms-150">👩‍🎓 Ajouter un élève</h3>
+
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="shadow-sm p-4 bg-white rounded ms-150">
     <!-- ETAPES -->
-    <div class="mb-4">
+    <div class="mb-4 ms-150
+">
       <div class="progress" style="height: 8px;">
         <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="currentStep * 25"></div>
       </div>

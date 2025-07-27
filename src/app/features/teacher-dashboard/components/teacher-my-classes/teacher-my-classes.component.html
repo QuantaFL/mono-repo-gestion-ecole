@@ -3,7 +3,7 @@
   <div *ngIf="loading" class="loading">Chargement...</div>
   <div *ngIf="!loading && classes.length === 0" class="no-classes">Aucune classe trouvée pour cette année académique.</div>
   <div class="classes-list" *ngIf="!loading && classes.length > 0">
-    <div class="class-card" *ngFor="let classItem of classes" (click)="goToClassDetails(classItem.id)">
+    <div class="class-card" *ngFor="let classItem of classes" (click)="goToClassDetails(classItem.id!)">
       <div class="class-title">{{ classItem.name }}</div>
       <div class="class-level">Niveau: {{ classItem.level }}</div>
       <div class="class-meta">Créée le: {{ classItem.created_at | date:'mediumDate' }}</div>
