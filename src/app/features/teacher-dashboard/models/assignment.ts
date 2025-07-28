@@ -1,7 +1,7 @@
-import { Subject } from './subject';
-import { ClassModel } from './class-model';
-import { Term } from "./term";
-import { Teacher } from "./teacher";
+import {Subject} from './subject';
+import {ClassModel} from './class-model';
+import {Term} from "./term";
+import {Teacher} from "./teacher";
 
 export interface Assignment {
   id: number;
@@ -15,4 +15,7 @@ export interface Assignment {
   classModel?: ClassModel;
   subject?: Subject;
   term?: Term;
+  day_of_week?: string[];
+  start_time?: string;
+  end_time?: string;
 }
