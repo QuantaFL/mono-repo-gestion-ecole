@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Student} from "../models/student";
-import {Observable} from "rxjs";
-import { HttpClient } from '@angular/common/http';
-import {CreateStudentRequest} from "../requests/createStudentRequest";
+import {firstValueFrom, Observable} from "rxjs";
+import {HttpClient} from '@angular/common/http';
 import {UpdateStudentRequest} from "../requests/updateStudentRequest";
-import { CreateStudentResponse } from "../requests/createStudentResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +12,19 @@ export class StudentService {
 
   constructor(private http: HttpClient) {}
 
-  getAllStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}`);
+  async getAllStudentss(): Promise<Student[]> {
+    return await firstValueFrom(this.http.get<Student[]>(this.apiUrl));
   }
+  getAllStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.apiUrl);
+  }
+
 
   getStudentById(id: number): Observable<Student> {
     return this.http.get<Student>(`${this.apiUrl}/${id}`);
   }
 
   createStudent(student: any): Observable<any> {
-    // Si c'est un FormData (upload fichier), laisse Angular gérer le content-type
     return this.http.post<any>(`${this.apiUrl}/inscription`, student);
   }
 

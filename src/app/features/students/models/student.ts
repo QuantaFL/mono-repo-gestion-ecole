@@ -1,5 +1,3 @@
-import {User} from "../../auth/models/user";
-import {ClassModel} from "../../class/models/class";
 import {StudentSession} from "../../teacher-dashboard/models/student-session";
 
 
@@ -14,4 +12,7 @@ export interface Student {
   parentModel?: any;
   userModel?: any;
   academic_records_url?: string;
+  femaleCount?: number;
+  maleCount?: number;
+  count?: number;
 }

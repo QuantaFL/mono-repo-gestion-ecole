@@ -1,4 +1,4 @@
-import { User } from "../../auth/models/user";
+import {User} from "../../auth/models/user";
 
 export interface Subject {
   id: number;
@@ -21,4 +21,5 @@ export interface Teacher {
   user_model_id: number;
   subjects: Subject[];
   userModel: User;
+  count?: number;
 }
