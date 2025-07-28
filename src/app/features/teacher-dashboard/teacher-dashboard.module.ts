@@ -14,6 +14,7 @@ import {ClassDetailsComponent} from './components/class-details/class-details.co
 import {StudentDetailsModalComponent} from './components/student-details-modal/student-details-modal.component';
 import {TeacherMyClassesComponent} from './components/teacher-my-classes/teacher-my-classes.component';
 import {SharedModule} from '../../shared/shared.module';
+import {TeacherTimetableComponent} from './components/teacher-timetable/teacher-timetable.component';
 
 
 @NgModule({
@@ -22,8 +23,7 @@ import {SharedModule} from '../../shared/shared.module';
     ClassDetailsComponent,
     TeacherDashboardLayoutComponent,
     StudentDetailsModalComponent,
-    TeacherMyClassesComponent,
-
+    TeacherMyClassesComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +34,8 @@ import {SharedModule} from '../../shared/shared.module';
     DialogModule,
     SharedModule,
     ReactiveFormsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    TeacherTimetableComponent
   ],
 })
 export class TeacherDashboardModule { }
