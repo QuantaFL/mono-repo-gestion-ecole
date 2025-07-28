@@ -14,4 +14,6 @@ export interface UserModel {
   created_at: string;
   updated_at: string;
   isFirstLogin: boolean;
+  profile_picture_url?: string;
+  nationality?: string;
 }

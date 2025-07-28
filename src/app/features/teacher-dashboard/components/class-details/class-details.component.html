@@ -4,6 +4,13 @@
   <ul>
     <li *ngFor="let note of studentNotes">
       <strong>
+        <ng-container *ngIf="note.student?.profilePictureUrl; else noProfile">
+          <img [src]="note.student.profilePictureUrl" alt="Photo de profil" class="student-profile-img"
+               style="width:32px;height:32px;border-radius:50%;margin-right:8px;vertical-align:middle;object-fit:cover;"/>
+        </ng-container>
+        <ng-template #noProfile>
+          <i class="fas fa-user" style="margin-right:8px;"></i>
+        </ng-template>
         {{ note.student?.user_model?.first_name }} {{ note.student?.user_model?.last_name }}
         ({{ note.student?.matricule }})
       </strong>

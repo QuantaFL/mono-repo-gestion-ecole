@@ -1,16 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TeacherDashboardService } from '../../services/teacher-dashboard.service';
-import { AcademicYear } from '../../models/academic-year';
-import { ClassModel } from '../../models/class-model';
-import { Term } from '../../models/term';
-import { TeacherStore } from '../../services/teacher.store';
-import { Teacher } from '../../models/teacher';
-import { Subject } from '../../models/subject';
-import { PerformanceSummary } from '../../models/performance-summary';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, switchMap, catchError, filter, tap } from 'rxjs/operators';
-import { Student } from '../../models/student';
-import { Grade } from '../../models/grade';
+import {Component, Input, OnInit} from '@angular/core';
+import {TeacherDashboardService} from '../../services/teacher-dashboard.service';
+import {AcademicYear} from '../../models/academic-year';
+import {Term} from '../../models/term';
+import {TeacherStore} from '../../services/teacher.store';
+import {Teacher} from '../../models/teacher';
+import {Subject} from '../../models/subject';
+import {PerformanceSummary} from '../../models/performance-summary';
+import {of} from 'rxjs';
+import {catchError, filter, switchMap, tap} from 'rxjs/operators';
 import {Assignment} from "../../models/assignment";
 
 @Component({
@@ -76,6 +73,7 @@ export class TeacherDashboardHomeComponent implements OnInit {
           return this.teacherDashboardService.getBulkPerformanceSummary(classSubjects).pipe(
             tap(summary => {
               this.performanceSummary = summary;
+              console.log(summary)
             }),
             catchError(err => {
               this.performanceSummary = null;

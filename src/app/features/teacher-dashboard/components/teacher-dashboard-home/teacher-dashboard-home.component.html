@@ -125,15 +125,23 @@
       <div class="card-content">
         <h3 class="card-title">Étudiant le Plus Performant</h3>
         <div class="student-profile">
-          <div class="student-avatar">
-            <i class="fas fa-user"></i>
+          <div class="student-avatar"
+               style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;background:#f5f5f7;overflow:hidden;">
+            <ng-container *ngIf="summary.bestPerformingStudent?.profilePictureUrl; else defaultBestAvatar">
+              <img [src]="summary.bestPerformingStudent.profilePictureUrl" alt="Photo de profil"
+                   class="student-profile-img"
+                   style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;"/>
+            </ng-container>
+            <ng-template #defaultBestAvatar>
+              <i class="fas fa-user" style="font-size:48px;color:#bbb;"></i>
+            </ng-template>
           </div>
           <div class="student-info">
             <div class="student-name">{{ summary.bestPerformingStudent?.firstName }} {{ summary.bestPerformingStudent?.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
                 <span class="score-value">{{ summary.bestPerformingStudent?.averageGrade | number:'1.1-1' }}</span>
-                <span class="score-max">/100</span>
+                <span class="score-max">/20</span>
               </div>
             </div>
           </div>
@@ -150,15 +158,23 @@
       <div class="card-content">
         <h3 class="card-title">Étudiant le Moins Performant</h3>
         <div class="student-profile">
-          <div class="student-avatar">
-            <i class="fas fa-user"></i>
+          <div class="student-avatar"
+               style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;background:#f5f5f7;overflow:hidden;">
+            <ng-container *ngIf="summary.worstPerformingStudent?.profilePictureUrl; else defaultWorstAvatar">
+              <img [src]="summary.worstPerformingStudent.profilePictureUrl" alt="Photo de profil"
+                   class="student-profile-img"
+                   style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;"/>
+            </ng-container>
+            <ng-template #defaultWorstAvatar>
+              <i class="fas fa-user" style="font-size:48px;color:#bbb;"></i>
+            </ng-template>
           </div>
           <div class="student-info">
             <div class="student-name">{{ summary.worstPerformingStudent?.firstName }} {{ summary.worstPerformingStudent?.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
                 <span class="score-value">{{ summary.worstPerformingStudent?.averageGrade | number:'1.1-1' }}</span>
-                <span class="score-max">/100</span>
+                <span class="score-max">/20</span>
               </div>
             </div>
           </div>
