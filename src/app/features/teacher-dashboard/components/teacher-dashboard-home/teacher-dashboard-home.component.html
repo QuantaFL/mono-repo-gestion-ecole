@@ -39,9 +39,7 @@
           </div>
           <span>
             <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
-              <ng-container *ngFor="let subject of uniqueSubjects; let i = index">
-                <span class="subject-badge subject-badge-{{i % 20}}" title="{{ subject.name }}">{{ subject.name }}</span>
-              </ng-container>
+              {{ getUniqueSubjectNames() }}
             </ng-container>
             <ng-template #noSubjects>
               <span>Aucune matière assignée</span>
