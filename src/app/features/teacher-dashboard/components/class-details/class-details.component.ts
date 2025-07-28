@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 import { TeacherStore } from '../../services/teacher.store';
 import { ClassModel } from '../../models/class-model';
 import {Teacher} from "../../models/teacher";
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class ClassDetailsComponent implements OnInit {
   grades: Grade[] = [];
   students: Student[] = [];
   uniqueSubjectIds: number[] = []; // Changed to number[] for subject IDs
-  gradeTypes: string[] = ['devoir', 'examen'];
+  gradeTypes: string[] = ['exam', 'quiz'];
   assignements: Assignment[] = [];
   currentTeacher : Teacher | null = null;
   // Always show these types
@@ -42,6 +43,7 @@ export class ClassDetailsComponent implements OnInit {
     private teacherDashboardService: TeacherDashboardService,
     private dialog: Dialog,
     private teacherStore: TeacherStore,
+    private toast: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -58,12 +60,15 @@ export class ClassDetailsComponent implements OnInit {
 
     forkJoin({
       currentTerm: this.teacherDashboardService.getCurrentTerm(),
-      currentClass: this.teacherDashboardService.getClassById(this.classId)
+      currentClass: this.teacherDashboardService.getClassById(this.classId),
     }).subscribe({
       next: ({ currentTerm, currentClass }) => {
+
+      console.log('Fetching class details for classId:', this.classId)
         this.currentTerm = currentTerm;
         this.currentClass = currentClass;
-        const studentIds = (currentClass.current_academic_year_student_sessions || []).map((session: StudentSession) => session.student_id);
+        console.log('currentClass:', currentClass);
+        const studentIds = (currentClass.current_academic_year_student_sessions).map((session: StudentSession) => session.student_id);
         if (studentIds.length > 0) {
           this.teacherDashboardService.fetchStudentsByIds(studentIds).subscribe({
             next: (students) => {
@@ -97,8 +102,8 @@ export class ClassDetailsComponent implements OnInit {
         next: (assignments) => {
           console.log('All assignments:', assignments); // Debug: log all assignments before filtering
           this.assignements = assignments.filter(a => a.class_model_id === this.classId);
-          this.uniqueSubjectIds = this.assignements.map(a => a.subject_id).filter((id): id is number => !!id);
-          this.gradeTypes = ['devoir', 'examen'];
+          this.uniqueSubjectIds = this.assignements.map(a => a.subject?.id).filter((id): id is number => !!id);
+          this.gradeTypes = ['quiz', 'exam'];
           // Fetch all subjects in bulk
           if (this.uniqueSubjectIds.length > 0) {
             this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).subscribe({
@@ -135,18 +140,44 @@ export class ClassDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Fetch all grades for all students in the class, using the new batch endpoint and passing all available context.
+   */
   fetchGradesForAllStudents(): void {
     if (!this.classId || !this.currentTerm || this.students.length === 0) return;
 
-    const gradeObservables = this.students.filter(student => student && student.id).map(student =>
-      this.teacherDashboardService.getGradesForStudentInClassTerm(this.classId!, this.currentTerm!.id, student!.id!)
-    );
-    console.log('Fetching grades for students:', this.students.map(s => s.id));
-
-    forkJoin(gradeObservables).subscribe({
-      next: (allStudentGrades: Grade[][]) => {
-        this.grades = allStudentGrades.flat();
-        console.log('Grades fetched successfully:', this.grades);
+    let teacherId: number | undefined;
+    if (this.currentTeacher && this.currentTeacher.id) {
+      teacherId = this.currentTeacher.id;
+    }
+    this.teacherDashboardService.getAllGradesForClass(
+      this.classId,
+      teacherId
+    ).subscribe({
+      next: (response: any[]) => {
+        // Flatten grades from backend response
+        const flatGrades: any[] = [];
+        for (const entry of response) {
+          // If grades is an error, log assignment and student session IDs
+          if (entry.grades && entry.grades.error) {
+            const assignmentId = entry.student_session?.id ? (entry.assignment_id || entry.assignement_id || 'unknown') : 'unknown';
+            const sessionId = entry.student_session?.id || 'unknown';
+            console.warn(`Assignment not found. Assignment ID: ${assignmentId}, Student Session ID: ${sessionId}`);
+            continue;
+          }
+          // If grades is an array, flatten each
+          if (Array.isArray(entry.grades)) {
+            for (const grade of entry.grades) {
+              flatGrades.push({
+                ...grade,
+                student: entry.student,
+                student_session: entry.student_session
+              });
+            }
+          }
+        }
+        this.grades = flatGrades;
+        console.log('Flattened grades:', this.grades);
         // Initialize gradeInputs for all (student_session_id, assignment_id, type) combinations
         this.gradeInputs = {};
         for (const student of this.students) {
@@ -158,11 +189,23 @@ export class ClassDetailsComponent implements OnInit {
           for (const assignment of this.assignements) {
             for (const type of this.gradeTypes) {
               const key = `${sessionId}_${assignment.id}_${type}`;
-              const grade = this.grades.find(g =>
-                g.student_session?.id === sessionId &&
-                g.assignement?.id === assignment.id &&
-                g.type === type
-              );
+              const grade = this.grades.find(g => {
+                const match = g.student_session?.id === sessionId &&
+                  g.assignement?.id === assignment.id &&
+                  g.type === type;
+                if (match) {
+                  console.log('Grade matched:', {
+                    sessionId,
+                    assignmentId: assignment.id,
+                    type,
+                    grade
+                  });
+                }
+                return match;
+              });
+              if (!grade) {
+                console.log('No grade found for:', { sessionId, assignmentId: assignment.id, type });
+              }
               this.gradeInputs[key] = grade ? grade.mark : null;
             }
           }
@@ -174,7 +217,7 @@ export class ClassDetailsComponent implements OnInit {
         console.log('students:', this.students);
       },
       error: (err: any) => {
-        console.error('Error fetching grades for students:', err);
+        console.error('Error fetching grades for class:', err);
       }
     });
   }
@@ -182,13 +225,26 @@ export class ClassDetailsComponent implements OnInit {
   getGrade(studentSessionId: number, assignmentId: number, type: string): number | null {
     const key = `${studentSessionId}_${assignmentId}_${type}`;
     if (this.gradeInputs.hasOwnProperty(key)) {
-      return this.gradeInputs[key];
+      const value = this.gradeInputs[key];
+      if (value === null) {
+        console.log('getGrade: No grade for', { studentSessionId, assignmentId, type });
+      } else {
+        console.log('getGrade: Found grade for', { studentSessionId, assignmentId, type, value });
+      }
+      return value;
     }
-    const grade = this.grades.find(g =>
-      g.student_session?.id === studentSessionId &&
-      g.assignement?.id === assignmentId &&
-      g.type === type
-    );
+    const grade = this.grades.find(g => {
+      const match = g.student_session?.id === studentSessionId &&
+        g.assignement?.id === assignmentId &&
+        g.type === type;
+      if (match) {
+        console.log('getGrade: Matched grade object', { studentSessionId, assignmentId, type, grade });
+      }
+      return match;
+    });
+    if (!grade) {
+      console.log('getGrade: No grade found for', { studentSessionId, assignmentId, type });
+    }
     return grade ? grade.mark : null;
   }
 
@@ -202,50 +258,42 @@ export class ClassDetailsComponent implements OnInit {
     if (!this.currentTerm) return;
     this.loading = true;
     this.errorMessage = '';
-    const requests = [];
+    const gradesBatch: any[] = [];
     for (const student of this.students) {
-      for (const subjectId of this.uniqueSubjectIds) {
+      const sessionId = student.latest_student_session?.id;
+      if (!sessionId) continue;
+      for (const assignment of this.assignements) {
         for (const type of this.gradeTypes) {
-          const key = `${student.id}_${subjectId}_${type}`;
+          const key = `${sessionId}_${assignment.id}_${type}`;
           const mark = this.gradeInputs[key];
           if (mark === null || mark === undefined || isNaN(mark)) continue;
-          const existingGrade = this.grades.find(g =>
-            g.student_session?.student?.id === student.id &&
-            g.assignement?.subject?.id === subjectId &&
-            g.type === type
-          );
-          const assignement = this.assignements.find(a => a.subject_id === subjectId && a.class_model_id === this.classId);
-          if (!assignement) continue;
-          const payload = {
-            assignement_id: assignement.id,
-            student_session_id: student.latest_student_session?.id,
+          gradesBatch.push({
+            student_session_id: sessionId,
+            assignement_id: assignment.id,
             term_id: this.currentTerm.id,
             type,
             mark
-          };
-          if (existingGrade && existingGrade.id != null) {
-            // updateGrade should accept (id, payload)
-            requests.push(this.teacherDashboardService.updateGrade(existingGrade.id as number, payload));
-          } else {
-            // Use the correct method for creating a grade
-            requests.push(this.teacherDashboardService.addGrade(payload));
-          }
+          });
         }
       }
     }
-    if (requests.length === 0) {
+    if (gradesBatch.length === 0) {
       this.loading = false;
       return;
     }
-    Promise.all(requests.map(r => r.toPromise()))
-      .then(() => {
+    console.log('Saving grades batch:', gradesBatch);
+    this.teacherDashboardService.addGradesBatch(gradesBatch).subscribe({
+      next: () => {
         this.fetchGradesForAllStudents();
         this.loading = false;
-      })
-      .catch(err => {
+        this.toast.success('Notes enregistrées avec succès !', 'Succès');
+      },
+      error: (err: any) => {
         this.errorMessage = 'Erreur lors de l\'enregistrement des notes.';
         this.loading = false;
-      });
+        this.toast.error(this.errorMessage, 'Erreur');
+      }
+    });
   }
 
   submitTermGrades(): void {
@@ -260,10 +308,14 @@ export class ClassDetailsComponent implements OnInit {
           console.log('Notes du terme soumises avec succès:', res);
           alert('Notes du terme soumises avec succès !');
           this.fetchGradesForAllStudents(); // Refresh grades after submission
+          this.toast.success('Notes du terme soumises avec succès !', 'Succès');
+          this.loading = false;
         },
         error: (err) => {
           console.error('Erreur lors de la soumission des notes du terme:', err);
-          alert('Erreur lors de la soumission des notes du terme. Veuillez vérifier la console pour plus de détails.');
+          this.errorMessage = 'Erreur lors de la soumission des notes du terme.';
+          this.loading = false;
+          this.toast.error('Erreur lors de la soumission des notes du terme. Veuillez vérifier la console pour plus de détails.', 'Erreur');
         }
       });
     }
