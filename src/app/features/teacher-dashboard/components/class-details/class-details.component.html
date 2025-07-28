@@ -16,7 +16,7 @@
             <th>Nom de l'Étudiant</th>
             <ng-container *ngFor="let assignment of assignements">
               <th *ngFor="let type of gradeTypes">
-                {{ subjectIdToSubject[assignment.subject_id]!.name || 'Matière inconnue' }} ({{ type | titlecase }})
+                {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }} ({{ type | titlecase }})
               </th>
             </ng-container>
             <th>Info</th>
