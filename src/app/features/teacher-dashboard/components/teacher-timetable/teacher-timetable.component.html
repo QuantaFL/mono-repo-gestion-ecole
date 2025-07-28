@@ -1,0 +1,18 @@
+<div class="timetable-container">
+  <h1 class="timetable-title">Mon Emploi du temps</h1>
+  <div class="timetable-grid">
+    <div class="header-cell time-header">Time</div>
+    <div *ngFor="let day of daysOfWeek" class="header-cell day-header">{{ day }}</div>
+
+    <ng-container *ngFor="let time of timeSlots">
+      <div class="time-slot-label">{{ time }}</div>
+      <div *ngFor="let day of daysOfWeek" class="timetable-cell">
+        <div *ngIf="timetable[day][time] as slot" [style.background-color]="slot.color" class="slot-content">
+          <div class="subject-name">{{ slot.subject }}</div>
+          <div class="class-name">{{ slot.className }}</div>
+          <div class="time-range">{{ slot.startTime }} - {{ slot.endTime }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
