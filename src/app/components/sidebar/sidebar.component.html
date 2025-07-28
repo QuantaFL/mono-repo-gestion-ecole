@@ -16,11 +16,11 @@
   <nav class="nav-menu">
     <ul class="menu-list">
       <li class="menu-item"
-          *ngFor="let item of menuItems; trackBy: trackByPath"
-          [class.active]="item.isActive">
+          *ngFor="let item of menuItems; trackBy: trackByPath">
         <a [routerLink]="item.path"
            class="menu-link"
            routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }"
            (click)="onMenuClick(item)">
           <div class="menu-icon-container">
             <svg class="menu-icon"
