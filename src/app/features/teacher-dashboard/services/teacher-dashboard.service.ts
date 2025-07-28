@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ClassModel } from '../models/class-model';
-import { Grade } from '../models/grade';
-import { AcademicYear } from '../models/academic-year';
-import { Term } from '../models/term';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ClassModel} from '../models/class-model';
+import {Grade} from '../models/grade';
+import {AcademicYear} from '../models/academic-year';
+import {Term} from '../models/term';
+import {ReportCard} from '../models/report-card';
 
-import { Teacher } from '../models/teacher';
-import { Student } from '../models/student';
+import {Teacher} from '../models/teacher';
+import {Student} from '../models/student';
 import {Assignment} from "../models/assignment";
 import {Subject} from "../models/subject";
 import {PerformanceSummary} from "../models/performance-summary";
@@ -132,5 +133,9 @@ export class TeacherDashboardService {
    */
   getBulkPerformanceSummary(classSubjects: { classId: number, subjectId: number }[]): Observable<PerformanceSummary> {
     return this.http.post<PerformanceSummary>(`${this.apiUrl}/teachers/dashboard/performance-summary/bulk`, { classSubjects });
+  }
+
+  getReportCardsForStudent(studentId: number): Observable<ReportCard[]> {
+    return this.http.get<ReportCard[]>(`${this.apiUrl}/students/${studentId}/report-cards`);
   }
 }
