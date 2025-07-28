@@ -3,11 +3,12 @@
   <div class="sidebar-header">
     <div class="logo-container">
       <div class="logo">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-        </svg>
+        <div class="logo-circle">
+          <img alt="School Logo" class="logo-image" src="assets/school_logo.png"/>
+        </div>
       </div>
-      <h1 class="logo-text" *ngIf="!isCollapsed">{{ getCurrentUser()!.role.name === 'admin' ? 'portail admin':'portail prof' }}</h1>
+      <h2 *ngIf="!isCollapsed"
+          class="logo-text">{{ getCurrentUser()!.role.name === 'admin' ? 'portail admin' : 'portail prof' }}</h2>
     </div>
   </div>
 
@@ -67,4 +68,3 @@
        (click)="toggleSidebar()">
   </div>
 </aside>
-
