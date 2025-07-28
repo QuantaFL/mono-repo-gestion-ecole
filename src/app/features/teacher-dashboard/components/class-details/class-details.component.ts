@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 import { TeacherStore } from '../../services/teacher.store';
 import { ClassModel } from '../../models/class-model';
 import {Teacher} from "../../models/teacher";
+import { StudentNote } from '../../models/student-note';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -22,6 +23,35 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './class-details.component.scss'
 })
 export class ClassDetailsComponent implements OnInit {
+  studentNotes: StudentNote[] = [];
+  /**
+   * Fetch student notes for a specific subject in this class.
+   */
+  fetchStudentNotesForSubject(subjectId: number): void {
+    if (!this.classId || !subjectId) return;
+    this.teacherDashboardService.getStudentNotesForSubject(this.classId, subjectId).subscribe({
+      next: (notes: StudentNote[]) => {
+        this.studentNotes = notes;
+        // Pre-fill gradeInputs for the selected subject
+        for (const note of notes) {
+          const sessionId = note.student_session_id;
+          for (const grade of note.grades) {
+            // Fill for all assignments of this subject
+            const assignments = this.assignements.filter(a => a.subject_id === subjectId);
+            for (const assignment of assignments) {
+              const key = `${sessionId}_${assignment.id}_${grade.type}`;
+              this.gradeInputs[key] = grade.mark;
+            }
+          }
+        }
+        console.log('Fetched student notes:', notes);
+      },
+      error: (err) => {
+        this.studentNotes = [];
+        console.error('Error fetching student notes:', err);
+      }
+    });
+  }
   classId: number | null = null;
   currentClass: ClassModel | null = null;
   currentTerm: Term | null = null;
@@ -106,22 +136,28 @@ export class ClassDetailsComponent implements OnInit {
           this.gradeTypes = ['quiz', 'exam'];
           // Fetch all subjects in bulk
           if (this.uniqueSubjectIds.length > 0) {
-            this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).subscribe({
-              next: (subjects: Subject[]) => {
-                this.uniqueSubjects = subjects;
-                this.subjectIdToSubject = {};
-                for (const subj of subjects) {
-                  this.subjectIdToSubject[subj.id] = subj;
-                }
-                this.fetchGradesForAllStudents();
-              },
-              error: (err) => {
-                this.uniqueSubjects = [];
-                this.subjectIdToSubject = {};
-                this.fetchGradesForAllStudents();
-                console.error('Error fetching subjects:', err);
+          this.teacherDashboardService.fetchSubjectsByIds(this.uniqueSubjectIds).subscribe({
+            next: (subjects: Subject[]) => {
+              this.uniqueSubjects = subjects;
+              this.subjectIdToSubject = {};
+              for (const subj of subjects) {
+                this.subjectIdToSubject[subj.id] = subj;
               }
-            });
+              // Automatically fetch student notes for the first subject
+              if (subjects.length > 0) {
+                this.fetchStudentNotesForSubject(subjects[0].id);
+                // Do NOT call fetchGradesForAllStudents here, to avoid overwriting gradeInputs
+              } else {
+                this.fetchGradesForAllStudents();
+              }
+            },
+            error: (err) => {
+              this.uniqueSubjects = [];
+              this.subjectIdToSubject = {};
+              this.fetchGradesForAllStudents();
+              console.error('Error fetching subjects:', err);
+            }
+          });
           } else {
             this.uniqueSubjects = [];
             this.subjectIdToSubject = {};
@@ -133,7 +169,7 @@ export class ClassDetailsComponent implements OnInit {
           this.uniqueSubjectIds = [];
           this.uniqueSubjects = [];
           this.subjectIdToSubject = {};
-          this.gradeTypes = ['devoir', 'examen'];
+          this.gradeTypes = ['quiz', 'exam'];
           console.error('Error fetching assignments:', err);
         }
       });
@@ -160,9 +196,10 @@ export class ClassDetailsComponent implements OnInit {
         for (const entry of response) {
           // If grades is an error, log assignment and student session IDs
           if (entry.grades && entry.grades.error) {
-            const assignmentId = entry.student_session?.id ? (entry.assignment_id || entry.assignement_id || 'unknown') : 'unknown';
+            // Try to get assignmentId from entry, but fallback to undefined
             const sessionId = entry.student_session?.id || 'unknown';
-            console.warn(`Assignment not found. Assignment ID: ${assignmentId}, Student Session ID: ${sessionId}`);
+            // assignmentId is not present in entry, so log only sessionId here
+            console.warn(`Assignment not found for Student Session ID: ${sessionId}. Assignment ID not present in backend response.`);
             continue;
           }
           // If grades is an array, flatten each
@@ -178,7 +215,6 @@ export class ClassDetailsComponent implements OnInit {
         }
         this.grades = flatGrades;
         console.log('Flattened grades:', this.grades);
-        // Initialize gradeInputs for all (student_session_id, assignment_id, type) combinations
         this.gradeInputs = {};
         for (const student of this.students) {
           const sessionId = student.latest_student_session?.id;
@@ -204,7 +240,8 @@ export class ClassDetailsComponent implements OnInit {
                 return match;
               });
               if (!grade) {
-                console.log('No grade found for:', { sessionId, assignmentId: assignment.id, type });
+                // Log assignment not found with assignmentId from loop
+                console.warn(`Assignment not found. Assignment ID: ${assignment.id}, Student Session ID: ${sessionId}`);
               }
               this.gradeInputs[key] = grade ? grade.mark : null;
             }
@@ -227,8 +264,7 @@ export class ClassDetailsComponent implements OnInit {
     if (this.gradeInputs.hasOwnProperty(key)) {
       const value = this.gradeInputs[key];
       if (value === null) {
-        console.log('getGrade: No grade for', { studentSessionId, assignmentId, type });
-      } else {
+       } else {
         console.log('getGrade: Found grade for', { studentSessionId, assignmentId, type, value });
       }
       return value;
@@ -242,9 +278,7 @@ export class ClassDetailsComponent implements OnInit {
       }
       return match;
     });
-    if (!grade) {
-      console.log('getGrade: No grade found for', { studentSessionId, assignmentId, type });
-    }
+    // Removed 'getGrade: No grade found for' log as requested
     return grade ? grade.mark : null;
   }
 
@@ -270,7 +304,6 @@ export class ClassDetailsComponent implements OnInit {
           gradesBatch.push({
             student_session_id: sessionId,
             assignement_id: assignment.id,
-            term_id: this.currentTerm.id,
             type,
             mark
           });
@@ -284,7 +317,10 @@ export class ClassDetailsComponent implements OnInit {
     console.log('Saving grades batch:', gradesBatch);
     this.teacherDashboardService.addGradesBatch(gradesBatch).subscribe({
       next: () => {
-        this.fetchGradesForAllStudents();
+        // After saving, refresh student notes for the first subject
+        if (this.uniqueSubjects.length > 0) {
+          this.fetchStudentNotesForSubject(this.uniqueSubjects[0].id);
+        }
         this.loading = false;
         this.toast.success('Notes enregistrées avec succès !', 'Succès');
       },
@@ -307,7 +343,10 @@ export class ClassDetailsComponent implements OnInit {
         next: (res) => {
           console.log('Notes du terme soumises avec succès:', res);
           alert('Notes du terme soumises avec succès !');
-          this.fetchGradesForAllStudents(); // Refresh grades after submission
+          // After submitting, refresh student notes for the first subject
+          if (this.uniqueSubjects.length > 0) {
+            this.fetchStudentNotesForSubject(this.uniqueSubjects[0].id);
+          }
           this.toast.success('Notes du terme soumises avec succès !', 'Succès');
           this.loading = false;
         },

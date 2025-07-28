@@ -1,3 +1,7 @@
+  /**
+   * Fetch student notes for a specific class and subject.
+   */
+
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
@@ -12,11 +16,20 @@ import {Student} from '../models/student';
 import {Assignment} from "../models/assignment";
 import {Subject} from "../models/subject";
 import {PerformanceSummary} from "../models/performance-summary";
+import { StudentNote } from '../models/student-note';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherDashboardService {
+
+ noCacheHeaders = { headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' } };
+  /**
+   * Fetch student notes for a specific class and subject.
+   */
+  getStudentNotesForSubject(classId: number, subjectId: number): Observable<StudentNote[]> {
+    return this.http.get<StudentNote[]>(`${this.apiUrl}/classes/${classId}/subjects/${subjectId}/student-notes`, this.noCacheHeaders);
+  }
   /**
    * Fetch all grades for all students in the class, optionally filtered by teacher, subject, or assignment.
    * If a parameter is not provided, 'null' is used in the URL.
@@ -46,7 +59,8 @@ export class TeacherDashboardService {
     return this.http.get<ClassModel[]>(`${this.apiUrl}/teachers/${teacherId}/classes`, {
       params: {
         academic_year_id: academicYearId.toString()
-      }
+      },
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
     });
   }
 
@@ -64,7 +78,8 @@ export class TeacherDashboardService {
         term_id: termId.toString(),
         class_model_id: classModelId.toString(),
         subject_id: subjectId.toString()
-      }
+      },
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
     });
   }
 
@@ -99,7 +114,7 @@ export class TeacherDashboardService {
   }
 
   getGradesForStudentInClassTerm(classId: number, termId: number, studentId: number): Observable<Grade[]> {
-    return this.http.get<Grade[]>(`${this.apiUrl}/grades/class/${classId}/students/${studentId}`);
+    return this.http.get<Grade[]>(`${this.apiUrl}/grades/class/${classId}/students/${studentId}`, this.noCacheHeaders);
   }
 
   getTeacherByUserId(userId: number): Observable<Teacher> {
@@ -107,7 +122,7 @@ export class TeacherDashboardService {
   }
 
   getStudentsByClassId(classId: number): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}/classes/${classId}/students`);
+    return this.http.get<Student[]>(`${this.apiUrl}/classes/${classId}/students`, this.noCacheHeaders);
   }
 
   getClassById(classId: number): Observable<ClassModel> {
@@ -125,7 +140,7 @@ export class TeacherDashboardService {
     return this.http.get<Assignment[]>(`${this.apiUrl}/assignments/teacher/${id}`);
   }
   fetchSubjectsByIds(ids: number[]): Observable<Subject[]> {
-    return this.http.post<Subject[]>(`${this.apiUrl}/subjects/bulk`, { ids });
+    return this.http.post<Subject[]>(`${this.apiUrl}/subjects/bulk`, { ids }, this.noCacheHeaders);
   }
 
   /**
@@ -152,10 +167,10 @@ export class TeacherDashboardService {
    * @param classSubjects Array of { classId, subjectId }
    */
   getBulkPerformanceSummary(classSubjects: { classId: number, subjectId: number }[]): Observable<PerformanceSummary> {
-    return this.http.post<PerformanceSummary>(`${this.apiUrl}/teachers/dashboard/performance-summary/bulk`, { classSubjects });
+    return this.http.post<PerformanceSummary>(`${this.apiUrl}/teachers/dashboard/performance-summary/bulk`, { classSubjects }, this.noCacheHeaders);
   }
 
   getReportCardsForStudent(studentId: number): Observable<ReportCard[]> {
-    return this.http.get<ReportCard[]>(`${this.apiUrl}/students/${studentId}/report-cards`);
+    return this.http.get<ReportCard[]>(`${this.apiUrl}/students/${studentId}/report-cards`, this.noCacheHeaders);
   }
 }

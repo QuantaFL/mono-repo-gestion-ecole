@@ -1,3 +1,21 @@
+<!-- Student Notes Section -->
+<div *ngIf="studentNotes.length > 0" class="student-notes-section">
+  <h3>Notes des élèves pour la matière sélectionnée</h3>
+  <ul>
+    <li *ngFor="let note of studentNotes">
+      <strong>
+        {{ note.student?.user_model?.first_name }} {{ note.student?.user_model?.last_name }}
+        ({{ note.student?.matricule }})
+      </strong>
+      <span *ngFor="let grade of note.grades">
+        | {{ grade.type }}: <b>{{ grade.mark }}</b>
+      </span>
+    </li>
+  </ul>
+</div>
+<div *ngIf="studentNotes.length === 0">
+  <p>Aucune note trouvée pour cette matière.</p>
+</div>
 <div class="card class-details-card">
   <div class="card-header">
     <h2 class="card-title">Feuille de note de la classe de {{ currentClass?.name }}</h2>
