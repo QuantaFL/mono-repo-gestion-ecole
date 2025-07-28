@@ -17,6 +17,26 @@ import {PerformanceSummary} from "../models/performance-summary";
   providedIn: 'root'
 })
 export class TeacherDashboardService {
+  /**
+   * Fetch all grades for all students in the class, optionally filtered by teacher, subject, or assignment.
+   * If a parameter is not provided, 'null' is used in the URL.
+   */
+  getAllGradesForClass(
+    classId: number,
+    teacherId?: number,
+    subjectId?: number,
+    assignmentId?: number
+  ) {
+    const teacherPart = teacherId !== undefined && teacherId !== null ? teacherId : 'null';
+    const subjectPart = subjectId !== undefined && subjectId !== null ? subjectId : 'null';
+    const assignmentPart = assignmentId !== undefined && assignmentId !== null ? assignmentId : 'null';
+    // students is always 'null' for this endpoint (fetch all students)
+    const url = `${this.apiUrl}/grades/class/${classId}/students/null/teacher/${teacherPart}/subject/null/assignement/${assignmentPart}`;
+    return this.http.get<Grade[]>(url);
+  }
+  addGradesBatch(grades: any[]) {
+    return this.http.post(`${this.apiUrl}/grades`, { grades });
+  }
   private apiUrl = 'http://localhost:8000/api/v1'; // Assuming your API runs on localhost:8000
 
   constructor(private http: HttpClient) { }
