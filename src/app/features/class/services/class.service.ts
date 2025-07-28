@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ClassModel } from '../../teacher-dashboard/models/class-model';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ClassModel} from '../../teacher-dashboard/models/class-model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +29,9 @@ export class ClassService {
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  getAllClasses(): Observable<ClassModel[]> {
+    return this.http.get<ClassModel[]>(`${this.apiUrl}`);
   }
 }

@@ -12,19 +12,15 @@
     <div class="kpi-grid">
       <div class="kpi-card">
         <h6 class="kpi-label">Total Élèves</h6>
-        <h3 class="kpi-value">512</h3>
+        <h3 class="kpi-value">{{ totalStudentsModel!.at(0)!.count }}</h3>
       </div>
       <div class="kpi-card">
         <h6 class="kpi-label">Enseignants</h6>
-        <h3 class="kpi-value">42</h3>
+        <h3 class="kpi-value">{{ totalTeacher! }}</h3>
       </div>
       <div class="kpi-card">
         <h6 class="kpi-label">Classes</h6>
-        <h3 class="kpi-value">18</h3>
-      </div>
-      <div class="kpi-card">
-        <h6 class="kpi-label">Présences aujourd'hui</h6>
-        <h3 class="kpi-value">457</h3>
+        <h3 class="kpi-value">{{ totalClasses! }}</h3>
       </div>
     </div>
 
@@ -32,9 +28,6 @@
     <div class="chart-grid">
       <div class="chart-card">
         <canvas id="studentsChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <canvas id="presenceChart"></canvas>
       </div>
     </div>
   </div>
