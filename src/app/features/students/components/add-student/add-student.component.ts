@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ClassService } from '../../../class/services/class.service';
-import { ClassModel } from '../../../class/models/class';
-import { StudentService } from '../../services/student.service';
-import { Router } from '@angular/router';
-import {CreateStudentRequest} from "../../requests/createStudentRequest";
-import { AcademicYearService } from '../../services/academic-year.service';
-import { AcademicYear } from '../../../teacher-dashboard/models/academic-year';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ClassService} from '../../../class/services/class.service';
+import {ClassModel} from '../../../class/models/class';
+import {StudentService} from '../../services/student.service';
+import {Router} from '@angular/router';
+import {AcademicYearService} from '../../services/academic-year.service';
+import {AcademicYear} from '../../../teacher-dashboard/models/academic-year';
 import {ToastrService} from "ngx-toastr";
 
 @Component({
@@ -45,8 +44,6 @@ export class AddStudentComponent implements OnInit {
         Validators.email
       ]),
       student_adress: new FormControl('', Validators.required),
-      student_matricule: new FormControl('', Validators.required),
-      student_password: new FormControl('', Validators.required),
       student_role_id: new FormControl(3, Validators.required),
 
       // Étape 2 — infos scolaires
@@ -61,7 +58,6 @@ export class AddStudentComponent implements OnInit {
         Validators.required,
         Validators.email
       ]),
-      parent_password: new FormControl('', Validators.required),
       parent_phone: new FormControl('', Validators.required),
       parent_adress: new FormControl('', Validators.required),
       parent_birthday: new FormControl('', Validators.required),
@@ -94,8 +90,6 @@ export class AddStudentComponent implements OnInit {
       student_phone: '770000000',
       student_email: 'test.student@example.com',
       student_adress: '123 Test Street',
-      student_matricule: 'MAT123456',
-      student_password: 'TestPass123!',
       student_role_id: 3,
       class_model_id: '', // Set after classes load if needed
       academic_year_id: '', // Set by service
@@ -103,7 +97,6 @@ export class AddStudentComponent implements OnInit {
       parent_first_name: 'ParentFirst',
       parent_last_name: 'ParentLast',
       parent_email: 'parent@example.com',
-      parent_password: 'ParentPass123!',
       parent_phone: '780000000',
       parent_adress: '456 Parent Ave',
       parent_birthday: '1980-01-01',
@@ -135,16 +128,13 @@ export class AddStudentComponent implements OnInit {
           this.studentForm.get('student_gender')?.valid === true &&
           this.studentForm.get('student_phone')?.valid === true &&
           this.studentForm.get('student_email')?.valid === true &&
-          this.studentForm.get('student_adress')?.valid === true &&
-          this.studentForm.get('student_matricule')?.valid === true &&
-          this.studentForm.get('student_password')?.valid === true;
+          this.studentForm.get('student_adress')?.valid === true;
       case 2:
         return this.studentForm.get('class_model_id')?.valid === true;
       case 3:
         return this.studentForm.get('parent_first_name')?.valid === true &&
           this.studentForm.get('parent_last_name')?.valid === true &&
           this.studentForm.get('parent_email')?.valid === true &&
-          this.studentForm.get('parent_password')?.valid === true &&
           this.studentForm.get('parent_phone')?.valid === true &&
           this.studentForm.get('parent_adress')?.valid === true &&
           this.studentForm.get('parent_birthday')?.valid === true &&

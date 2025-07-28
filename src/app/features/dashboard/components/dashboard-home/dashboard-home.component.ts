@@ -1,5 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -8,7 +8,9 @@ import Chart from 'chart.js/auto';
   styleUrl: './dashboard-home.component.scss'
 })
 export class DashboardHomeComponent implements OnInit {
-
+  totalStudents: number = 0;
+  totalTeacher: number = 0;
+  totalClasses: number = 0;
   ngOnInit(): void {
     this.createStudentsChart();
     this.createPresenceChart();
@@ -87,7 +89,7 @@ toggleMenu(menu: string): void {
    isCollapsed = false;
   isMobile = false;
 
- 
+
   @HostListener('window:resize')
   onResize() {
     this.checkScreen();

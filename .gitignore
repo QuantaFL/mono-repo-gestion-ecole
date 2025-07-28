@@ -44,3 +44,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /.github/copilot-instructions.md
+/teacher_dashboard_backend_design.md
