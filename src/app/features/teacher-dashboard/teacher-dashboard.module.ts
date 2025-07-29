@@ -1,3 +1,4 @@
+import { TermCountdownReminderComponent } from './components/term-countdown-reminder/term-countdown-reminder.component';
 import {NgModule} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -23,7 +24,8 @@ import {TeacherTimetableComponent} from './components/teacher-timetable/teacher-
     ClassDetailsComponent,
     TeacherDashboardLayoutComponent,
     StudentDetailsModalComponent,
-    TeacherMyClassesComponent
+    TeacherMyClassesComponent,
+    TermCountdownReminderComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,6 @@ import {TeacherTimetableComponent} from './components/teacher-timetable/teacher-
     HttpClientModule,
     DialogModule,
     SharedModule,
-    ReactiveFormsModule,
     NgOptimizedImage,
     TeacherTimetableComponent
   ],

@@ -1,0 +1,23 @@
+<div class="reminder-container" [ngClass]="{ 'urgent': urgent, 'warning': warning }">
+  <div class="lottie-animation" id="lottie-container"></div>
+  <div class="countdown-text">
+    <ng-container *ngIf="!autoSubmit && !notesSubmitted">
+      <h2 *ngIf="urgent">⏰ Dernière semaine ! Soumettez vos notes !</h2>
+      <h2 *ngIf="warning && !urgent">⏳ 2 semaines restantes pour soumettre les notes</h2>
+      <h2 *ngIf="!warning && !urgent">🎉 Term ends soon! Don't forget to submit notes!</h2>
+      <div class="countdown">
+        <span>{{ timeLeft.days }}j</span> :
+        <span>{{ timeLeft.hours }}h</span> :
+        <span>{{ timeLeft.minutes }}m</span> :
+        <span>{{ timeLeft.seconds }}s</span>
+      </div>
+      <button *ngIf="urgent" class="submit-btn">Soumettre les notes</button>
+    </ng-container>
+    <ng-container *ngIf="autoSubmit && !notesSubmitted">
+      <h2>⏳ Temps écoulé ! Les notes seront soumises automatiquement.</h2>
+    </ng-container>
+    <ng-container *ngIf="notesSubmitted">
+      <h2>✅ Notes déjà soumises !</h2>
+    </ng-container>
+  </div>
+</div>
