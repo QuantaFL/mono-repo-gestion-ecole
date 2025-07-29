@@ -3,6 +3,7 @@ import { StudentService } from "../../services/student.service";
 import { Router } from "@angular/router";
 import { Student } from "../../models/student";
 import lottie, { AnimationItem } from 'lottie-web';
+import {AcademicYear} from "../../../teacher-dashboard/models/academic-year";
 @Component({
   selector: 'app-student-list',
   templateUrl: './student-list.component.html',
@@ -19,6 +20,7 @@ export class StudentListComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSizeOptions: number[] = [5, 10, 20, 50];
   totalPages: number = 1;
   totalPagesArray: number[] = [];
+  currentAcademicYear: AcademicYear | null = null;
 
   @ViewChild('lottieContainer', { static: false }) lottieContainer?: ElementRef;
   private lottieInstance?: AnimationItem;
@@ -38,6 +40,15 @@ export class StudentListComponent implements OnInit, AfterViewInit, OnDestroy {
         alert('Erreur lors du chargement des étudiants.');
       }
     });
+    this.studentService.getCurrentAcademicYear().subscribe(
+      (year) => {
+        this.currentAcademicYear = year;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement de l\'année académique actuelle:', error);
+        this.currentAcademicYear = null;
+      }
+    )
   }
 
   ngAfterViewInit(): void {
