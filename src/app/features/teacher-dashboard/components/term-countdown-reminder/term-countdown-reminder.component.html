@@ -4,7 +4,7 @@
     <ng-container *ngIf="!autoSubmit && !notesSubmitted">
       <h2 *ngIf="urgent">Dernière semaine ! Veuillez transmettre vos notes.</h2>
       <h2 *ngIf="warning && !urgent">Plus que 2 semaines pour la saisie des notes.</h2>
-      <h2 *ngIf="!warning && !urgent">Le trimestre est en cours. Vous pourrez saisir vos notes plus tard.</h2>
+      <h2 *ngIf="!warning && !urgent">Le trimestre est en cours. Vous pouvez saisir vos notes dès maintenant.</h2>
       <div class="countdown">
         <span>{{ timeLeft.days }}j</span> :
         <span>{{ timeLeft.hours }}h</span> :

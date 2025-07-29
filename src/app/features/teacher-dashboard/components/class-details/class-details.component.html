@@ -1,47 +1,33 @@
-<!-- Student Notes Section -->
-<div *ngIf="studentNotes.length > 0" class="student-notes-section">
-  <h3>Notes des élèves pour la matière sélectionnée</h3>
-  <ul>
-    <li *ngFor="let note of studentNotes">
-      <strong>
-        <ng-container *ngIf="note.student?.profilePictureUrl; else noProfile">
-          <img [src]="note.student.profilePictureUrl" alt="Photo de profil" class="student-profile-img"
-               style="width:32px;height:32px;border-radius:50%;margin-right:8px;vertical-align:middle;object-fit:cover;"/>
-        </ng-container>
-        <ng-template #noProfile>
-          <i class="fas fa-user" style="margin-right:8px;"></i>
-        </ng-template>
-        {{ note.student?.user_model?.first_name }} {{ note.student?.user_model?.last_name }}
-        ({{ note.student?.matricule }})
-      </strong>
-      <span *ngFor="let grade of note.grades">
-        | {{ grade.type }}: <b>{{ grade.mark }}</b>
-      </span>
-    </li>
-  </ul>
-</div>
+<!-- Student Notes Section (debug list removed) -->
 <div *ngIf="studentNotes.length === 0">
   <p>Aucune note trouvée pour cette matière.</p>
 </div>
-<div class="card class-details-card">
-  <div class="card-header">
-    <h2 class="card-title">Feuille de note de la classe de {{ currentClass?.name }} - {{ currentTerm?.name }} </h2>
+<div class="card class-details-card modern-class-details-card">
+  <div class="modern-card-header">
+    <div class="modern-card-header-bg"></div>
+    <div class="modern-card-header-content">
+      <h2 class="modern-card-title">
+        <i class="fas fa-chalkboard-teacher"></i>
+        Feuille de note de la classe de <span class="highlight">{{ currentClass?.name }}</span> - <span class="highlight">{{ currentTerm?.name }}</span>
+      </h2>
+      <h3 class="modern-section-title">Notes des Étudiants</h3>
+    </div>
   </div>
-  <div class="card-content">
-    <h3 class="section-title">Notes des Étudiants</h3>
+  <div class="modern-card-content">
     <p *ngIf="students.length === 0" class="no-data-message">Aucun étudiant trouvé pour cette classe.</p>
-
     <div *ngIf="loading" class="loading-message">Chargement en cours...</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
     <div class="table-responsive" *ngIf="students.length > 0">
-      <table class="data-table">
+      <table class="data-table modern-data-table">
         <thead>
           <tr>
-            <th>Nom de l'Étudiant</th>
+            <th><i class="fas fa-user"></i> Nom de l'Étudiant</th>
             <ng-container *ngFor="let assignment of assignements">
               <th *ngFor="let type of gradeTypes">
-                {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }} ({{ type | titlecase }})
+                <span class="subject-badge">
+                  <i class="fas fa-book"></i> {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }}
+                </span>
+                <span class="type-badge">{{ type | titlecase }}</span>
               </th>
             </ng-container>
             <th>Info</th>
@@ -49,7 +35,9 @@
         </thead>
         <tbody>
         <tr *ngFor="let student of students">
-          <td>{{ student.userModel!.first_name }} {{ student.userModel!.last_name }}</td>
+          <td>
+            <span class="student-table-name">{{ student.userModel!.first_name }} {{ student.userModel!.last_name }}</span>
+          </td>
           <ng-container *ngFor="let assignment of assignements">
             <td *ngFor="let type of gradeTypes">
               <ng-container *ngIf="student.latest_student_session?.id as sessionId">
@@ -65,15 +53,14 @@
             </td>
           </ng-container>
           <td>
-              <button class="btn btn-icon" (click)="showStudentInfo(student)">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-              </button>
-            </td>
-          </tr>
+            <button class="btn btn-icon" (click)="showStudentInfo(student)">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
-
     <div class="form-actions">
       <button class="btn btn-primary" (click)="saveGrades()">Enregistrer les Notes</button>
       <button class="btn btn-secondary" (click)="submitTermGrades()">Soumettre les Notes du Terme</button>
