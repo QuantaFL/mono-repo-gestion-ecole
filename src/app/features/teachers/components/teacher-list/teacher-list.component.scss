@@ -42,6 +42,56 @@
   stroke-width: 2.5;
 }
 
+.btn-prominent.btn-primary.apple-action-btn {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-prominent.btn-primary.apple-action-btn:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.btn-prominent.btn-warning.apple-action-btn {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 2.5px 6.5px;
+  border-radius: 7.5px;
+  background: #e53935;
+  color: #fff;
+  box-shadow: 0 1.5px 3px rgba(229, 57, 53, 0.10);
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-prominent.btn-warning.apple-action-btn .icon {
+  width: 21.5px;
+  height: 21.5px;
+}
+
+.btn-prominent.btn-warning.apple-action-btn:hover {
+  box-shadow: 0 3px 6px rgba(229, 57, 53, 0.15);
+  transform: translateY(-1px) scale(1.025);
+}
+
 .card {
   background-color: white;
   border-radius: var(--border-radius);
@@ -127,4 +177,26 @@
 
 .btn-icon.btn-danger:hover {
   background-color: rgba(var(--danger-color), 0.1);
+}
+
+.status-green {
+  color: #2ecc40;
+  font-weight: 700;
+  background: #eafaf1;
+  border-radius: 8px;
+  padding: 8px 18px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(46, 204, 64, 0.08);
+  border: 1.5px solid #b2f2c9;
+}
+
+.status-green .icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+  vertical-align: middle;
+  stroke: #2ecc40;
 }
