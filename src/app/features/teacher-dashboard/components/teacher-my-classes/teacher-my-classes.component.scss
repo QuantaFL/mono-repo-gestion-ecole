@@ -1,3 +1,210 @@
+.enhanced-class-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+  background: var(--background-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-lg);
+  padding: 0;
+  min-height: 110px;
+  overflow: hidden;
+  border: none;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 8px 32px 0 rgba(59,130,246,0.13);
+    transform: translateY(-4px) scale(1.03);
+    background: linear-gradient(90deg, #f5f7fa 60%, #e0e7ef 100%);
+  }
+}
+.enhanced-class-accent {
+  width: 8px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 8px 0 0 8px;
+  margin-right: 0;
+  min-height: 100%;
+  box-shadow: 0 0 8px 0 rgba(59,130,246,0.10);
+}
+.enhanced-class-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 24px 20px 24px;
+}
+.enhanced-class-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.enhanced-class-title {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color-dark);
+  letter-spacing: 0.01em;
+}
+.enhanced-class-arrow {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-left: 10px;
+  transition: transform 0.2s;
+  opacity: 0.7;
+  .enhanced-class-card:hover & {
+    transform: translateX(6px) scale(1.1);
+    opacity: 1;
+  }
+}
+.enhanced-class-details-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+.enhanced-class-level {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.enhanced-class-meta {
+  font-size: 0.98rem;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modern-my-classes-container {
+  position: relative;
+  padding: 40px 24px 32px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  z-index: 1;
+}
+.modern-my-classes-header {
+  position: relative;
+  padding: 36px 32px 24px 32px;
+  margin-bottom: 32px;
+  z-index: 2;
+}
+.modern-my-classes-header-bg {
+  position: absolute;
+  top: -60px;
+  right: -80px;
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  opacity: 0.10;
+  border-radius: 50%;
+  z-index: 1;
+  filter: blur(2px);
+}
+.modern-my-classes-header-content {
+  position: relative;
+  z-index: 2;
+}
+.modern-my-classes-title {
+  font-size: 2.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color-dark);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.01em;
+  i {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+  }
+}
+.modern-my-classes-desc {
+  font-size: 1.1rem;
+  color: var(--text-color-light);
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+}
+.modern-loading, .modern-no-classes {
+  color: var(--text-color-light);
+  font-size: 1.1rem;
+  margin-top: 32px;
+  text-align: center;
+}
+.modern-classes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 16px;
+}
+.modern-class-card {
+  background: var(--background-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-lg);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  min-height: 120px;
+  &:hover {
+    box-shadow: 0 6px 24px 0 rgba(59,130,246,0.10);
+    transform: translateY(-4px) scale(1.025);
+    background: linear-gradient(90deg, #f5f7fa 60%, #e0e7ef 100%);
+  }
+}
+.modern-class-card-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+}
+.modern-class-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modern-class-title {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color-dark);
+}
+.modern-class-level {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modern-class-meta {
+  font-size: 0.98rem;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modern-class-card-arrow {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-left: 10px;
+  transition: transform 0.2s;
+  opacity: 0.7;
+  .modern-class-card:hover & {
+    transform: translateX(6px) scale(1.1);
+    opacity: 1;
+  }
+}
 .my-classes-container {
   padding: 32px 24px;
   max-width: 900px;
