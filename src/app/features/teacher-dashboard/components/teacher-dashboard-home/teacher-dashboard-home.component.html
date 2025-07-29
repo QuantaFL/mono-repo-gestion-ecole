@@ -33,6 +33,7 @@
     </div>
   </div>
 
+
   <div class="overview-cards modern-overview-cards">
     <div class="card academic-year">
       <div class="card-header">
@@ -50,7 +51,7 @@
         <div class="progress-bar">
           <div class="progress-fill" style="--progress: 65%"></div>
         </div>
-        <span class="progress-text">65% terminé</span>
+        <span class="progress-text">{{ progressPercent }}% terminé</span>
       </div>
     </div>
 
@@ -68,11 +69,11 @@
       </div>
       <div class="card-stats">
         <div class="stat-item">
-          <span class="stat-number">42</span>
+          <span class="stat-number">{{ daysRemaining }}</span>
           <span class="stat-label">Jours restants</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">8</span>
+          <span class="stat-number">{{ scheduledExamsCount }}</span>
           <span class="stat-label">Examens prévus</span>
         </div>
       </div>
@@ -88,7 +89,7 @@
           </div>
         </div>
         <div class="enhanced-class-details-row-home">
-          <div class="modern-class-level enhanced-class-level-home"><i class="fas fa-signal"></i> 8 Classes</div>
+          <div class="modern-class-level enhanced-class-level-home"><i class="fas fa-signal"></i> {{ scheduledExamsCount }}</div>
           <div class="modern-class-meta enhanced-class-meta-home"><i class="fas fa-calendar-plus"></i> Visualisez et gérez vos classes assignées</div>
         </div>
         <div class="enhanced-class-action-home">

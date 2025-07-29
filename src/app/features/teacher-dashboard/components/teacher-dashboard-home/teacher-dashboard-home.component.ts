@@ -28,6 +28,9 @@ export class TeacherDashboardHomeComponent implements OnInit {
   assignements: Assignment[] = [];
   @Input() isSidebarCollapsed: boolean = false;
   performanceSummary: PerformanceSummary | null = null;
+  progressPercent: number = 0;
+  daysRemaining: number = 0;
+  scheduledExamsCount: number = 0;
 
   constructor(private teacherDashboardService: TeacherDashboardService, private teacherStore: TeacherStore) { }
 
@@ -68,7 +71,6 @@ export class TeacherDashboardHomeComponent implements OnInit {
         }
       }),
       switchMap(() => {
-        // Build classSubjects array for bulk performance summary
         const classSubjects = this.assignements
           .filter(a => a.class_model_id && a.subject_id)
           .map(a => ({ classId: a.class_model_id, subjectId: a.subject_id }));
@@ -96,50 +98,65 @@ export class TeacherDashboardHomeComponent implements OnInit {
     ).subscribe();
   }
 
+
+  private calculateProgressAndDays(): void {
+    if (this.currentAcademicYear) {
+      const start = new Date(this.currentAcademicYear.start_date);
+      const end = new Date(this.currentAcademicYear.end_date);
+      const now = new Date();
+      const total = end.getTime() - start.getTime();
+      const elapsed = Math.max(0, Math.min(now.getTime() - start.getTime(), total));
+      this.progressPercent = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+      this.daysRemaining = Math.max(0, Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+    } else {
+      this.progressPercent = 0;
+      this.daysRemaining = 0;
+    }
+  }
+
   /**
-   * This method is no longer needed as the logic has been moved to ngOnInit using RxJS operators.
+   * Fetches the number of scheduled exams for the current academic year and term.
+   * Replace with actual service call as needed.
    */
-  // fetchTeacherAssignmentsAndSubjects(teacherId: number): void {
-  //   // Old logic removed
-  // }
+  private fetchScheduledExams(): void {
+    // TODO: Replace with actual service call to fetch exams for current term/year
+    // Example: this.teacherDashboardService.getScheduledExams(this.currentAcademicYear?.id, this.currentTerm?.id)
+    //   .subscribe(exams => this.scheduledExamsCount = exams.length);
+    this.scheduledExamsCount = 8; // Placeholder for demo
+  }
 
-  fetchCurrentAcademicYear(): void {
-    this.teacherDashboardService.getCurrentAcademicYear().subscribe({
-      next: (year: AcademicYear) => {
+  private fetchCurrentAcademicYear(): void {
+    this.teacherDashboardService.getCurrentAcademicYear().pipe(
+      tap(year => {
         this.currentAcademicYear = year;
-      },
-      error: (err: any) => {
-        console.error('Error fetching current academic year:', err);
-      }
-    });
+        this.calculateProgressAndDays();
+        this.fetchScheduledExams();
+      })
+    ).subscribe();
   }
 
+  splitAcademicYear(startDateStr: string, endDateStr: string): { term1: Terms; term2: Terms } {
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
 
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new Error("Invalid start or end date");
+    }
 
+    const totalTime = endDate.getTime() - startDate.getTime();
+    const halfTime = totalTime / 2;
 
-splitAcademicYear(startDateStr: string, endDateStr: string): { term1: Terms; term2: Terms } {
-  const startDate = new Date(startDateStr);
-  const endDate = new Date(endDateStr);
+    const midDate = new Date(startDate.getTime() + halfTime);
+    midDate.setHours(0, 0, 0, 0);
 
-  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-    throw new Error("Invalid start or end date");
+    const term1End = new Date(midDate);
+    term1End.setDate(term1End.getDate() - 1);
+
+    return {
+      term1: { start: startDate, end: term1End },
+      term2: { start: midDate, end: endDate }
+    };
   }
-
-  const totalTime = endDate.getTime() - startDate.getTime();
-  const halfTime = totalTime / 2;
-
-  const midDate = new Date(startDate.getTime() + halfTime);
-  midDate.setHours(0, 0, 0, 0);
-
-  const term1End = new Date(midDate);
-  term1End.setDate(term1End.getDate() - 1);
-
-  return {
-    term1: { start: startDate, end: term1End },
-    term2: { start: midDate, end: endDate }
-  };
-}
-
 
   fetchCurrentTerm(): void {
     this.teacherDashboardService.getCurrentTerm().subscribe({
