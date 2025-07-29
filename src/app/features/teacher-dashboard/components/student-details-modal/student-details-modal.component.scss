@@ -1,3 +1,153 @@
+.modern-student-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.45);
+  animation: fadeInBg 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.modern-modal-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  opacity: 0.10;
+  z-index: 1;
+  filter: blur(2px);
+}
+.modern-modal-card {
+  position: relative;
+  z-index: 2;
+  background: var(--background-color);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px 0 rgba(59,130,246,0.18);
+  min-width: 350px;
+  max-width: 480px;
+  width: 96vw;
+  padding: 0;
+  overflow: hidden;
+  animation: modalPopIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.modern-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 32px 18px 32px;
+  background: none;
+}
+.modern-modal-title {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+.modern-modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-color-light);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.modern-modal-close-btn:hover {
+  background: var(--border-color);
+  color: var(--primary-color-dark);
+}
+.modern-modal-content {
+  padding: 0 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.modern-student-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+.modern-student-avatar {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: white;
+  box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+}
+.modern-student-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.modern-info-item {
+  display: flex;
+  gap: 8px;
+  font-size: 1.08rem;
+  color: var(--text-color);
+}
+.modern-info-label {
+  color: var(--primary-color-dark);
+  font-weight: var(--font-weight-medium);
+}
+.modern-info-value {
+  color: var(--text-color);
+  font-weight: var(--font-weight-bold);
+}
+.modern-report-cards-section {
+  margin-top: 12px;
+  h3 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+  }
+  ul {
+    padding-left: 18px;
+    margin: 0;
+  }
+  li {
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+    color: var(--text-color);
+  }
+  .modern-report-term {
+    color: var(--primary-color-dark);
+    font-weight: var(--font-weight-medium);
+  }
+  .modern-report-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: var(--font-weight-bold);
+    transition: color 0.2s;
+  }
+  .modern-report-link:hover {
+    color: var(--primary-color-dark);
+  }
+}
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalPopIn {
+  0% { transform: scale(0.7) translateY(80px); opacity: 0; }
+  60% { transform: scale(1.05) translateY(-10px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.animate-modal-in {
+  animation: fadeInBg 0.5s cubic-bezier(0.4,0,0.2,1);
+}
 @import '../../../../../styles/variables';
 
 .modal-container {

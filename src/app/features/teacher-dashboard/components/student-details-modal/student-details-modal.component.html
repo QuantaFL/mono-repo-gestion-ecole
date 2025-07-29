@@ -1,53 +1,39 @@
-<div class="modal-container">
-  <div class="modal-header">
-    <h2 class="modal-title">Détails de l'Étudiant</h2>
-    <button (click)="closeModal()" class="modal-close-btn">
-      <svg class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-           viewBox="0 0 24 24">
-        <line x1="18" x2="6" y1="6" y2="18"></line>
-        <line x1="6" x2="18" y1="6" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-  <div class="modal-content">
-    <div class="student-info-section">
-      <div class="info-item">
-        <span class="info-label">Nom Complet:</span>
-        <span class="info-value">{{ student.userModel?.first_name }} {{ student.userModel?.last_name }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Email:</span>
-        <span class="info-value">{{ student.userModel?.email }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Téléphone:</span>
-        <span class="info-value">{{ student.userModel?.phone || 'N/A' }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Adresse:</span>
-        <span class="info-value">{{ student.userModel?.adress || 'N/A' }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Date de naissance:</span>
-        <span class="info-value">{{ student.userModel?.birthday || 'N/A' }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Genre:</span>
-        <span class="info-value">{{ student.userModel?.gender || 'N/A' }}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-label">Matricule:</span>
-        <span class="info-value">{{ student.userModel?.matricule || 'N/A' }}</span>
-      </div>
+<div class="modal-container modern-student-modal animate-modal-in">
+  <div class="modern-modal-bg"></div>
+  <div class="modern-modal-card">
+    <div class="modal-header modern-modal-header">
+      <h2 class="modal-title modern-modal-title">Détails de l'Étudiant</h2>
+      <button (click)="closeModal()" class="modal-close-btn modern-modal-close-btn">
+        <svg class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             viewBox="0 0 24 24">
+          <line x1="18" x2="6" y1="6" y2="18"></line>
+          <line x1="6" x2="18" y1="6" y2="18"></line>
+        </svg>
+      </button>
     </div>
-
-    <div *ngIf="reportCards.length > 0" class="report-cards-section">
-      <h3>Bulletins Scolaires</h3>
-      <ul>
-        <li *ngFor="let reportCard of reportCards">
-          {{ reportCard.term?.name }} - <a [href]="reportCard.pdf_url" target="_blank">Voir le bulletin</a>
-        </li>
-      </ul>
+    <div class="modal-content modern-modal-content">
+      <div class="modern-student-info">
+        <div class="modern-student-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="modern-student-info-list">
+          <div class="modern-info-item"><span class="modern-info-label">Nom Complet:</span> <span class="modern-info-value">{{ student.userModel?.first_name }} {{ student.userModel?.last_name }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Email:</span> <span class="modern-info-value">{{ student.userModel?.email }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Téléphone:</span> <span class="modern-info-value">{{ student.userModel?.phone || 'N/A' }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Adresse:</span> <span class="modern-info-value">{{ student.userModel?.adress || 'N/A' }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Date de naissance:</span> <span class="modern-info-value">{{ student.userModel?.birthday || 'N/A' }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Genre:</span> <span class="modern-info-value">{{ student.userModel?.gender || 'N/A' }}</span></div>
+          <div class="modern-info-item"><span class="modern-info-label">Matricule:</span> <span class="modern-info-value">{{ student.userModel?.matricule || 'N/A' }}</span></div>
+        </div>
+      </div>
+      <div *ngIf="reportCards.length > 0" class="modern-report-cards-section">
+        <h3>Bulletins Scolaires</h3>
+        <ul>
+          <li *ngFor="let reportCard of reportCards">
+            <span class="modern-report-term">{{ reportCard.term?.name }}</span> - <a [href]="reportCard.pdf_url" target="_blank" class="modern-report-link">Voir le bulletin</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
