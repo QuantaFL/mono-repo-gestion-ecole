@@ -49,7 +49,7 @@
       </div>
       <div class="card-progress">
         <div class="progress-bar">
-          <div class="progress-fill" style="--progress: 65%"></div>
+          <div class="progress-fill" [ngStyle]="{ '--progress': progressPercent + '%' }"></div>
         </div>
         <span class="progress-text">{{ progressPercent }}% terminé</span>
       </div>
