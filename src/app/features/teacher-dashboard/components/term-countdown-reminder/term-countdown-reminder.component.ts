@@ -27,7 +27,8 @@ export class TermCountdownReminderComponent implements OnInit, AfterViewInit {
       renderer: 'svg',
       loop: true,
       autoplay: true,
-      path: 'https://assets10.lottiefiles.com/packages/lf20_4kx2q32n.json'
+      // Use local asset for the animation
+      path: 'assets/dashboard-teacher.json'
     });
   }
 
