@@ -9,7 +9,10 @@ import {PerformanceSummary} from '../../models/performance-summary';
 import {of} from 'rxjs';
 import {catchError, filter, switchMap, tap} from 'rxjs/operators';
 import {Assignment} from "../../models/assignment";
-
+  interface Terms {
+  start: Date;
+  end: Date;
+}
 @Component({
   selector: 'app-teacher-dashboard-home',
   templateUrl: './teacher-dashboard-home.component.html',
@@ -110,6 +113,33 @@ export class TeacherDashboardHomeComponent implements OnInit {
       }
     });
   }
+
+
+
+
+splitAcademicYear(startDateStr: string, endDateStr: string): { term1: Terms; term2: Terms } {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error("Invalid start or end date");
+  }
+
+  const totalTime = endDate.getTime() - startDate.getTime();
+  const halfTime = totalTime / 2;
+
+  const midDate = new Date(startDate.getTime() + halfTime);
+  midDate.setHours(0, 0, 0, 0);
+
+  const term1End = new Date(midDate);
+  term1End.setDate(term1End.getDate() - 1);
+
+  return {
+    term1: { start: startDate, end: term1End },
+    term2: { start: midDate, end: endDate }
+  };
+}
+
 
   fetchCurrentTerm(): void {
     this.teacherDashboardService.getCurrentTerm().subscribe({

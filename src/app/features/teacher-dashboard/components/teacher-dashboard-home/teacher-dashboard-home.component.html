@@ -1,3 +1,7 @@
+<app-term-countdown-reminder
+  [termEndDate]="currentTerm!.id === 1 ? splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term1.end.toISOString() : splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term2.end.toISOString()"
+  [notesSubmitted]="false"
+></app-term-countdown-reminder>
 <div class="dashboard-home-container" [class.sidebar-collapsed]="isSidebarCollapsed">
   <div class="dashboard-background">
     <div class="floating-elements">
