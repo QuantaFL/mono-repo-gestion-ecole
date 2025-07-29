@@ -3,6 +3,7 @@ import {TeacherDashboardService} from '../../services/teacher-dashboard.service'
 import {Assignment} from '../../models/assignment';
 import {TeacherStore} from '../../services/teacher.store';
 import {CommonModule} from '@angular/common';
+import { Teacher } from '../../models/teacher';
 
 interface TimetableSlot {
   subject: string;
@@ -34,7 +35,7 @@ export class TeacherTimetableComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeTimetable();
-    this.teacherStore.currentTeacher$.subscribe((teacher: import("/home/cheikh/WebstormProjects/admin-portail/src/app/features/teacher-dashboard/models/teacher").Teacher | null) => {
+    this.teacherStore.currentTeacher$.subscribe((teacher: Teacher | null) => {
       if (teacher) {
         this.teacherDashboardService.getAssignmentsForTeacher(teacher.id).subscribe(assignments => {
           console.log(assignments);

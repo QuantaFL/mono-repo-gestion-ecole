@@ -13,7 +13,7 @@ import {ReportCard} from '../models/report-card';
 
 import {Teacher} from '../models/teacher';
 import {Student} from '../models/student';
-import {Assignment} from "../models/assignment";
+import { Assignment } from '../models/assignment';
 import {Subject} from "../models/subject";
 import {PerformanceSummary} from "../models/performance-summary";
 import { StudentNote } from '../models/student-note';
@@ -150,6 +150,10 @@ export class TeacherDashboardService {
    */
   updateGrade(id: number, payload: any): Observable<Grade> {
     return this.http.put<Grade>(`${this.apiUrl}/grades/${id}`, payload);
+  }
+
+  getTeacherClassAssignmentsNotes(teacherId: number, classId: number, subjectId: number, assignmentId: number): Observable<StudentNote[]> {
+    return this.http.get<StudentNote[]>(`http://localhost:8000/api/v1/classes/${classId}/subjects/${subjectId}/assignments/${assignmentId}/teachers/${teacherId}/student-notes`);
   }
 
   /**
