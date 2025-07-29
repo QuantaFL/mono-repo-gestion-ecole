@@ -2,59 +2,38 @@
   [termEndDate]="currentTerm!.id === 1 ? splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term1.end.toISOString() : splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term2.end.toISOString()"
   [notesSubmitted]="false"
 ></app-term-countdown-reminder>
-<div class="dashboard-home-container" [class.sidebar-collapsed]="isSidebarCollapsed">
-  <div class="dashboard-background">
-    <div class="floating-elements">
-      <div class="floating-circle"></div>
-      <div class="floating-circle"></div>
-      <div class="floating-circle"></div>
-    </div>
+<div class="dashboard-home-container modern-dashboard-home">
+  <div class="modern-dashboard-accent"></div>
+  <div class="modern-dashboard-header">
+    <h1 class="modern-dashboard-title">Bienvenue sur le Tableau de bord Enseignant !</h1>
+    <p class="modern-dashboard-desc">Votre centre de gestion pour les classes, années académiques et performances étudiantes</p>
   </div>
 
-  <div class="header-section">
-    <h1 class="welcome-title">Bienvenue sur le Tableau de bord Enseignant !</h1>
-    <p class="subtitle">Votre centre de gestion pour les classes, années académiques et performances étudiantes</p>
-  </div>
-
-  <div class="teacher-info-card" *ngIf="currentTeacher">
-    <div class="teacher-avatar">
-      <div class="avatar-icon">
+  <div class="modern-teacher-info-card" *ngIf="currentTeacher">
+    <div class="modern-teacher-info-row">
+      <div class="modern-teacher-avatar">
         <i class="fas fa-user-graduate"></i>
       </div>
-    </div>
-    <div class="teacher-details">
-      <h3 class="teacher-name">{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
-      <div class="contact-grid">
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <span>{{ currentTeacher.userModel.email }}</span>
+      <div class="modern-teacher-details">
+        <h3 class="modern-teacher-name">{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
+        <div class="modern-teacher-contact">
+          <span><i class="fas fa-envelope"></i> {{ currentTeacher.userModel.email }}</span>
+          <span><i class="fas fa-phone"></i> {{ currentTeacher.userModel.phone }}</span>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fas fa-phone"></i>
-          </div>
-          <span>{{ currentTeacher.userModel.phone }}</span>
-        </div>
-        <div class="contact-item subjects">
-          <div class="contact-icon">
-            <i class="fas fa-book"></i>
-          </div>
-          <span>
-            <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
-              {{ getUniqueSubjectNames() }}
-            </ng-container>
-            <ng-template #noSubjects>
-              <span>Aucune matière assignée</span>
-            </ng-template>
-          </span>
+        <div class="modern-teacher-subjects">
+          <i class="fas fa-book"></i>
+          <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
+            {{ getUniqueSubjectNames() }}
+          </ng-container>
+          <ng-template #noSubjects>
+            <span>Aucune matière assignée</span>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="overview-cards">
+  <div class="overview-cards modern-overview-cards">
     <div class="card academic-year">
       <div class="card-header">
         <div class="card-icon">
@@ -99,23 +78,25 @@
       </div>
     </div>
 
-    <div class="card my-classes">
-      <div class="card-header">
-        <div class="card-icon">
-          <i class="fas fa-chalkboard-teacher"></i>
+    <div class="card my-classes enhanced-class-card-home">
+      <div class="enhanced-class-accent-home"></div>
+      <div class="enhanced-class-main-home">
+        <div class="enhanced-class-header-row-home">
+          <div class="modern-class-title enhanced-class-title-home">Mes Classes</div>
+          <div class="modern-class-card-arrow enhanced-class-arrow-home">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
-        <div class="card-indicator"></div>
-      </div>
-      <div class="card-content">
-        <h3 class="card-title">Mes Classes</h3>
-        <div class="card-value">8 Classes</div>
-        <p class="card-description">Visualisez et gérez vos classes assignées</p>
-      </div>
-      <div class="card-action">
-        <button class="btn btn-primary">
-          <span>Aller à Mes Classes</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
+        <div class="enhanced-class-details-row-home">
+          <div class="modern-class-level enhanced-class-level-home"><i class="fas fa-signal"></i> 8 Classes</div>
+          <div class="modern-class-meta enhanced-class-meta-home"><i class="fas fa-calendar-plus"></i> Visualisez et gérez vos classes assignées</div>
+        </div>
+        <div class="enhanced-class-action-home">
+          <button class="btn btn-primary">
+            <span>Aller à Mes Classes</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
       </div>
     </div>
 

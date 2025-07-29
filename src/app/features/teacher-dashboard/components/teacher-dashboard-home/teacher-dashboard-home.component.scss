@@ -1,3 +1,191 @@
+.modern-dashboard-home {
+  position: relative;
+  padding: 0 0 40px 0;
+  background: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.modern-dashboard-accent {
+  width: 100%;
+  height: 16px;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 0 0 16px 16px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px 0 rgba(59,130,246,0.10);
+}
+.modern-dashboard-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.modern-dashboard-title {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.modern-dashboard-desc {
+  font-size: 1.2rem;
+  color: var(--text-color-light);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.85;
+}
+.modern-teacher-info-card {
+  background: var(--background-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-lg);
+  padding: 32px 32px 24px 32px;
+  margin: 0 auto 40px auto;
+  max-width: 900px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modern-teacher-info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+.modern-teacher-avatar {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  color: white;
+  box-shadow: var(--box-shadow-lg);
+}
+.modern-teacher-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modern-teacher-name {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color-dark);
+  margin-bottom: 0.2rem;
+}
+.modern-teacher-contact {
+  display: flex;
+  gap: 18px;
+  color: var(--text-color-light);
+  font-size: 1.08rem;
+  i {
+    color: var(--primary-color);
+    margin-right: 6px;
+  }
+}
+.modern-teacher-subjects {
+  color: var(--primary-color);
+  font-size: 1.08rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  i {
+    color: var(--primary-color-dark);
+    margin-right: 4px;
+  }
+}
+.modern-overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+.enhanced-class-card-home {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+  background: var(--background-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-lg);
+  padding: 0;
+  min-height: 110px;
+  overflow: hidden;
+  border: none;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 8px 32px 0 rgba(59,130,246,0.13);
+    transform: translateY(-4px) scale(1.03);
+    background: linear-gradient(90deg, #f5f7fa 60%, #e0e7ef 100%);
+  }
+}
+.enhanced-class-accent-home {
+  width: 8px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 8px 0 0 8px;
+  margin-right: 0;
+  min-height: 100%;
+  box-shadow: 0 0 8px 0 rgba(59,130,246,0.10);
+}
+.enhanced-class-main-home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 24px 20px 24px;
+}
+.enhanced-class-header-row-home {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.enhanced-class-title-home {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color-dark);
+  letter-spacing: 0.01em;
+}
+.enhanced-class-arrow-home {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-left: 10px;
+  transition: transform 0.2s;
+  opacity: 0.7;
+  .enhanced-class-card-home:hover & {
+    transform: translateX(6px) scale(1.1);
+    opacity: 1;
+  }
+}
+.enhanced-class-details-row-home {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+.enhanced-class-level-home {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.enhanced-class-meta-home {
+  font-size: 0.98rem;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.enhanced-class-action-home {
+  margin-top: 18px;
+}
 @import '../../../../../styles/variables';
 
 .dashboard-home-container {
