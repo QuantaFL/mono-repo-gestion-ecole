@@ -4,5 +4,6 @@ export type StudentNote = {
   grades: Array<{
     type: string;
     mark: number;
+    status: string;
   }>;
 };

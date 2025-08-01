@@ -6,6 +6,7 @@ export interface Grade {
   id?: number;
   mark: number | null;
   type: string | null;
+  status: string | null;
   created_at?: string;
   updated_at?: string;
   assignement_id: number;
