@@ -26,7 +26,7 @@
               <ng-container *ngFor="let assignment of assignements">
                 <th *ngFor="let type of gradeTypes">
                   <span class="subject-badge">
-                    <i class="fas fa-book"></i> {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }}
+                    <i class="fas fa-book"></i> {{ subjectIdToSubject[assignment.subject_id].name || 'Matière inconnue' }}
                   </span>
                   <span class="type-badge">{{ type | titlecase }}</span>
                 </th>
@@ -98,7 +98,7 @@
                     'neutral': entry.rank > 3
                   }">{{ entry.rank }}</span>
                 </td>
-                <td>{{ entry.student?.userModel?.first_name }} {{ entry.student?.userModel?.last_name }}</td>
+                <td>{{ entry.student.userModel.first_name }} {{ entry.student.userModel.last_name }}</td>
                 <td>{{ entry.finalGrade }}</td>
               </tr>
             </tbody>

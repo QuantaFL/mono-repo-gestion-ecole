@@ -123,10 +123,10 @@
             </ng-template>
           </div>
           <div class="student-info">
-            <div class="student-name">{{ summary.bestPerformingStudent?.firstName }} {{ summary.bestPerformingStudent?.lastName }}</div>
+            <div class="student-name">{{ summary.bestPerformingStudent.firstName }} {{ summary.bestPerformingStudent.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
-                <span class="score-value">{{ summary.bestPerformingStudent?.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-value">{{ summary.bestPerformingStudent.averageGrade | number:'1.1-1' }}</span>
                 <span class="score-max">/20</span>
               </div>
             </div>
@@ -156,10 +156,10 @@
             </ng-template>
           </div>
           <div class="student-info">
-            <div class="student-name">{{ summary.worstPerformingStudent?.firstName }} {{ summary.worstPerformingStudent?.lastName }}</div>
+            <div class="student-name">{{ summary.worstPerformingStudent.firstName }} {{ summary.worstPerformingStudent.lastName }}</div>
             <div class="student-details">
               <div class="student-score">
-                <span class="score-value">{{ summary.worstPerformingStudent?.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-value">{{ summary.worstPerformingStudent.averageGrade | number:'1.1-1' }}</span>
                 <span class="score-max">/20</span>
               </div>
             </div>
