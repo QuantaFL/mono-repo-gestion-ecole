@@ -3,6 +3,7 @@ import {Student} from "../models/student";
 import {firstValueFrom, Observable} from "rxjs";
 import {HttpClient} from '@angular/common/http';
 import {UpdateStudentRequest} from "../requests/updateStudentRequest";
+import {AcademicYear} from "../../teacher-dashboard/models/academic-year";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class StudentService {
   }
   getAllStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(this.apiUrl);
+  }
+  getCurrentAcademicYear(): Observable<AcademicYear> {
+    return this.http.get<AcademicYear>('http://localhost:8000/api/v1/academic-years/current');
   }
 
 
