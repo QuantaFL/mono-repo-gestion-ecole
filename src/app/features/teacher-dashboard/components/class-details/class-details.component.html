@@ -17,53 +17,97 @@
     <p *ngIf="students.length === 0" class="no-data-message">Aucun étudiant trouvé pour cette classe.</p>
     <div *ngIf="loading" class="loading-message">Chargement en cours...</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <div class="table-responsive" *ngIf="students.length > 0">
-      <table class="data-table modern-data-table">
-        <thead>
-          <tr>
-            <th><i class="fas fa-user"></i> Nom de l'Étudiant</th>
-            <ng-container *ngFor="let assignment of assignements">
-              <th *ngFor="let type of gradeTypes">
-                <span class="subject-badge">
-                  <i class="fas fa-book"></i> {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }}
-                </span>
-                <span class="type-badge">{{ type | titlecase }}</span>
-              </th>
-            </ng-container>
-            <th>Info</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let student of students">
-          <td>
-            <span class="student-table-name">{{ student.userModel!.first_name }} {{ student.userModel!.last_name }}</span>
-          </td>
-          <ng-container *ngFor="let assignment of assignements">
-            <td *ngFor="let type of gradeTypes">
-              <ng-container *ngIf="student.latest_student_session?.id as sessionId">
-                <input type="number" min="0" max="20" step="1" class="form-control grade-input"
-                       [value]="getGrade(sessionId, assignment.id, type)"
-                       (change)="updateGrades(sessionId, assignment.id, type, $event)"
-                       [placeholder]="'Saisir...'"
-                       [disabled]="!sessionId">
+    <ng-container *ngIf="!termSubmitted; else finalSheet">
+      <div class="table-responsive" *ngIf="students.length > 0">
+        <table class="data-table modern-data-table">
+          <thead>
+            <tr>
+              <th><i class="fas fa-user"></i> Nom de l'Étudiant</th>
+              <ng-container *ngFor="let assignment of assignements">
+                <th *ngFor="let type of gradeTypes">
+                  <span class="subject-badge">
+                    <i class="fas fa-book"></i> {{ subjectIdToSubject[assignment.subject_id]?.name || 'Matière inconnue' }}
+                  </span>
+                  <span class="type-badge">{{ type | titlecase }}</span>
+                </th>
               </ng-container>
-              <ng-container *ngIf="!student.latest_student_session?.id">
-                <span class="text-danger small">No session ID</span>
-              </ng-container>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let student of students">
+            <td>
+              <span class="student-table-name">{{ student.userModel!.first_name }} {{ student.userModel!.last_name }}</span>
             </td>
-          </ng-container>
-          <td>
-            <button class="btn btn-icon" (click)="showStudentInfo(student)">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-primary" (click)="saveGrades()">Enregistrer les Notes</button>
-      <button class="btn btn-secondary" (click)="submitTermGrades()">Soumettre les Notes du Terme</button>
-    </div>
+            <ng-container *ngFor="let assignment of assignements">
+              <td *ngFor="let type of gradeTypes">
+                <ng-container *ngIf="student.latest_student_session?.id as sessionId">
+                  <input type="number" min="0" max="20" step="1" class="form-control grade-input"
+                         [value]="getGrade(sessionId, assignment.id, type)"
+                         (change)="updateGrades(sessionId, assignment.id, type, $event)"
+                         [placeholder]="'Saisir...'"
+                         [disabled]="!sessionId">
+                </ng-container>
+                <ng-container *ngIf="!student.latest_student_session?.id">
+                  <span class="text-danger small">No session ID</span>
+                </ng-container>
+              </td>
+            </ng-container>
+            <td>
+              <button class="btn btn-icon" (click)="showStudentInfo(student)">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="saveGrades()">Enregistrer les Notes</button>
+        <button class="btn btn-secondary"
+                [disabled]="!canSubmitTermGrades()"
+                (click)="onSubmitTermGrades()">
+          Soumettre les Notes du Terme
+        </button>
+        <div *ngIf="submitMessage" class="custom-submit-message">{{ submitMessage }}</div>
+      </div>
+    </ng-container>
+    <ng-template #finalSheet>
+      <div class="final-sheet-container">
+        <div class="final-sheet-header">
+          <h2 class="final-sheet-title"><i class="fas fa-award"></i> Résultats finaux du terme</h2>
+          <p class="final-sheet-desc">Le terme est terminé. Les notes sont verrouillées et le classement est affiché ci-dessous.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="final-grades-table">
+            <thead>
+              <tr>
+                <th>Rang</th>
+                <th>Nom de l'Étudiant</th>
+                <th>Note Finale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of sortedFinalGrades">
+                <td>
+                  <span [ngClass]="{
+                    'rank-number': true,
+                    'gold': entry.rank === 1,
+                    'silver': entry.rank === 2,
+                    'bronze': entry.rank === 3,
+                    'neutral': entry.rank > 3
+                  }">{{ entry.rank }}</span>
+                </td>
+                <td>{{ entry.student?.userModel?.first_name }} {{ entry.student?.userModel?.last_name }}</td>
+                <td>{{ entry.finalGrade }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="final-sheet-footer">
+          <i class="fas fa-lock"></i> Les notes sont désormais finales et ne peuvent plus être modifiées.
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>

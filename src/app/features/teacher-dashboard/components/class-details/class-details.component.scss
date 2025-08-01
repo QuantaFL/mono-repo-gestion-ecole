@@ -1,3 +1,94 @@
+/* Final Sheet Styles */
+.final-sheet-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-top: 2rem;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.final-sheet-header {
+  margin-bottom: 2rem;
+}
+.final-sheet-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.final-sheet-title i {
+  color: #fbbf24;
+  font-size: 2.2rem;
+}
+.final-sheet-desc {
+  color: #4a5568;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.final-grades-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.final-grades-table th {
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px 8px 0 0;
+  font-size: 1.1rem;
+}
+.final-grades-table td {
+  background: #f9fafb;
+  color: #2d3748;
+  font-size: 1.1rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+.rank-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(251,191,36,0.15);
+}
+.final-grade-badge {
+  display: inline-block;
+  background: #10b981;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.4rem 1.1rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.10);
+}
+.final-sheet-footer {
+  margin-top: 1.5rem;
+  color: #718096;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.final-sheet-footer i {
+  color: #4b5563;
+  font-size: 1.2rem;
+}
 .modern-data-table tbody tr {
   transition: background 0.2s, box-shadow 0.2s;
 }
@@ -218,29 +309,30 @@
   outline: none;
 }
 
-.grade-input {
-  width: 80px; /* Adjust as needed */
-  text-align: center;
-  padding: 8px 10px;
-  font-size: var(--font-size-base);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background-color: white;
-  color: var(--text-color);
+// ...existing code...
+.rank-number {
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 0.2em 0.7em;
+  border-radius: 0.7em;
+  margin-right: 0.5em;
+  display: inline-block;
 }
-
-.grade-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-  outline: none;
+.rank-number.gold {
+  color: #fff;
+  background: linear-gradient(90deg, #ffd700 0%, #ffec8b 100%);
 }
-
-.section-title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--primary-color);
-  margin-top: 30px;
-  margin-bottom: 15px;
+.rank-number.silver {
+  color: #333;
+  background: linear-gradient(90deg, #c0c0c0 0%, #f8f8ff 100%);
+}
+.rank-number.bronze {
+  color: #fff;
+  background: linear-gradient(90deg, #cd7f32 0%, #ffe4b5 100%);
+}
+.rank-number.neutral {
+  color: #333;
+  background: linear-gradient(90deg, #b0b0b0 0%, #e0e0e0 100%);
 }
 
 .no-data-message {
