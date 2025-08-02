@@ -15,7 +15,7 @@ import { AddStudentComponent } from './features/students/components/add-student/
 import { AddTeacherComponent } from './features/teachers/components/add-teacher/add-teacher.component';
 import { ClassAddComponent } from "./features/class/components/class-add/class-add.component";
 import { ClassListComponent } from "./features/class/components/class-list/class-list.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
@@ -28,8 +28,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AddSubjectComponent } from './features/subjects/components/add-subject/add-subject.component';
 import { ChangePasswordComponent } from "./features/auth/components/change-password/change-password.component";
 import { SharedModule } from './shared/shared.module';
-import { AssignementComponent } from './assignement/assignement.component';
+import { AssignementComponent } from './features/assignement/assignement.component';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptorTsService } from './features/auth/services/auth.interceptor.ts.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,7 +73,12 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   providers: [
     provideAnimationsAsync(),
-    DatePipe
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorTsService, // Assuming you have an AuthInterceptor defined
+      multi: true
+    }
   ],
 
   bootstrap: [AppComponent]
