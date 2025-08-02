@@ -25,7 +25,7 @@ throw new Error('Method not implemented.');
     this.loading = true;
     this.subjectService.getAllSubject().subscribe({
       next: (res) => {
-        console.log(res);
+        console.log(res.reverse());
         // Flatten nested array if needed
         if (Array.isArray(res) && Array.isArray(res[0])) {
           this.subjects = res[0];
