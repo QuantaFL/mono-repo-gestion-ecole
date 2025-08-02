@@ -23,7 +23,7 @@ export class TeacherListComponent implements OnInit {
     this.teacherService.getAllTeacher().subscribe({
       next: (res) => {
         console.log(res);
-        this.teachers = res;
+        this.teachers = res.reverse(); // Reverse the order if needed
         this.loading = false;
       },
       error: (err) => {
