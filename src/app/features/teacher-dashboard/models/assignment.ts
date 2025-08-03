@@ -16,9 +16,9 @@ export interface Assignment {
   subject?: Subject;
   term?: Term;
   academicYear?: any;
-  day_of_week: string[]; // Array of day names
-  start_time: string; // Full datetime string
-  end_time: string; // Full datetime string
+  day_of_week: string[];
+  start_time: string;
+  end_time: string;
   coefficient?: number;
   isActive?: boolean;
   term_id?: number | null;
