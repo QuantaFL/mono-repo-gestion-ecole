@@ -46,7 +46,10 @@
         <label class="form-label">Adresse</label>
         <textarea formControlName="student_adress" class="form-control" rows="2" placeholder="Adresse complète..."></textarea>
       </div>
-
+      <div class="col-md-6">
+        <label class="form-label">Photo de l'élève</label>
+        <input type="file" (change)="onStudentPhotoFileChange($event)" class="form-control" />
+      </div>
     </div>
 
     <!-- ÉTAPE 2 — Infos scolaires -->
