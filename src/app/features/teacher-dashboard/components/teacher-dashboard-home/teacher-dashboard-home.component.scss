@@ -6,39 +6,42 @@
   min-height: 100vh;
   overflow-x: hidden;
 }
+
 .modern-dashboard-accent {
   width: 100%;
-  height: 16px;
-  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-  border-radius: 0 0 16px 16px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 0 0 8px 8px;
   margin-bottom: 32px;
-  box-shadow: 0 2px 12px 0 rgba(59,130,246,0.10);
+  box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.15);
 }
+
 .modern-dashboard-header {
   text-align: center;
   margin-bottom: 40px;
 }
+
 .modern-dashboard-title {
   font-size: clamp(2.2rem, 4vw, 3.5rem);
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 50%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary-color);
   margin-bottom: 12px;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
+
 .modern-dashboard-desc {
   font-size: 1.2rem;
   color: var(--text-color-light);
   font-weight: var(--font-weight-medium);
   opacity: 0.85;
 }
+
 .modern-teacher-info-card {
   background: var(--background-color);
-  border-radius: 20px;
-  box-shadow: var(--box-shadow-lg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   padding: 32px 32px 24px 32px;
   margin: 0 auto 40px auto;
   max-width: 900px;
@@ -48,35 +51,40 @@
   flex-direction: column;
   align-items: center;
 }
+
 .modern-teacher-info-row {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 32px;
 }
+
 .modern-teacher-avatar {
   width: 90px;
   height: 90px;
-  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
-  border-radius: 24px;
+  background: var(--primary-color);
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.8rem;
   color: white;
-  box-shadow: var(--box-shadow-lg);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
 }
+
 .modern-teacher-details {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .modern-teacher-name {
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
-  color: var(--primary-color-dark);
+  color: var(--text-color);
   margin-bottom: 0.2rem;
 }
+
 .modern-teacher-contact {
   display: flex;
   gap: 18px;
@@ -87,6 +95,7 @@
     margin-right: 6px;
   }
 }
+
 .modern-teacher-subjects {
   color: var(--primary-color);
   font-size: 1.08rem;
@@ -94,44 +103,47 @@
   align-items: center;
   gap: 8px;
   i {
-    color: var(--primary-color-dark);
+    color: var(--primary-color);
     margin-right: 4px;
   }
 }
+
 .modern-overview-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 32px;
   margin-top: 40px;
 }
+
 .enhanced-class-card-home {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   position: relative;
   background: var(--background-color);
-  border-radius: 20px;
-  box-shadow: var(--box-shadow-lg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   padding: 0;
   min-height: 110px;
   overflow: hidden;
-  border: none;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
   &:hover {
-    box-shadow: 0 8px 32px 0 rgba(59,130,246,0.13);
-    transform: translateY(-4px) scale(1.03);
-    background: linear-gradient(90deg, #f5f7fa 60%, #e0e7ef 100%);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
   }
 }
+
 .enhanced-class-accent-home {
-  width: 8px;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  border-radius: 8px 0 0 8px;
+  width: 6px;
+  background: var(--primary-color);
+  border-radius: 6px 0 0 6px;
   margin-right: 0;
   min-height: 100%;
-  box-shadow: 0 0 8px 0 rgba(59,130,246,0.10);
 }
+
 .enhanced-class-main-home {
   flex: 1;
   display: flex;
@@ -139,6 +151,7 @@
   justify-content: center;
   padding: 24px 24px 20px 24px;
 }
+
 .enhanced-class-header-row-home {
   display: flex;
   flex-direction: row;
@@ -146,12 +159,14 @@
   justify-content: space-between;
   margin-bottom: 10px;
 }
+
 .enhanced-class-title-home {
   font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
-  color: var(--primary-color-dark);
+  color: var(--text-color);
   letter-spacing: 0.01em;
 }
+
 .enhanced-class-arrow-home {
   color: var(--primary-color);
   font-size: 1.5rem;
@@ -163,12 +178,14 @@
     opacity: 1;
   }
 }
+
 .enhanced-class-details-row-home {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 24px;
 }
+
 .enhanced-class-level-home {
   font-size: 1.05rem;
   color: var(--primary-color);
@@ -176,6 +193,7 @@
   align-items: center;
   gap: 6px;
 }
+
 .enhanced-class-meta-home {
   font-size: 0.98rem;
   color: var(--text-color-light);
@@ -183,9 +201,11 @@
   align-items: center;
   gap: 6px;
 }
+
 .enhanced-class-action-home {
   margin-top: 18px;
 }
+
 @import '../../../../../styles/variables';
 
 .dashboard-home-container {
@@ -197,91 +217,7 @@
   overflow-x: hidden;
 }
 
-.dashboard-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg,
-    rgba(59, 130, 246, 0.03) 0%,
-    rgba(99, 102, 241, 0.03) 50%,
-    rgba(139, 92, 246, 0.03) 100%
-  );
-  z-index: -2;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
-    animation: backgroundShift 20s ease-in-out infinite;
-  }
-}
-
-@keyframes backgroundShift {
-  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
-  50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
-}
-
-.floating-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.floating-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(99, 102, 241, 0.1) 100%
-  );
-  animation: floatCircle 15s infinite ease-in-out;
-
-  &:nth-child(1) {
-    width: 120px;
-    height: 120px;
-    top: 15%;
-    left: 10%;
-    animation-delay: -5s;
-  }
-
-  &:nth-child(2) {
-    width: 180px;
-    height: 180px;
-    top: 60%;
-    right: 15%;
-    animation-delay: -10s;
-  }
-
-  &:nth-child(3) {
-    width: 100px;
-    height: 100px;
-    top: 80%;
-    left: 65%;
-    animation-delay: -15s;
-  }
-}
-
-@keyframes floatCircle {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-100px) rotate(180deg) scale(1.1);
-    opacity: 0.1;
-  }
-}
+// Removed all gradient backgrounds and floating elements for cleaner look
 
 .header-section {
   text-align: center;
@@ -292,14 +228,7 @@
 .welcome-title {
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(135deg,
-    var(--primary-color) 0%,
-    var(--primary-color-dark) 50%,
-    #6366f1 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary-color);
   margin-bottom: 16px;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -316,8 +245,8 @@
 .teacher-info-card {
   background: var(--background-color);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-lg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   padding: 35px;
   margin: 0 auto 50px;
   max-width: 800px;
@@ -332,7 +261,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    background: var(--primary-color);
   }
 }
 
@@ -344,14 +273,14 @@
   .avatar-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
-    border-radius: 20px;
+    background: var(--primary-color);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     color: white;
-    box-shadow: var(--box-shadow-lg);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
   }
 }
 
@@ -384,7 +313,8 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background: rgba(59, 130, 246, 0.08);
   }
 
   &.subjects {
@@ -416,8 +346,8 @@
 .card {
   background: var(--background-color);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   padding: 30px;
   position: relative;
   overflow: hidden;
@@ -431,15 +361,15 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: var(--gradient);
+    background: var(--accent-color);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
   }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--box-shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 
     &::before {
       transform: scaleX(1);
@@ -448,60 +378,61 @@
 }
 
 .card.academic-year {
-  --gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  --accent-color: #3b82f6;
   --index: 1;
 }
 
 .card.active-term {
-  --gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  --accent-color: #8b5cf6;
   --index: 2;
 }
 
 .card.my-classes {
-  --gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --accent-color: #10b981;
   --index: 3;
 }
 
 .card.top-student {
-  --gradient: linear-gradient(135deg, var(--success-color) 0%,var(--success-color) 100%);
+  --accent-color: var(--success-color);
   --index: 4;
 }
 
 .card.quick-stats {
-  --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  --accent-color: var(--primary-color);
   --index: 5;
 }
 
 .card.recent-activity {
-  --gradient: linear-gradient(135deg, var(--primary-color-dark) 0%, var(--primary-color) 100%);
+  --accent-color: var(--primary-color);
   --index: 6;
 }
 
 .card.bottom-student {
-  --gradient: linear-gradient(135deg, #374151 0%, #374151 100%); // light gray gradient
-  --index: 1;// dark gray text for contrast
+  --accent-color: #ef4444;
+  --index: 1;
   background: var(--background-color);
-  border: 1px solid var(--danger-color);
-  box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  margin-top: 24px;
+  border: 1px solid #ef4444;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
 
   .card-header {
-    background: rgba(239, 68, 68, 0.08); // subtle danger background
-    border-bottom: 1px solid var(--danger-color);
+    background: rgba(239, 68, 68, 0.05);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin: -10px -10px 16px -10px;
 
     .card-icon {
-      color: var(--danger-color);
+      color: #ef4444;
       background: var(--background-color);
-      border-radius: var(--border-radius);
+      border-radius: 12px;
       padding: 10px;
       font-size: 1.5rem;
-      box-shadow: var(--box-shadow);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
     }
   }
 
   .card-title {
-    color: #dc3545;
+    color: #ef4444;
     font-weight: 600;
     margin-bottom: 12px;
   }
@@ -512,8 +443,8 @@
     margin-bottom: 12px;
 
     .student-avatar {
-      background: #f8d7da;
-      color: #dc3545;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
       border-radius: 50%;
       width: 48px;
       height: 48px;
@@ -527,19 +458,19 @@
     .student-info {
       .student-name {
         font-weight: 500;
-        color: #dc3545;
+        color: #ef4444;
         font-size: 1.1rem;
       }
 
       .student-class {
         font-size: 0.95rem;
-        color: #b71c1c;
+        color: #b91c1c;
         margin-bottom: 2px;
       }
 
       .student-score {
         font-size: 1.1rem;
-        color: #000000;
+        color: var(--text-color);
         font-weight: 600;
       }
 
@@ -566,14 +497,14 @@
 .card-icon {
   width: 50px;
   height: 50px;
-  background: var(--gradient);
-  border-radius: 15px;
+  background: var(--accent-color);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
   color: white;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card-indicator {
@@ -603,10 +534,7 @@
   .card-value {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: var(--font-weight-bold);
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent-color);
     margin-bottom: 8px;
     line-height: 1.2;
   }
@@ -630,7 +558,7 @@
 
     .progress-fill {
       height: 100%;
-      background: var(--gradient);
+      background: var(--accent-color);
       border-radius: 4px;
       width: var(--progress);
       animation: fillProgress 2s ease-out 0.5s both;
@@ -660,10 +588,7 @@
       display: block;
       font-size: 1.5rem;
       font-weight: var(--font-weight-bold);
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent-color);
       line-height: 1.2;
     }
 
@@ -679,40 +604,26 @@
 
 .card-action {
   .btn {
-    background: var(--gradient);
+    background: var(--primary-color);
     color: white;
     border: none;
     padding: 14px 28px;
-    border-radius: 50px;
+    border-radius: 12px;
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-base);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
     display: flex;
     align-items: center;
     gap: 8px;
     position: relative;
     overflow: hidden;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
     &:hover {
       transform: translateY(-2px);
-      box-shadow: var(--box-shadow-lg);
-
-      &::before {
-        left: 100%;
-      }
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+      background: var(--primary-color-dark);
     }
   }
 }
@@ -726,14 +637,14 @@
   .student-avatar {
     width: 60px;
     height: 60px;
-    background: var(--gradient);
+    background: var(--success-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     color: white;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
   }
 
   .student-info {
@@ -760,10 +671,7 @@
         .score-value {
           font-size: 1.25rem;
           font-weight: var(--font-weight-bold);
-          background: var(--gradient);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: var(--success-color);
         }
 
         .score-max {
@@ -802,7 +710,7 @@
 
       .metric-fill {
         height: 100%;
-        background: var(--gradient);
+        background: var(--primary-color);
         border-radius: 3px;
         width: var(--metric);
         animation: fillMetric 2s ease-out 1s both;
@@ -843,19 +751,20 @@
   &:hover {
     transform: translateY(-2px);
     background: rgba(59, 130, 246, 0.08);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
   }
 
   .stat-icon {
     width: 40px;
     height: 40px;
-    background: var(--gradient);
+    background: var(--primary-color);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
     color: white;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
   }
 
   .stat-data {
@@ -863,10 +772,7 @@
       display: block;
       font-size: 1.25rem;
       font-weight: var(--font-weight-bold);
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--primary-color);
       line-height: 1.2;
     }
 
@@ -900,14 +806,14 @@
     .activity-icon {
       width: 32px;
       height: 32px;
-      background: var(--gradient);
+      background: var(--primary-color);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.875rem;
       color: white;
-      box-shadow: var(--box-shadow);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
       flex-shrink: 0;
     }
 
@@ -941,6 +847,7 @@
   }
 }
 
+// Clean subject badges with solid colors
 .subject-badge-0 { background: #2563eb; color: #fff; }
 .subject-badge-1 { background: #22c55e; color: #fff; }
 .subject-badge-2 { background: #f59e42; color: #fff; }
