@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
-import { ClassService } from '../../services/class.service';
 import { ClassModel } from '../../../teacher-dashboard/models/class-model';
 
 @Component({
@@ -12,49 +11,42 @@ export class ViewSubjectsModalComponent implements OnInit, OnChanges {
   @Input() selectedClass: ClassModel | null = null;
   @Output() close = new EventEmitter<void>();
 
-  classDetails: any = null;
   loading = false;
   error: string | null = null;
 
-  constructor(private classService: ClassService) {}
+  constructor() {}
 
   ngOnInit(): void {
     if (this.isOpen && this.selectedClass) {
-      this.loadClassWithSubjects();
+      this.loadClassData();
     }
   }
 
   ngOnChanges(): void {
     if (this.isOpen && this.selectedClass) {
-      this.loadClassWithSubjects();
+      this.loadClassData();
     }
   }
 
-  loadClassWithSubjects(): void {
-    if (!this.selectedClass?.id) return;
-    
-    this.loading = true;
+  loadClassData(): void {
+    // Utilisez directement les données de la classe passée en input
+    // Pas besoin d'appel API supplémentaire
+    this.loading = false;
     this.error = null;
     
-    console.log('Loading subjects for class:', this.selectedClass);
+    console.log('Using cached class data with subjects:', this.selectedClass);
     
-    this.classService.getById(this.selectedClass.id).subscribe({
-      next: (classData) => {
-        this.classDetails = classData;
-        this.loading = false;
-        console.log('Class details with subjects:', classData);
-      },
-      error: (error) => {
-        this.error = 'Erreur lors du chargement des matières';
-        this.loading = false;
-        console.error('Error loading class subjects:', error);
-      }
-    });
+    if (this.selectedClass && !this.selectedClass.subjects) {
+      console.warn('Class data does not contain subjects. You may need to ensure the API returns subjects with classes.');
+    }
+  }
+
+  get classSubjects() {
+    return this.selectedClass?.subjects || [];
   }
 
   closeModal(): void {
     this.isOpen = false;
-    this.classDetails = null;
     this.error = null;
     this.close.emit();
   }

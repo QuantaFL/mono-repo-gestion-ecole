@@ -19,10 +19,10 @@
         {{ error }}
       </div>
 
-      <div *ngIf="!loading && classDetails?.subjects?.length" class="subjects-list">
-        <h4>Matières assignées ({{ classDetails.subjects.length }}) :</h4>
+      <div *ngIf="!loading && classSubjects.length" class="subjects-list">
+        <h4>Matières assignées ({{ classSubjects.length }}) :</h4>
         <div class="subjects-grid">
-          <div *ngFor="let subject of classDetails.subjects" class="subject-card">
+          <div *ngFor="let subject of classSubjects" class="subject-card">
             <div class="subject-header">
               <h5>{{ subject.name }}</h5>
               <span class="subject-status" [class.active]="subject.status">
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div *ngIf="!loading && (!classDetails?.subjects || classDetails.subjects.length === 0)" class="no-subjects">
+      <div *ngIf="!loading && !classSubjects.length" class="no-subjects">
         <div class="empty-state">
           <p>📚</p>
           <h4>Aucune matière assignée</h4>
