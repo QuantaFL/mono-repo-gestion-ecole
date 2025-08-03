@@ -22,4 +22,5 @@ export interface Teacher {
   subjects: Subject[];
   userModel: User;
   count?: number;
+  isActive?: boolean;
 }
