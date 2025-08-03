@@ -1,0 +1,56 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Ajouter une matière</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="selectedClass" class="class-info">
+        <p><strong>Classe:</strong> {{ selectedClass.name }}</p>
+        <p><strong>Niveau:</strong> {{ selectedClass.level }}</p>
+      </div>
+
+      <div *ngIf="loading" class="loading-message">
+        Chargement des matières...
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="!loading && subjects.length" class="subjects-list">
+        <h4>Sélectionnez une matière :</h4>
+        <div class="subject-options">
+          <div 
+            *ngFor="let subject of subjects" 
+            class="subject-option"
+            [class.selected]="selectedSubjectId === subject.id"
+            (click)="onSubjectSelect(subject.id)">
+            <div class="subject-name">{{ subject.name }}</div>
+            <div class="subject-details">
+              <span>Niveau: {{ subject.level }}</span>
+              <span>Coefficient: {{ subject.coefficient }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !subjects.length" class="no-subjects">
+        Aucune matière disponible
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">
+        Annuler
+      </button>
+      <button 
+        class="btn-primary" 
+        [disabled]="!selectedSubjectId || loading"
+        (click)="assignSubject()">
+        {{ loading ? 'Attribution en cours...' : 'Assigner la matière' }}
+      </button>
+    </div>
+  </div>
+</div>
