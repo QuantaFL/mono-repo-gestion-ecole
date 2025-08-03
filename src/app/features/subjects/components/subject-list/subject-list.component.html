@@ -18,10 +18,11 @@
         <tr>
          <!--  <th>ID</th> -->
           <th>Nom</th>
+          <th>Statut</th>
        <!--  <th>Coefficient</th>--> 
        <!--   <th>Niveau</th> --> 
-          <th>Créé le</th>
-          <th>Modifié le</th>
+       <!--   <th>Créé le</th>-->
+         <!--  <th>Modifié le</th>-->
           <th>Actions</th>
         </tr>
       </thead>
@@ -29,12 +30,19 @@
         <tr *ngFor="let subject of subjects">
           <!-- <td>{{ subject.id }}</td> -->
           <td>{{ subject.name }}</td>
+          <td>
+            <span class="status-badge" [class.active]="subject.status">
+              {{ subject.status ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
         <!--   <td>{{ subject.coefficient }}</td>-->
         <!--   <td>{{ subject.level || '-' }}</td>-->
-          <td>{{ subject.createdAt || '-' }}</td>
-          <td>{{ subject.updatedAt || '-' }}</td>
+         <!--  <td>{{ subject.createdAt || '-' }}</td>-->
+        <!--   <td>{{ subject.updatedAt || '-' }}</td>-->
           <td>
-            <button class="btn-secondary" (click)="assignTeacher(subject)">Affecter à un prof</button>
+            <button class="btn-secondary" (click)="toggleSubjectStatus(subject)">
+              {{ subject.status ? 'Désactiver' : 'Activer' }}
+            </button>
           </td>
         </tr>
       </tbody>

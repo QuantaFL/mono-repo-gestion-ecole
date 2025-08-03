@@ -22,4 +22,8 @@ export class SubjectService {
   getAllSubject(): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}`);
   }
+
+  toggleSubjectStatus(name: string): Observable<Subject> {
+    return this.http.post<Subject>(`${this.apiUrl}/toggle-status`, { name });
+  }
 }

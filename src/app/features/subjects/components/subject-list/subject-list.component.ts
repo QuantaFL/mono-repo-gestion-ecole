@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubjectService } from '../../services/subject.service';
 import { Subject } from '../../models/subject';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-subject-list',
@@ -8,14 +9,36 @@ import { Subject } from '../../models/subject';
   styleUrl: './subject-list.component.scss'
 })
 export class SubjectListComponent implements OnInit {
-assignTeacher(_t30: Subject) {
-throw new Error('Method not implemented.');
+toggleSubjectStatus(subject: Subject) {
+  console.log('Toggling status for subject:', subject);
+  
+  this.subjectService.toggleSubjectStatus(subject.name).subscribe({
+    next: (response) => {
+      console.log('Subject status toggled successfully:', response);
+      
+      // Update the local subject status
+      const index = this.subjects.findIndex(s => s.name === subject.name);
+      if (index !== -1) {
+        this.subjects[index] = response;
+      }
+      
+      const statusText = response.status ? 'activée' : 'désactivée';
+      this.toastr.success(`Matière "${subject.name}" ${statusText} avec succès`, 'Succès');
+    },
+    error: (error) => {
+      console.error('Error toggling subject status:', error);
+      this.toastr.error('Erreur lors du changement de statut de la matière', 'Erreur');
+    }
+  });
 }
   subjects: Subject[] = [];
   loading = false;
   error: string | null = null;
 
-  constructor(private subjectService: SubjectService) {}
+  constructor(
+    private subjectService: SubjectService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.fetchSubjects();

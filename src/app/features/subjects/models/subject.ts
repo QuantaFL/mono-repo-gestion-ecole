@@ -3,6 +3,7 @@ export interface Subject {
   name: string;
   coefficient: number;
   level?: string;
+  status?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
