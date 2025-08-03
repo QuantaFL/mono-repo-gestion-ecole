@@ -135,7 +135,7 @@ export class TeacherTimetableComponent implements OnInit, OnDestroy {
    * Export complete teacher report as PDF
    */
   async exportTeacherReport(): Promise<void> {
-    if (!this.currentTeacher || !this.assignments.length) {
+    if (!this.currentTeacher) {
       console.error('No teacher or assignment data available for report');
       return;
     }
