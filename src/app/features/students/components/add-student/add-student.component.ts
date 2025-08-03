@@ -19,6 +19,7 @@ export class AddStudentComponent implements OnInit {
   classes: ClassModel[] = [];
   currentAcademicYear?: AcademicYear;
   academicRecordsFile: File | null = null;
+  studentPhotoFile: File | null = null;
 
   constructor(
     private classService: ClassService,
@@ -130,7 +131,8 @@ export class AddStudentComponent implements OnInit {
           this.studentForm.get('student_email')?.valid === true &&
           this.studentForm.get('student_adress')?.valid === true;
       case 2:
-        return this.studentForm.get('class_model_id')?.valid === true;
+        return this.studentForm.get('class_model_id')?.valid === true &&
+          this.studentForm.get('academic_records')?.valid === true;
       case 3:
         return this.studentForm.get('parent_first_name')?.valid === true &&
           this.studentForm.get('parent_last_name')?.valid === true &&
@@ -153,20 +155,30 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
+  onStudentPhotoFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.studentPhotoFile = input.files[0];
+      console.log('Photo sélectionnée:', this.studentPhotoFile);
+    } else {
+      this.studentPhotoFile = null;
+    }
+  }
+
   async onSubmit(): Promise<void> {
     if (this.studentForm.valid) {
       const formValue = this.studentForm.getRawValue();
       const formData = new FormData();
-      // Ajoute tous les champs du formulaire dans le FormData
       Object.keys(formValue).forEach(key => {
         formData.append(key, formValue[key]);
       });
-      // Ajoute le fichier s'il existe
       if (this.academicRecordsFile) {
         formData.append('academic_records', this.academicRecordsFile);
         console.log('Nom du fichier academic_records envoyé:', this.academicRecordsFile.name);
-      } else {
-        this.toastr.info("Aucun fichier académique sélectionné, l'envoi se fera sans fichier.", 'Information');
+      }
+      if (this.studentPhotoFile) {
+        formData.append('photo', this.studentPhotoFile);
+        console.log('Nom du fichier photo envoyé:', this.studentPhotoFile.name);
       }
       // Log du contenu du FormData
       for (const pair of formData.entries()) {
