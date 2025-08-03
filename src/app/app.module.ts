@@ -15,6 +15,10 @@ import { AddStudentComponent } from './features/students/components/add-student/
 import { AddTeacherComponent } from './features/teachers/components/add-teacher/add-teacher.component';
 import { ClassAddComponent } from "./features/class/components/class-add/class-add.component";
 import { ClassListComponent } from "./features/class/components/class-list/class-list.component";
+import { AssignSubjectModalComponent } from "./features/class/components/assign-subject-modal/assign-subject-modal.component";
+import { ViewSubjectsModalComponent } from "./features/class/components/view-subjects-modal/view-subjects-modal.component";
+import { TerminationConfirmModalComponent } from "./features/teachers/components/termination-confirm-modal/termination-confirm-modal.component";
+import { TerminatedTeacherListComponent } from "./features/teachers/components/terminated-teacher-list/terminated-teacher-list.component";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './components/header/header.component';
@@ -44,6 +48,10 @@ import { AuthInterceptorTsService } from './features/auth/services/auth.intercep
     AddTeacherComponent,
     ClassAddComponent,
     ClassListComponent,
+    AssignSubjectModalComponent,
+    ViewSubjectsModalComponent,
+    TerminationConfirmModalComponent,
+    TerminatedTeacherListComponent,
     HeaderComponent,
     AddSubjectComponent,
     ChangePasswordComponent,

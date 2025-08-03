@@ -12,6 +12,7 @@ import {authGuard} from "./core/guards/auth.guard";
 import {SubjectListComponent} from "./features/subjects/components/subject-list/subject-list.component";
 import {AddSubjectComponent} from "./features/subjects/components/add-subject/add-subject.component";
 import {ChangePasswordComponent} from "./features/auth/components/change-password/change-password.component";
+import { TerminatedTeacherListComponent } from './features/teachers/components/terminated-teacher-list/terminated-teacher-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'subject', component: AddSubjectComponent},
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },
   { path: 'teacher-dashboard', loadChildren: () => import('./features/teacher-dashboard/teacher-dashboard.module').then(m => m.TeacherDashboardModule) },
+  {path:'list_terminated_assigned_teacher', component: TerminatedTeacherListComponent, canActivate: [authGuard]},
   { path: '**', redirectTo: 'login' }
 ];
 
