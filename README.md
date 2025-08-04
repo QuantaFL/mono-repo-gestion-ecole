@@ -4,19 +4,19 @@ This monorepo contains three main applications for the education portal system:
 
 ## Projects
 
-### 🏫 Admin Portail (`admin-portail/`)
+### Admin Portail (`admin-portail/`)
 Angular-based administrative portal for managing the education system.
 
 **Tech Stack:** Angular, TypeScript, SCSS
 **Purpose:** Administrative interface for school management
 
-### 🚀 API Backend (`portail-education-api-remaster/`)
+### API Backend (`portail-education-api-remaster/`)
 Laravel-based REST API backend serving all applications.
 
-**Tech Stack:** Laravel, PHP, MySQL
+**Tech Stack:** Laravel, PHP, Postgres
 **Purpose:** Core API providing data and business logic
 
-### 📱 Mobile App (`portail-education-eleve-parent/`)
+### Mobile App (`portail-education-eleve-parent/`)
 Flutter mobile application for students and parents.
 
 **Tech Stack:** Flutter, Dart
