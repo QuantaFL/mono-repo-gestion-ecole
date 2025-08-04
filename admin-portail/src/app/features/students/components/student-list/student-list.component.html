@@ -1,0 +1,84 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2 class="page-title">Liste des élèves</h2>
+    <button class="btn-primary" routerLink="/student">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      Inscription élève
+    </button>
+  </div>
+
+  <div class="search-pagination-bar">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Rechercher par nom, email ou matricule..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      aria-label="Recherche élèves"
+      autocomplete="off"
+    />
+  </div>
+
+  <div class="card">
+    <div *ngIf="filteredStudents.length === 0" class="empty-state">
+      <div #lottieContainer class="lottie-empty-animation" style="width:220px;height:220px;margin:0 auto;"></div>
+      <div class="empty-state-text">
+        <h3>Aucun élève trouvé</h3>
+        <p>Essayez d’ajuster votre recherche ou d’ajouter un nouvel élève.</p>
+      </div>
+    </div>
+    <div class="table-responsive" *ngIf="filteredStudents.length > 0">
+      <table class="data-table apple-list">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let student of paginatedStudents, let i = index" class="apple-row">
+          <td class="apple-index">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td class="apple-name">{{ student.userModel.first_name }}</td>
+          <td class="apple-name">{{ student.userModel.last_name }}</td>
+          <td class="apple-email">{{ student.userModel.email }}</td>
+          <td class="apple-phone">{{ student.userModel?.phone }}</td>
+          <td class="actions-cell apple-actions">
+            <ng-container *ngIf="!student.latest_student_session || student.latest_student_session.academic_year_id !== currentAcademicYear?.id; else enrolled">
+              <button class="btn-prominent btn-primary apple-action-btn" title="Reinscrire étudiant">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Reinscrire Etudiant
+              </button>
+            </ng-container>
+            <ng-template #enrolled>
+              <span class="status-green" title="Inscrit session en cours">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Inscrit session en cours
+              </span>
+            </ng-template>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-bar" *ngIf="filteredStudents.length > pageSize">
+      <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Page précédente">&laquo;</button>
+      <ng-container *ngFor="let page of totalPagesArray">
+        <button class="pagination-btn" [class.active]="page === currentPage" (click)="goToPage(page)">{{ page }}</button>
+      </ng-container>
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" aria-label="Page suivante">&raquo;</button>
+      <select class="page-size-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()" aria-label="Taille page">
+        <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} / page</option>
+      </select>
+    </div>
+  </div>
+</div>

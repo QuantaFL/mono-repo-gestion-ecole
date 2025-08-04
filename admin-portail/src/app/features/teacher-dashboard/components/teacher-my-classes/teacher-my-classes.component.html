@@ -1,0 +1,32 @@
+<div class="my-classes-container modern-my-classes-container">
+  <div class="modern-my-classes-header">
+    <div class="modern-my-classes-header-bg"></div>
+    <div class="modern-my-classes-header-content">
+      <h2 class="modern-my-classes-title">
+        <i class="fas fa-layer-group"></i>
+        Mes Classes
+      </h2>
+      <p class="modern-my-classes-desc">Retrouvez ici toutes vos classes assignées pour l'année académique en cours.</p>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading modern-loading">Chargement...</div>
+  <div *ngIf="!loading && classes.length === 0" class="no-classes modern-no-classes">Aucune classe trouvée pour cette année académique.</div>
+  <div class="classes-list modern-classes-list" *ngIf="!loading && classes.length > 0">
+    <div class="modern-class-card enhanced-class-card" *ngFor="let classItem of classes" (click)="goToClassDetails(classItem.id!)">
+      <div class="enhanced-class-accent"></div>
+      <div class="enhanced-class-main">
+        <div class="enhanced-class-header-row">
+          <div class="modern-class-title enhanced-class-title">{{ classItem.name }}</div>
+          <div class="modern-class-card-arrow enhanced-class-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+        <div class="enhanced-class-details-row">
+          <div class="modern-class-level enhanced-class-level"><i class="fas fa-signal"></i> Niveau: {{ classItem.level }}</div>
+          <div class="modern-class-meta enhanced-class-meta"><i class="fas fa-calendar-plus"></i> Créée le: {{ classItem.created_at | date:'mediumDate' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

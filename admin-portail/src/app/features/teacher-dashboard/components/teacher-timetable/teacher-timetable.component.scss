@@ -1,0 +1,358 @@
+.modern-timetable-container {
+  padding: 0 0 40px 0;
+  background: var(--background-color);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+.modern-timetable-accent {
+  width: 100%;
+  height: 14px;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 0 0 14px 14px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px 0 rgba(59,130,246,0.10);
+}
+.modern-timetable-title {
+  text-align: center;
+  font-size: 2.3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2.2rem;
+  letter-spacing: -0.01em;
+}
+.modern-timetable-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(5, 1fr);
+  gap: 8px;
+  background-color: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.10);
+  overflow: hidden;
+  animation: timetablePopIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.modern-header-cell {
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.13rem;
+  padding: 1.1rem 0.5rem;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.modern-time-header {
+  border-top-left-radius: 18px;
+}
+.modern-day-header:last-child {
+  border-top-right-radius: 18px;
+}
+.modern-time-slot-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #555;
+  background: #f0f4f8;
+  padding: 1.1rem 0.5rem;
+  font-size: 1.08rem;
+}
+.modern-timetable-cell {
+  min-height: 120px;
+  background: #fdfdfd;
+  border: 1px solid #e0e0e0;
+  transition: background 0.3s, box-shadow 0.3s;
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+  &:hover {
+    background: #f5f7fa;
+    box-shadow: 0 2px 12px 0 rgba(59,130,246,0.08);
+    z-index: 2;
+  }
+}
+.modern-slot-content {
+  padding: 1.1rem 0.5rem;
+  height: 100%;
+  border-radius: 10px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(59,130,246,0.06);
+  background: rgba(59,130,246,0.07);
+  animation: slotFadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.modern-slot-subject {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--primary-color-dark);
+  margin-bottom: 0.2rem;
+}
+.modern-slot-class {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  margin-bottom: 0.15rem;
+}
+.modern-slot-time {
+  font-size: 0.98rem;
+  color: #555;
+}
+@keyframes timetablePopIn {
+  0% { transform: scale(0.92) translateY(40px); opacity: 0; }
+  60% { transform: scale(1.04) translateY(-8px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes slotFadeIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-timetable-in {
+  animation: timetablePopIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+.timetable-container {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  font-family: 'Poppins', sans-serif;
+
+  .timetable-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+
+  .timetable-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(5, 1fr);
+    gap: 8px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .header-cell {
+      background-color: #4A90E2;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .time-header {
+      border-top-left-radius: 12px;
+    }
+
+    .day-header:last-child {
+      border-top-right-radius: 12px;
+    }
+
+    .time-slot-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: #555;
+      background-color: #f0f4f8;
+      padding: 1rem;
+    }
+
+    .timetable-cell {
+      min-height: 120px;
+      background-color: #fdfdfd;
+      border: 1px solid #e0e0e0;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .slot-content {
+        padding: 1rem;
+        height: 100%;
+        border-radius: 8px;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        .subject-name {
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+
+        .class-name {
+          font-size: 1rem;
+          color: #555;
+          margin: 0.25rem 0;
+        }
+
+        .time-range {
+          font-size: 0.9rem;
+          color: #777;
+        }
+      }
+    }
+  }
+}
+
+/* Header with export buttons */
+.timetable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  .modern-timetable-title {
+    margin: 0;
+    flex: 1;
+    min-width: 250px;
+  }
+}
+
+/* Export buttons styling */
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.export-btn-timetable {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  }
+}
+
+.export-btn-report {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e881f9 0%, #f3455a 100%);
+  }
+}
+
+/* Export loading overlay */
+.export-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.export-spinner {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  p {
+    margin: 15px 0 0 0;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+/* Spinner animation */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design for export buttons */
+@media (max-width: 768px) {
+  .timetable-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .export-buttons {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .export-btn {
+    flex: 1;
+    min-width: 120px;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .export-btn {
+    width: 100%;
+  }
+}

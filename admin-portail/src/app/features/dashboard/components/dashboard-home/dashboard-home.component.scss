@@ -1,0 +1,78 @@
+@import url('../../../../../styles/variables.scss');
+.dashboard-container {
+  margin-left: 280px;
+  flex: 1; /* prend tout l'espace restant */
+  padding: 24px;
+  background-color: var(--background-color);
+  overflow-y: auto;
+}
+.page-title {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin-bottom: 32px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 24px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+}
+
+.kpi-label {
+  font-size: 14px;
+  color: var(--text-color-light);
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.chart-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 24px;
+}
+
+.chart-title {
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+canvas {
+  max-height: 300px;
+  width: 100% !important;
+  height: auto !important;
+}
+.layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* prend toute la hauteur de l'écran */
+  overflow: hidden;
+}

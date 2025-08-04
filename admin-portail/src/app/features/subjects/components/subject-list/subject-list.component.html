@@ -1,0 +1,53 @@
+<div class="subject-page-container">
+  <div class="page-header">
+    <h2 class="page-title">Liste des matières</h2>
+    <button class="btn-primary" routerLink="/subject">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      Ajouter une matière
+    </button>
+  </div>
+
+  <div class="card">
+    <div *ngIf="loading" class="info-message">Chargement...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <table class="subject-table" *ngIf="subjects.length">
+      <thead>
+        <tr>
+         <!--  <th>ID</th> -->
+          <th>Nom</th>
+          <th>Statut</th>
+       <!--  <th>Coefficient</th>--> 
+       <!--   <th>Niveau</th> --> 
+       <!--   <th>Créé le</th>-->
+         <!--  <th>Modifié le</th>-->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subject of subjects">
+          <!-- <td>{{ subject.id }}</td> -->
+          <td>{{ subject.name }}</td>
+          <td>
+            <span class="status-badge" [class.active]="subject.status">
+              {{ subject.status ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+        <!--   <td>{{ subject.coefficient }}</td>-->
+        <!--   <td>{{ subject.level || '-' }}</td>-->
+         <!--  <td>{{ subject.createdAt || '-' }}</td>-->
+        <!--   <td>{{ subject.updatedAt || '-' }}</td>-->
+          <td>
+            <button class="btn-secondary" (click)="toggleSubjectStatus(subject)">
+              {{ subject.status ? 'Désactiver' : 'Activer' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading && !subjects.length" class="info-message">Aucune matière trouvée.</div>
+  </div>
+</div>

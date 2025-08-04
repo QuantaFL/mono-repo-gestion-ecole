@@ -1,0 +1,121 @@
+<div class="container py-4 ms-150" style="margin-left: 200px;">
+
+<h3 class="mb-4 text-primary ms-150">👩‍🎓 Ajouter un élève</h3>
+
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="shadow-sm p-4 bg-white rounded ms-150">
+    <!-- ETAPES -->
+    <div class="mb-4 ms-150
+">
+      <div class="progress" style="height: 8px;">
+        <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="currentStep * 25"></div>
+      </div>
+      <div class="text-end mt-1 small text-muted">Étape {{ currentStep }} / 4</div>
+    </div>
+
+    <!-- ÉTAPE 1 — Infos élève -->
+    <div *ngIf="currentStep === 1" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Prénom de l'élève</label>
+        <input type="text" formControlName="student_first_name" class="form-control" placeholder="ex. Fatou" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Nom de l'élève</label>
+        <input type="text" formControlName="student_last_name" class="form-control" placeholder="ex. Ndiaye" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Date de naissance</label>
+        <input type="date" formControlName="student_birthday" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sexe</label>
+        <select class="form-select" formControlName="student_gender">
+          <option value="">-- Sélectionnez --</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Téléphone</label>
+        <input type="text" formControlName="student_phone" class="form-control" placeholder="77xxxxxxx" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" formControlName="student_email" class="form-control" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Adresse</label>
+        <textarea formControlName="student_adress" class="form-control" rows="2" placeholder="Adresse complète..."></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Photo de l'élève</label>
+        <input type="file" (change)="onStudentPhotoFileChange($event)" class="form-control" />
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 — Infos scolaires -->
+    <div *ngIf="currentStep === 2" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Classe</label>
+        <select class="form-select" formControlName="class_model_id">
+          <option value="" disabled selected>Choisir une classe</option>
+          <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Année académique</label>
+        <input type="text" class="form-control" [value]="currentAcademicYear?.label || ''" readonly />
+        <input type="hidden" formControlName="academic_year_id" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Justificatif (fichier)</label>
+        <input type="file" (change)="onAcademicRecordsFileChange($event)" class="form-control" />
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 — Infos parent -->
+    <div *ngIf="currentStep === 3" class="row g-3">
+      <div class="col-12">
+        <h5 class="text-primary">👨‍👩‍👧 Informations sur le parent</h5>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Prénom du parent</label>
+        <input type="text" formControlName="parent_first_name" class="form-control" placeholder="ex. Ousmane" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Nom du parent</label>
+        <input type="text" formControlName="parent_last_name" class="form-control" placeholder="ex. Fall" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Téléphone</label>
+        <input type="text" formControlName="parent_phone" class="form-control" placeholder="77xxxxxxx" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" formControlName="parent_email" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Adresse</label>
+        <input type="text" formControlName="parent_adress" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Date de naissance</label>
+        <input type="date" formControlName="parent_birthday" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sexe</label>
+        <select class="form-select" formControlName="parent_gender">
+          <option value="">-- Sélectionnez --</option>
+          <option value="M">Masculin</option>
+          <option value="F">F��minin</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Navigation boutons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-outline-primary" (click)="prevStep()" [disabled]="currentStep === 1" *ngIf="currentStep!==1">Précédent</button>
+      <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">Suivant</button>
+      <button type="submit" class="btn btn-success" *ngIf="currentStep === 3">Enregistrer</button>
+    </div>
+  </form>
+</div>

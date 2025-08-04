@@ -1,0 +1,70 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <div class="logo">
+        <div class="logo-circle">
+          <img alt="School Logo" class="logo-image" src="assets/school_logo.png"/>
+        </div>
+      </div>
+      <h2 *ngIf="!isCollapsed"
+          class="logo-text">{{ getCurrentUser()!.role.name === 'admin' ? 'portail admin' : 'portail prof' }}</h2>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <ul class="menu-list">
+      <li class="menu-item"
+          *ngFor="let item of menuItems; trackBy: trackByPath">
+        <a [routerLink]="item.path"
+           class="menu-link"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }"
+           (click)="onMenuClick(item)">
+          <div class="menu-icon-container">
+            <svg class="menu-icon"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 [innerHTML]="item.icon">
+            </svg>
+          </div>
+          <span class="menu-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+          <div class="active-indicator" *ngIf="item.isActive"></div>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Logout Section -->
+    <div class="logout-section">
+      <button class="logout-btn" (click)="logout()">
+        <div class="menu-icon-container">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+          </svg>
+        </div>
+        <span class="menu-text" *ngIf="!isCollapsed">Déconnexion</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Footer Info -->
+  <div class="sidebar-footer" *ngIf="!isCollapsed">
+    <div class="user-info">
+      <div class="user-avatar">
+        <span>A</span>
+      </div>
+      <div class="user-details">
+        <p class="user-name">{{getCurrentUser()!.email}}</p>
+        <p class="user-role">{{getCurrentUser()!.role.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay"
+       *ngIf="isMobile && !isCollapsed"
+       (click)="toggleSidebar()">
+  </div>
+</aside>

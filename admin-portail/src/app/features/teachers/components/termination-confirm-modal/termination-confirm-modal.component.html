@@ -1,0 +1,39 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmer la résiliation</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="selectedTeacher" class="teacher-info">
+        <div class="warning-icon"></div>
+        <h4>Êtes-vous sûr de vouloir résilier le contrat ?</h4>
+        <div class="teacher-details">
+          <p><strong>Enseignant :</strong> {{ selectedTeacher.userModel.first_name }} {{ selectedTeacher.userModel.last_name }}</p>
+          <p><strong>Email :</strong> {{ selectedTeacher.userModel.email }}</p>
+          <p><strong>Date d'embauche :</strong> {{ selectedTeacher.hire_date | date:'dd/MM/yyyy' }}</p>
+        </div>
+        
+        <div class="warning-message">
+          <p>Cette action va :</p>
+          <ul>
+            <li>Désactiver toutes les assignations de cet enseignant</li>
+            <li>Marquer le contrat comme résilié</li>
+            <li>L'enseignant n'apparaîtra plus dans la liste active</li>
+          </ul>
+          <p><strong>Cette action est irréversible.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">
+        Annuler
+      </button>
+      <button class="btn-danger" (click)="confirmTermination()">
+        Confirmer la résiliation
+      </button>
+    </div>
+  </div>
+</div>

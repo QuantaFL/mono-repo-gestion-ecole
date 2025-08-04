@@ -1,0 +1,185 @@
+<app-term-countdown-reminder
+  [termEndDate]="currentTerm!.id === 1 ? splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term1.end.toISOString() : splitAcademicYear(currentAcademicYear!.start_date, currentAcademicYear!.end_date).term2.end.toISOString()"
+  [notesSubmitted]="false"
+></app-term-countdown-reminder>
+<div class="dashboard-home-container modern-dashboard-home">
+  <div class="modern-dashboard-accent"></div>
+  <div class="modern-dashboard-header">
+    <h1 class="modern-dashboard-title">Bienvenue sur le Tableau de bord Enseignant !</h1>
+    <p class="modern-dashboard-desc">Votre centre de gestion pour les classes, années académiques et performances étudiantes</p>
+  </div>
+
+  <div class="modern-teacher-info-card" *ngIf="currentTeacher">
+    <div class="modern-teacher-info-row">
+      <div class="modern-teacher-avatar">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <div class="modern-teacher-details">
+        <h3 class="modern-teacher-name">{{ currentTeacher.userModel.first_name }} {{ currentTeacher.userModel.last_name }}</h3>
+        <div class="modern-teacher-contact">
+          <span><i class="fas fa-envelope"></i> {{ currentTeacher.userModel.email }}</span>
+          <span><i class="fas fa-phone"></i> {{ currentTeacher.userModel.phone }}</span>
+        </div>
+        <div class="modern-teacher-subjects">
+          <i class="fas fa-book"></i>
+          <ng-container *ngIf="uniqueSubjects && uniqueSubjects.length; else noSubjects">
+            {{ getUniqueSubjectNames() }}
+          </ng-container>
+          <ng-template #noSubjects>
+            <span>Aucune matière assignée</span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="overview-cards modern-overview-cards">
+    <div class="card academic-year">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Année Académique Actuelle</h3>
+        <div class="card-value">{{ academicYearLabel }}</div>
+        <p class="card-description">Année en cours avec évaluations continues</p>
+      </div>
+      <div class="card-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" [ngStyle]="{ '--progress': progressPercent + '%' }"></div>
+        </div>
+        <span class="progress-text">{{ progressPercent }}% terminé</span>
+      </div>
+    </div>
+
+    <div class="card active-term">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Terme Actif</h3>
+        <div class="card-value">{{ termName }}</div>
+        <p class="card-description">Période d'évaluation en cours</p>
+      </div>
+      <div class="card-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ daysRemaining }}</span>
+          <span class="stat-label">Jours restants</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ scheduledExamsCount }}</span>
+          <span class="stat-label">Examens prévus</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card my-classes enhanced-class-card-home">
+      <div class="enhanced-class-accent-home"></div>
+      <div class="enhanced-class-main-home">
+        <div class="enhanced-class-header-row-home">
+          <div class="modern-class-title enhanced-class-title-home">Mes Classes</div>
+          <div class="modern-class-card-arrow enhanced-class-arrow-home">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+        <div class="enhanced-class-details-row-home">
+          <div class="modern-class-level enhanced-class-level-home"><i class="fas fa-signal"></i> {{ scheduledExamsCount }}</div>
+          <div class="modern-class-meta enhanced-class-meta-home"><i class="fas fa-calendar-plus"></i> Visualisez et gérez vos classes assignées</div>
+        </div>
+        <div class="enhanced-class-action-home">
+          <button class="btn btn-primary">
+            <span>Aller à Mes Classes</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card top-student" *ngIf="performanceSummary as summary">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Étudiant le Plus Performant</h3>
+        <div class="student-profile">
+          <div class="student-avatar"
+               style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;background:#f5f5f7;overflow:hidden;">
+            <ng-container *ngIf="summary.bestPerformingStudent?.profilePictureUrl; else defaultBestAvatar">
+              <img [src]="summary.bestPerformingStudent.profilePictureUrl" alt="Photo de profil"
+                   class="student-profile-img"
+                   style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;"/>
+            </ng-container>
+            <ng-template #defaultBestAvatar>
+              <i class="fas fa-user" style="font-size:48px;color:#bbb;"></i>
+            </ng-template>
+          </div>
+          <div class="student-info">
+            <div class="student-name">{{ summary.bestPerformingStudent.firstName }} {{ summary.bestPerformingStudent.lastName }}</div>
+            <div class="student-details">
+              <div class="student-score">
+                <span class="score-value">{{ summary.bestPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-max">/20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card bottom-student" *ngIf="performanceSummary as summary">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-user-times"></i>
+        </div>
+        <div class="card-indicator"></div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Étudiant le Moins Performant</h3>
+        <div class="student-profile">
+          <div class="student-avatar"
+               style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;background:#f5f5f7;overflow:hidden;">
+            <ng-container *ngIf="summary.worstPerformingStudent?.profilePictureUrl; else defaultWorstAvatar">
+              <img [src]="summary.worstPerformingStudent.profilePictureUrl" alt="Photo de profil"
+                   class="student-profile-img"
+                   style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;"/>
+            </ng-container>
+            <ng-template #defaultWorstAvatar>
+              <i class="fas fa-user" style="font-size:48px;color:#bbb;"></i>
+            </ng-template>
+          </div>
+          <div class="student-info">
+            <div class="student-name">{{ summary.worstPerformingStudent.firstName }} {{ summary.worstPerformingStudent.lastName }}</div>
+            <div class="student-details">
+              <div class="student-score">
+                <span class="score-value">{{ summary.worstPerformingStudent.averageGrade | number:'1.1-1' }}</span>
+                <span class="score-max">/20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noPerformanceSummary>
+      <div class="card top-student">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="card-indicator"></div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Performance Summary</h3>
+          <p>No performance data available yet for the current term and assignments.</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

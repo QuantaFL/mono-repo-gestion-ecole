@@ -1,0 +1,375 @@
+<div class="multi-step-form-container">
+  <!-- Header avec titre principal
+     <div class="form-header">
+    <h1 class="form-title">Ajouter un enseignant</h1>
+    <p class="form-subtitle">Remplissez les informations étape par étape</p>
+  </div>
+  
+  -->
+ 
+
+  <!-- Indicateur d'étapes -->
+  <div class="steps-indicator">
+    <div class="steps-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="((currentStep + 1) / totalSteps) * 100"></div>
+      </div>
+    </div>
+    
+    <div class="steps-list">
+      <div 
+        *ngFor="let step of steps; let i = index" 
+        class="step-item"
+        [class.active]="i === currentStep"
+        [class.completed]="isStepCompleted(i)"
+        [class.clickable]="canProceedToStep(i)"
+        (click)="goToStep(i)">
+        
+        <div class="step-number">
+          <span *ngIf="!isStepCompleted(i) || i === currentStep" class="step-icon"><!--
+            {{ step.icon }}
+          --></span>
+          <span *ngIf="isStepCompleted(i) && i !== currentStep" class="check-icon">✓</span>
+        </div>
+        
+        <div class="step-info">
+          <div class="step-title">{{ step.title }}</div>
+          <div class="step-subtitle">{{ step.subtitle }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu des étapes -->
+  <div class="step-content">
+    
+    <!-- Étape 1: Informations personnelles {{ steps[0].icon }}  -->
+    <div *ngIf="currentStep === 0" class="step-form">
+      <form [formGroup]="personalInfoForm" class="form-section">
+        <div class="step-header">
+          <h2 class="step-title">{{ steps[0].title }}</h2>
+          <p class="step-description">{{ steps[0].subtitle }}</p>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="firstName" class="form-label">Prénom *</label>
+            <input 
+              type="text" 
+              id="firstName" 
+              class="form-input" 
+              formControlName="firstName"
+              placeholder="Prénom de l'enseignant"
+              [class.error]="personalInfoForm.get('firstName')?.invalid && personalInfoForm.get('firstName')?.touched">
+            <div class="error-message" *ngIf="personalInfoForm.get('firstName')?.invalid && personalInfoForm.get('firstName')?.touched">
+              Le prénom est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="form-label">Nom *</label>
+            <input 
+              type="text" 
+              id="lastName" 
+              class="form-input" 
+              formControlName="lastName"
+              placeholder="Nom de famille"
+              [class.error]="personalInfoForm.get('lastName')?.invalid && personalInfoForm.get('lastName')?.touched">
+            <div class="error-message" *ngIf="personalInfoForm.get('lastName')?.invalid && personalInfoForm.get('lastName')?.touched">
+              Le nom est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="birthday" class="form-label">Date de naissance *</label>
+            <input 
+              type="date" 
+              id="birthday" 
+              class="form-input" 
+              formControlName="birthday"
+              [class.error]="personalInfoForm.get('birthday')?.invalid && personalInfoForm.get('birthday')?.touched">
+            <div class="error-message" *ngIf="personalInfoForm.get('birthday')?.invalid && personalInfoForm.get('birthday')?.touched">
+              La date de naissance est requise
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="gender" class="form-label">Genre *</label>
+            <select 
+              id="gender" 
+              class="form-select" 
+              formControlName="gender"
+              [class.error]="personalInfoForm.get('gender')?.invalid && personalInfoForm.get('gender')?.touched">
+              <option *ngFor="let gender of genders" [value]="gender.value">
+                {{ gender.label }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="nationality" class="form-label">Nationalité *</label>
+            <input 
+              type="text" 
+              id="nationality" 
+              class="form-input" 
+              formControlName="nationality"
+              placeholder="Ex: Sénégalais, Français, etc."
+              [class.error]="personalInfoForm.get('nationality')?.invalid && personalInfoForm.get('nationality')?.touched">
+            <div class="error-message" *ngIf="personalInfoForm.get('nationality')?.invalid && personalInfoForm.get('nationality')?.touched">
+              La nationalité est requise
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Étape 2: Informations de contact {{ steps[1].icon }} -->
+    <div *ngIf="currentStep === 1" class="step-form">
+      <form [formGroup]="contactForm" class="form-section">
+        <div class="step-header">
+          <h2 class="step-title"> {{ steps[1].title }}</h2>
+          <p class="step-description">{{ steps[1].subtitle }}</p>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="email" class="form-label">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-input" 
+              formControlName="email"
+              placeholder="exemple@email.com"
+              [class.error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+            <div class="error-message" *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+              <span *ngIf="contactForm.get('email')?.errors?.['required']">L'email est requis</span>
+              <span *ngIf="contactForm.get('email')?.errors?.['email']">Format d'email invalide</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Téléphone *</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              class="form-input" 
+              formControlName="phone"
+              placeholder="+221 XX XXX XX XX"
+              [class.error]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+            <div class="error-message" *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+              Le numéro de téléphone est requis
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="address" class="form-label">Adresse complète *</label>
+            <input 
+              type="text" 
+              id="address" 
+              class="form-input" 
+              formControlName="address"
+              placeholder="Adresse complète avec ville"
+              [class.error]="contactForm.get('address')?.invalid && contactForm.get('address')?.touched">
+            <div class="error-message" *ngIf="contactForm.get('address')?.invalid && contactForm.get('address')?.touched">
+              L'adresse est requise
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Étape 3: Informations professionnelles{{ steps[2].icon }} -->
+    <div *ngIf="currentStep === 2" class="step-form">
+      <form [formGroup]="professionalForm" class="form-section">
+        <div class="step-header">
+          <h2 class="step-title"> {{ steps[2].title }}</h2>
+          <p class="step-description">{{ steps[2].subtitle }}</p>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="hireDate" class="form-label">Date d'embauche *</label>
+            <input 
+              type="date" 
+              id="hireDate" 
+              class="form-input" 
+              formControlName="hireDate"
+              [class.error]="professionalForm.get('hireDate')?.invalid && professionalForm.get('hireDate')?.touched">
+            <div class="error-message" *ngIf="professionalForm.get('hireDate')?.invalid && professionalForm.get('hireDate')?.touched">
+              La date d'embauche est requise
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subjectId" class="form-label">Matière enseignée *</label>
+            <select 
+              id="subjectId" 
+              class="form-select" 
+              formControlName="subjectId"
+              [class.error]="professionalForm.get('subjectId')?.invalid && professionalForm.get('subjectId')?.touched">
+              <option value="" disabled>Sélectionnez une matière</option>
+              <option *ngFor="let subject of subjects" [value]="subject.id">
+                {{ subject.name }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="professionalForm.get('subjectId')?.invalid && professionalForm.get('subjectId')?.touched">
+              La matière est requise
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="classModelId" class="form-label">Classe assignée *</label>
+            <select 
+              id="classModelId" 
+              class="form-select" 
+              formControlName="classModelId"
+              [class.error]="professionalForm.get('classModelId')?.invalid && professionalForm.get('classModelId')?.touched">
+              <option value="" disabled>Sélectionnez une classe</option>
+              <option *ngFor="let classModel of classes" [value]="classModel.id">
+                {{ classModel.name }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="professionalForm.get('classModelId')?.invalid && professionalForm.get('classModelId')?.touched">
+              La classe est requise
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="coefficient" class="form-label">Coefficient *</label>
+            <input 
+              type="number" 
+              id="coefficient" 
+              class="form-input" 
+              formControlName="coefficient"
+              min="1"
+              max="10"
+              placeholder="Ex: 4"
+              [class.error]="professionalForm.get('coefficient')?.invalid && professionalForm.get('coefficient')?.touched">
+            <div class="error-message" *ngIf="professionalForm.get('coefficient')?.invalid && professionalForm.get('coefficient')?.touched">
+              Le coefficient est requis (minimum 1)
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Étape 4: Emploi du temps {{ steps[3].icon }} -->
+    <div *ngIf="currentStep === 3" class="step-form">
+      <form [formGroup]="scheduleForm" class="form-section">
+        <div class="step-header">
+          <h2 class="step-title"> {{ steps[3].title }}</h2>
+          <p class="step-description">{{ steps[3].subtitle }}</p>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="dayOfWeek" class="form-label">Jour de la semaine *</label>
+            <select 
+              id="dayOfWeek" 
+              class="form-select" 
+              formControlName="dayOfWeek"
+              [class.error]="scheduleForm.get('dayOfWeek')?.invalid && scheduleForm.get('dayOfWeek')?.touched">
+              <option value="" disabled>Sélectionnez un jour</option>
+              <option *ngFor="let day of daysOfWeek" [value]="day.value">
+                {{ day.label }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="scheduleForm.get('dayOfWeek')?.invalid && scheduleForm.get('dayOfWeek')?.touched">
+              Le jour de la semaine est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="startTime" class="form-label">Heure de début *</label>
+            <input 
+              type="time" 
+              id="startTime" 
+              class="form-input" 
+              formControlName="startTime"
+              [class.error]="scheduleForm.get('startTime')?.invalid && scheduleForm.get('startTime')?.touched">
+            <div class="error-message" *ngIf="scheduleForm.get('startTime')?.invalid && scheduleForm.get('startTime')?.touched">
+              L'heure de début est requise
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="endTime" class="form-label">Heure de fin *</label>
+            <input 
+              type="time" 
+              id="endTime" 
+              class="form-input" 
+              formControlName="endTime"
+              [class.error]="scheduleForm.get('endTime')?.invalid && scheduleForm.get('endTime')?.touched">
+            <div class="error-message" *ngIf="scheduleForm.get('endTime')?.invalid && scheduleForm.get('endTime')?.touched">
+              L'heure de fin est requise
+            </div>
+          </div>
+        </div>
+
+        <!-- Résumé final -->
+        <div class="summary-section">
+          <h3 class="summary-title">📋 Résumé des informations</h3>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <strong>Nom complet:</strong> 
+              {{ personalInfoForm.get('firstName')?.value }} {{ personalInfoForm.get('lastName')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Email:</strong> {{ contactForm.get('email')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Téléphone:</strong> {{ contactForm.get('phone')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Date d'embauche:</strong> {{ professionalForm.get('hireDate')?.value }}
+            </div>
+            <div class="summary-item">
+              <strong>Matière:</strong> 
+              {{ getSelectedSubjectName() }}
+            </div>
+            <div class="summary-item">
+              <strong>Classe:</strong> 
+              {{ getSelectedClassName() }}
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="step-navigation">
+    <button 
+      type="button" 
+      class="btn-secondary" 
+      (click)="previousStep()"
+      [disabled]="currentStep === 0">
+      ← Précédent
+    </button>
+
+    <button 
+      type="button" 
+      class="btn-cancel" 
+      routerLink="/teachers/list">
+      Annuler
+    </button>
+
+    <button 
+      *ngIf="currentStep < totalSteps - 1"
+      type="button" 
+      class="btn-primary" 
+      (click)="nextStep()"
+      [disabled]="!isCurrentStepValid()">
+      Suivant →
+    </button>
+
+    <button 
+      *ngIf="currentStep === totalSteps - 1"
+      type="button" 
+      class="btn-success" 
+      (click)="onSubmit()"
+      [disabled]="!areAllFormsValid()">
+      ✓ Enregistrer l'enseignant
+    </button>
+  </div>
+</div>

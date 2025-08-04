@@ -1,0 +1,135 @@
+<div class="class-list-wrapper">
+  <div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+      <h2 class="page-title">Liste des classes</h2>
+      <button class="btn-primary" (click)="goToClass()">
+        Ajouter une classe
+      </button>
+    </div>
+
+    <!-- Loading / Error -->
+    <div class="card">
+      <div *ngIf="loading" class="info-message">Chargement...</div>
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+
+      <!-- Liste des classes -->
+      <div class="class-list-container" *ngIf="classes.length">
+        <div *ngFor="let classe of classes" class="class-table-card">
+          <div class="class-header">
+            <span class="class-name">{{ classe.name }}</span>
+            <span class="class-level">{{ classe.level }}</span>
+            <button class="info-btn" (click)="showInfo(classe)" title="Infos">
+              <span class="info-icon">i</span>
+            </button>
+          </div>
+
+          <!-- Détails -->
+          <div class="class-details">
+            <p><strong>Année académique:</strong> {{ classe.current_academic_year_student_sessions     }}</p>
+            <p><strong>Nombre d'élèves:</strong> {{ classe.latest_student_session || 0 }}</p>
+            <p *ngIf="classe.latest_student_session">
+              Dernière session: {{ classe.latest_student_session }}
+            </p>
+
+            <!-- Boutons d'action -->
+            <div class="class-actions">
+              <button
+                class="btn-outline"
+                (click)="generateBulletin(classe)"
+                [disabled]="isGeneratingReportCards(classe.id!)">
+                <span *ngIf="isGeneratingReportCards(classe.id!)">Génération...</span>
+                <span *ngIf="!isGeneratingReportCards(classe.id!)">Générer bulletin</span>
+              </button>
+              <button class="btn-outline" (click)="addSubject(classe)">
+                 Ajouter matière
+              </button>
+              <button class="btn-outline" (click)="viewSubjects(classe)">
+                 Voir matières
+              </button>
+            </div>
+
+            <!-- Report Card Error -->
+            <div *ngIf="getReportCardError(classe.id!)" class="error-message">
+              {{ getReportCardError(classe.id!) }}
+            </div>
+
+            <!-- Generated Report Cards Section -->
+            <div *ngIf="hasGeneratedReportCards(classe.id!)" class="report-cards-section">
+              <div class="report-cards-header">
+                <h4>Bulletins générés ({{ generatedReportCards[classe.id!].length }})</h4>
+                <div class="download-all-actions">
+                  <button
+                    class="btn-success btn-sm"
+                    (click)="downloadReportCardsAsZip(classe.id!)"
+                    title="Télécharger tous les bulletins en ZIP">
+                    📦 Télécharger ZIP
+                  </button>
+                  <button
+                    class="btn-secondary btn-sm"
+                    (click)="downloadAllReportCards(classe.id!)"
+                    title="Télécharger tous les bulletins individuellement">
+                    📄 Télécharger tous
+                  </button>
+                  <button
+                    class="btn-outline btn-sm"
+                    (click)="clearReportCards(classe.id!)"
+                    title="Masquer les bulletins">
+                    ✕ Masquer
+                  </button>
+                </div>
+              </div>
+
+              <div class="report-cards-list">
+                <div
+                  *ngFor="let reportCard of generatedReportCards[classe.id!]; trackBy: trackByReportCardId"
+                  class="report-card-item">
+                  <div class="report-card-info">
+                    <span class="report-card-rank">Rang: {{ reportCard.rank }}</span>
+                    <span class="report-card-grade">Moyenne: {{ reportCard.average_grade | number:'1.2-2' }}</span>
+                    <span class="report-card-honors">{{ reportCard.honors }}</span>
+                  </div>
+                  <div class="report-card-actions">
+                    <button
+                      class="btn-primary btn-sm"
+                      (click)="downloadReportCard(reportCard)"
+                      title="Télécharger ce bulletin">
+                      ⬇ Télécharger
+                    </button>
+                    <a
+                      [href]="reportCard.pdf_url"
+                      target="_blank"
+                      class="btn-outline btn-sm"
+                      title="Voir le bulletin">
+                      👁 Voir
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aucun résultat -->
+      <div *ngIf="!loading && !classes.length" class="info-message">
+        Aucune classe trouvée.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour assigner une matière -->
+<app-assign-subject-modal
+  [isOpen]="isModalOpen"
+  [selectedClass]="selectedClass"
+  (close)="closeModal()"
+  (subjectAssigned)="onSubjectAssigned($event)">
+</app-assign-subject-modal>
+
+<!-- Modal pour voir les matières -->
+<app-view-subjects-modal
+  [isOpen]="isViewSubjectsModalOpen"
+  [selectedClass]="selectedClass"
+  (close)="closeViewSubjectsModal()">
+</app-view-subjects-modal>

@@ -1,0 +1,59 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Matières associées</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="selectedClass" class="class-info">
+        <p><strong>Classe:</strong> {{ selectedClass.name }}</p>
+        <p><strong>Niveau:</strong> {{ selectedClass.level }}</p>
+      </div>
+
+      <div *ngIf="loading" class="loading-message">
+        Chargement des matières...
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="!loading && classSubjects.length" class="subjects-list">
+        <h4>Matières assignées ({{ classSubjects.length }}) :</h4>
+        <div class="subjects-grid">
+          <div *ngFor="let subject of classSubjects" class="subject-card">
+            <div class="subject-header">
+              <h5>{{ subject.name }}</h5>
+              <span class="subject-status" [class.active]="subject.status">
+                {{ subject.status ? 'Actif' : 'Inactif' }}
+              </span>
+            </div>
+            <div class="subject-details">
+              <p><strong>Niveau:</strong> {{ subject.level }}</p>
+              <p><strong>Coefficient:</strong> {{ subject.coefficient }}</p>
+              <p><strong>Créé le:</strong> {{ subject.created_at | date:'dd/MM/yyyy' }}</p>
+            </div>
+            <div *ngIf="subject.pivot" class="assignment-info">
+              <small>Assigné le: {{ subject.pivot.created_at | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !classSubjects.length" class="no-subjects">
+        <div class="empty-state">
+          <p>📚</p>
+          <h4>Aucune matière assignée</h4>
+          <p>Cette classe n'a pas encore de matières assignées.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-primary" (click)="closeModal()">
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>

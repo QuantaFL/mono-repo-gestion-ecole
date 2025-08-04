@@ -1,0 +1,26 @@
+<div class="subject-form-page">
+  <div class="page-header">
+    <h2 class="page-title">Ajouter une matière</h2>
+  </div>
+
+  <div class="card">
+    <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <label for="name">Nom de la matière *</label>
+        <input 
+          id="name" 
+          formControlName="name" 
+          type="text" 
+          placeholder="Ex: Mathématiques, Français, Histoire..."
+          class="form-input" />
+        <div class="form-error" *ngIf="subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched">
+          Le nom de la matière est requis.
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="subjectForm.invalid">
+        Ajouter la matière
+      </button>
+    </form>
+  </div>
+</div>

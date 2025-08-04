@@ -1,0 +1,61 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2 class="page-title">Liste des enseignants actifs</h2>
+    <div class="header-actions">
+      <button class="btn-secondary" routerLink="/list_terminated_assigned_teacher">
+        👥 Voir enseignants résiliés
+      </button>
+      <button class="btn-primary" routerLink="/teacher">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="icon">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Ajouter un enseignant
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Date d'embauche</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let teacher of teachers">
+          <td>{{ teacher.userModel.last_name }}</td>
+          <td>{{ teacher.userModel.first_name }}</td>
+          <td>{{ teacher.userModel.email }}</td>
+          <td>{{ teacher.userModel.phone }}</td>
+          <td>{{ teacher.hire_date | date: 'dd/MM/yyyy' }}</td>
+          <td class="actions-cell">
+            <button class="btn-prominent btn-warning apple-action-btn" 
+                    title="Entamer résiliation"
+                    (click)="openTerminationModal(teacher)">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+              Entamer Résiliation
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmation de résiliation -->
+<app-termination-confirm-modal
+  [isOpen]="isTerminationModalOpen"
+  [selectedTeacher]="selectedTeacher"
+  (close)="closeTerminationModal()"
+  (confirm)="confirmTermination($event)">
+</app-termination-confirm-modal>

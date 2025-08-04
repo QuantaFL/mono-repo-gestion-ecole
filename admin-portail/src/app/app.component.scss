@@ -1,0 +1,17 @@
+.main-content {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 280px; /* Default sidebar width */
+  padding: 24px;
+}
+
+.main-content.collapsed {
+  margin-left: 72px; /* Collapsed sidebar width */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}
