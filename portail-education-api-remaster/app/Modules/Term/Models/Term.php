@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Modules\Term\Models;
+
+use App\Modules\AcademicYear\Models\AcademicYear;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Term extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'academic_year_id',
+        'start_date',
+        'end_date',
+        'status',
+    ];
+
+    protected $with = [
+        'academicYear',
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function isEnded(): bool
+    {
+        return now()->isAfter($this->end_date);
+    }
+
+    public static function getCurrentTerm()
+    {
+        $currentAcademicYear = AcademicYear::getCurrentAcademicYear();
+
+        if (!$currentAcademicYear) {
+            return null;
+        }
+
+        return $currentAcademicYear->terms()
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->first();
+    }
+}
